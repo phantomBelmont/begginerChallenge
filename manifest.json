@@ -1,6 +1,6 @@
 {
-  "name": "私のクイズアプリ",
-  "short_name": "クイズ",
+  "name": "私の試作品",
+  "short_name": "試し",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#4B0082",
