@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>習得できたコード</title>
     <head>
   <link rel="manifest" href="manifest.json">
@@ -55,9 +57,9 @@
     <div class="stars"></div>
 
     <div id="buttonsdiv">
-    <button onclick="natureSwap()"  id="idnature">🌌</button>
-    <button onclick="animalSwap()"  id="idanimal">🐣</button>
-    <button onclick="storySwap()" id="idstory">🧛</button>
+    <button onclick="natureSwapNnatureFlip()" id="idnature">🌌</button>
+    <button onclick="animalSwapNanimalFlip()"  id="idanimal">🐣</button>
+    <button onclick="storySwapNstoryFlip()" id="idstory">🧛</button>
     </div>
 
     <button onclick="btnSwap()">ボタンシャッフル</button>
@@ -73,76 +75,113 @@
 
             for (let last = natureOrder.length-1; last>0; last-- ){
              let randomPickup = Math.floor(Math.random()*(last+1));
-
              [natureOrder[last], natureOrder[randomPickup]] = [natureOrder[randomPickup], natureOrder[last]];
             };
-
             const kekka = document.getElementById('natureKekka');
             kekka.innerHTML=`${natureOrder[0]}→${natureOrder[1]}→${natureOrder[2]}`;
-            
         }
 
         function animalSwap(){
-            
             let animalOrder = ["🐄","🐭","🐣","🐸"];
-
             for (let last = animalOrder.length-1; last>0; last-- ){
              let randomPickup = Math.floor(Math.random()*(last+1));
-
              [animalOrder[last], animalOrder[randomPickup]] = [animalOrder[randomPickup], animalOrder[last]];
             };
-
             const kekka = document.getElementById('animalKekka');
             kekka.innerHTML=`${animalOrder[0]}→${animalOrder[1]}→${animalOrder[2]}`;
-            
         }
 
         function storySwap(){
-            
+        
             let storyOrder = ["🧜‍♀️","🏃‍♂️‍➡️","💍","🛡️","⚔️","🗡️","📖","🐺","🦇","🧛","🧚","🌙",];
-
             for (let last = storyOrder.length-1; last>0; last-- ){
              let randomPickup = Math.floor(Math.random()*(last+1));
-
              [storyOrder[last], storyOrder[randomPickup]] = [storyOrder[randomPickup], storyOrder[last]];
             };
-
             const kekka = document.getElementById('storyKekka');
             kekka.innerHTML=storyOrder[0]+"→"+storyOrder[1]+"→"+storyOrder[2];
-            
         }
+        
+
+            let natureSurface=true;
+            let animalSurface=true;
+            let storySurface=true;
+
+        function natureFlip(){
+            natureSurface=!natureSurface;
+            
+            if(natureSurface){
+                document.getElementById('idnature').textContent="🌌";
+            }else{
+                document.getElementById('idnature').textContent="✨";
+            }
+        }
+            function natureSwapNnatureFlip(){
+            natureFlip();
+            natureSwap();
+        }
+
+        function animalFlip(){
+            animalSurface=!animalSurface;
+            if(animalSurface){
+            document.getElementById('idanimal').textContent="🐣";
+            }else{
+            document.getElementById('idanimal').textContent="🐦‍🔥";
+            };
+        }
+        function animalSwapNanimalFlip(){
+            animalSwap();
+            animalFlip();
+        } 
+
+
+        function storyFlip(){
+            storySurface=!storySurface;
+            if(storySurface){
+            document.getElementById('idstory').textContent="🧛";
+            }else{
+            document.getElementById('idstory').textContent="🦇";
+            };
+        }
+        function storySwapNstoryFlip(){
+            storySwap();
+            storyFlip();
+        }
+
+
 
         function btnSwap(){
             const btn1 = document.getElementById('idnature').textContent;
             const btn2 = document.getElementById('idanimal').textContent;
             const btn3 = document.getElementById('idstory').textContent;
 
-            let btnShowingOrder = [btn1, btn2, btn3];
+            let surfaceOrder = [btn1, btn2, btn3];
 
-            for(let last = btnShowingOrder.length-1; last>0; last--){
+            for(let last = surfaceOrder.length-1; last>0; last--){
                 let randomPickup=Math.floor(Math.random()*(last+1));
-
-                [btnShowingOrder[last],btnShowingOrder[randomPickup]] = [btnShowingOrder[randomPickup],btnShowingOrder[last]];
+                [surfaceOrder[last],surfaceOrder[randomPickup]] = [surfaceOrder[randomPickup],surfaceOrder[last]];
             };
-            document.getElementById('idnature').textContent=btnShowingOrder[0];
-            document.getElementById('idanimal').textContent=btnShowingOrder[1];
-            document.getElementById('idstory').textContent=btnShowingOrder[2];
+            document.getElementById('idnature').textContent=surfaceOrder[0];
+            document.getElementById('idanimal').textContent=surfaceOrder[1];
+            document.getElementById('idstory').textContent=surfaceOrder[2];
            
-            const btnNature = document.getElementById('idnature');
-            const btnAnimal = document.getElementById('idanimal');
-            const btnStory = document.getElementById('idstory');
 
-            const btnKansuOrder =[btnNature, btnAnimal, btnStory];
 
-            for(let btnlast=btnKansuOrder.length-1; btnlast>0; btnlast--){
-                let btnRandomPickup=Math.floor(Math.random()*(btnlast+1))
+            const functionNature = document.getElementById('idnature');
+            const functionAnimal = document.getElementById('idanimal');
+            const functionStory = document.getElementById('idstory');
 
-                [btnKansuOrder[btnlast],btnKansuOrder[btnRandomPickup]]=[btnKansuOrder[btnRandomPickup],btnKansuOrder[btnlast]];
+            const functionOrder =[functionNature, functionAnimal, functionStory];
+
+            for(let lastindex=functionOrder.length-1; lastindex>0; lastindex--){
+                let btnRandomPickup=Math.floor(Math.random()*(lastindex+1))
+
+                [functionOrder[lastindex],functionOrder[btnRandomPickup]]=[functionOrder[btnRandomPickup],functionOrder[lastindex]];
             }
             
             const btnsDiv = document.getElementById('buttonsdiv');
             btnsDiv.innerHTML='';
-            btnKansuOrder.forEach(karibox=>{btnsDiv.appendChild(karibox);
+            functionOrder.forEach(karibox=>{btnsDiv.appendChild(karibox);
             });
         }
     </script>
