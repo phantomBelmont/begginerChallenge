@@ -1,6 +1,7 @@
 body{
             background-color: black;
             color:white;
+　　　　　　　font-size:20px;
 
             display: flex;
             height: 100vh;
@@ -15,7 +16,6 @@ body{
 
         }
 .btn{
-font-size:20px;
 background-color:grey;
 min-height:50px;
 width:100%;
