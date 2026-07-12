@@ -1,8 +1,8 @@
 .btn{
 font-size:16px;
 min-height:48px;
-width:auto;
-gap;l0px;
+width:100%;
+gap;50px;
 
 @media(min-width:768px){
 font-size:14px;
