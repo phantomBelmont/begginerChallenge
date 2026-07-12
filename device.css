@@ -1,0 +1,17 @@
+.btn{
+font-size:16px;
+min-height:48px;
+width:auto;
+gap;l0px;
+
+@media(min-width:768px){
+font-size:14px;
+min-height:44px;
+min-width:150px;
+}
+
+@media(min-width:1200px){
+font-size:16px
+}
+
+}
