@@ -15,11 +15,12 @@ body{
 
         }
 .btn{
-font-size:16px;
-min-height:48px;
+font-size:20px;
+background-color:grey;
+min-height:50px;
 width:100%;
-padding:12px 20px;
+padding:14px 20px;
 
 border:none;
-border-radius:8px;
+border-radius:12px;
 }
