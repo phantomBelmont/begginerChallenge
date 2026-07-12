@@ -1,5 +1,4 @@
-
-        body{
+body{
             background-color: black;
             color: yellow;
 
@@ -13,28 +12,3 @@
             justify-content: center;
             align-items: center;
         }
-
-        .stars{
-            position: fixed;
-            height: 100%;
-            width: 100%;
-            top:0; left:0;
-            z-index: -1;
-
-            background-size: 200px 200px;
-            background-image: radial-gradient(2px 2px at 50px 50px, orange, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 20px 20px, rgb(3, 238, 3), rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 10px 30px, pink, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 150px 120px, aqua, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 120px 150px, white, rgba(0,0,0,0));
-            background-repeat: repeat;
-
-            animation: moveDiagonal 10s ease-in-out infinite;
-
-        }
-
-        @keyframes moveDiagonal{
-            from{background-position: 0 0;}
-            to{background-position: 200px 200px;}
-        }
-   
