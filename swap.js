@@ -1,4 +1,4 @@
-    <script>
+
         function natureSwap(){
 
             let natureOrder = ["🌟","🌌","🌲"];
