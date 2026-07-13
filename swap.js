@@ -1,7 +1,6 @@
-
         function natureSwap(){
 
-            let natureOrder = ["🌟","🌌","🌲"];
+            let natureOrder = ["🌟","🌌","🌲","🌹","🪨","🌅","🏞️","☀️","🌙","🌕","❄️","🔥","⚡","💧","🌪️","🍎","🍓","🍌","🍍","🍄‍🟫","🧅","🥚","🥜","🍞","🍔","🍕","🍜","🍣","🍨","🍺","🍷","🎄","🎃","🎆"];
 
             for (let last = natureOrder.length-1; last>0; last-- ){
              let randomPickup = Math.floor(Math.random()*(last+1));
@@ -12,7 +11,7 @@
         }
 
         function animalSwap(){
-            let animalOrder = ["🐄","🐭","🐣","🐸"];
+            let animalOrder = ["🦁","🦄","🐏","🐐","🦇","🐺","🐢","🐍","🕊️","🐣","🐦","🐦‍🔥","🪿","🦢","🐚","🐟","🐸","🦉","🐱","🐙","🐶"];
             for (let last = animalOrder.length-1; last>0; last-- ){
              let randomPickup = Math.floor(Math.random()*(last+1));
              [animalOrder[last], animalOrder[randomPickup]] = [animalOrder[randomPickup], animalOrder[last]];
@@ -23,7 +22,7 @@
 
         function storySwap(){
 
-            let storyOrder = ["🧜‍♀️","🏃‍♂️‍➡️","💍","🛡️","⚔️","🗡️","📖","🐺","🦇","🧛","🧚","🌙",];
+            let storyOrder = ["🧛🏻","🦇","🐺","🌕","🌬️","🐟","🪺","🧚🏻","👻","☠️","🧟","🦤","🍎","🍖","🍄","🥪","🍷","🧭","⚓","🏰","🗺️","🏹","🪄","💎","🕯️","🧱","🚪","💍","⏱️","🪦","⚰️","📿","⚱️","💣","🗡️","🛡️","🗝️","🪉"];
             for (let last = storyOrder.length-1; last>0; last-- ){
              let randomPickup = Math.floor(Math.random()*(last+1));
              [storyOrder[last], storyOrder[randomPickup]] = [storyOrder[randomPickup], storyOrder[last]];
@@ -67,8 +66,3 @@
             functionOrder.forEach(karibox=>{btnsDiv.appendChild(karibox);
             });
         }
-
-
-        
-
-   
