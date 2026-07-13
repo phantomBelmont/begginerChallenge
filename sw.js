@@ -7,8 +7,9 @@ const urlsToCache = [
   './stars.css',
   './swap.js', 
   './flip.js',
-  './icon-192.png',
-  './icon-512.png'
+  './icon192.png',
+  './icon512.png',
+  './manifest.json'
 ];
 
 self.addEventListener('install', event => {
