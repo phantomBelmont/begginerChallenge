@@ -1,5 +1,5 @@
 @media(min-width:768px){
-.btn{
+button{
 font-size:14px;
 min-height:44px;
 min-width:150px;
@@ -8,7 +8,7 @@ width:auto;
 }
 
 @media(min-width:1200px){
-.btn{
+button{
 font-size:16px;
 padding:15px 40px;
 }
