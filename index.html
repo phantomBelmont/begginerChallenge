@@ -4,39 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>習得できたコード</title>
- 
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4B0082">
-  
   <link rel="icon" type="image/png" href="icon192.png">
   <link rel="apple-touch-icon" href="icon192.png">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
 
 <link rel="stylesheet" href="body.css">
 <link rel="stylesheet" href="stars.css">
 <link rel="stylesheet" href="device.css">
-        
-        
+
 </head>
 
 <body>
+    <div class="moon">🌑</div>
+    
     <div class="stars"></div>
 
     <div id="buttonsdiv">
-    <button onclick="natureSwap()" id="idnature" class="btn">🌌</button>
+    <button onclick="natureSwap()" id="idnature">🌹</button>
 
-    <button onclick="animalSwap()"  id="idanimal" class="btn">🐣</button>
+    <button onclick="animalSwap()"  id="idanimal">🦄</button>
 
-    <button onclick="storySwap()" id="idstory" class="btn">🧛</button>
+    <button onclick="storySwap()" id="idstory">🏰</button>
     </div>
 
     <button onclick="btnSwap()" class="btn">ボタンシャッフル</button>
-    <button onclick="surfaceFlip()" id="idflip" class="btn">🏰</button>
+    
+    <button onclick="surfaceFlip()" id="idflip">🧛🏻</button>
 
     <div id="natureKekka"></div>
     <div id="animalKekka"></div>
     <div id="storyKekka"></div>
 
-    
+
   <script src="swap.js" defer></script>
   <script src="flip.js" defer></script>
 
