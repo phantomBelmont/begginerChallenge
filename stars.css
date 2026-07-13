@@ -1,4 +1,4 @@
-        .stars{
+.stars{
             position: fixed;
             height: 100%;
             width: 100%;
@@ -17,14 +17,13 @@
             will-change:opacity, background-position;
 
         }
-
-
+        
+        
         @keyframes moveDiagonal{
             from{background-position: 0 0;}
             to{background-position: 200px 200px;}
         }
-
+        
         @keyframes twinkle{
             0%,100%{opacity:0.4;} 50%{opacity: 1;}
         }
-        
