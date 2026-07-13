@@ -40,6 +40,8 @@ border-radius:12px;
 transition:transform 0.1s, 
 background 0.2s,
 box−shadow 0.2s;
+
+will-change: transform, background, box-shadow;
 }
 
 @media (hover:hover) and (pointer: fine) {
