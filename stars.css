@@ -13,11 +13,18 @@
             radial-gradient(2px 2px at 120px 150px, white, rgba(0,0,0,0));
             background-repeat: repeat;
 
-            animation: moveDiagonal 10s ease-in-out infinite;
+            animation: moveDiagonal 5s ease-in-out infinite, twinkle 2s ease-in-out infinite;
+            will-change:opacity, background-position;
 
         }
+
 
         @keyframes moveDiagonal{
             from{background-position: 0 0;}
             to{background-position: 200px 200px;}
         }
+
+        @keyframes twinkle{
+            0%,100%{opacity:0.4;} 50%{opacity: 1;}
+        }
+        
