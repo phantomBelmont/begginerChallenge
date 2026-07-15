@@ -36,15 +36,19 @@
 
     <div id="buttonsdiv">
     <button onclick="natureSwap()" id="idnature">🌹</button>
-
     <button onclick="animalSwap()"  id="idanimal">🦄</button>
-
     <button onclick="storySwap()" id="idstory">🏰</button>
     </div>
 
     <button onclick="btnSwap()" class="btn">ボタンシャッフル</button>
     
-    <button onclick="surfaceFlip()" id="idflip">🧛🏻</button>
+    カテゴリー別カード↓
+    <button onclick="categoryLabelling('all')">全部</button>
+    <button onclick="categoryLabelling('metamorphosis')">変身</button>
+    <button onclick="categoryLabelling('others')">その他</button>
+    
+    <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;">スタート！</div>
+    <button onclick="toNext()">次へ</button>
 
     <div id="natureKekka"></div>
     <div id="animalKekka"></div>
