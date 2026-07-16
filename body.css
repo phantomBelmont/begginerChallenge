@@ -1,26 +1,34 @@
 body{
-            background-color: black;
-            color:white;
-　　　　　　　font-size:1.5rem;
+    background-color: #000;
+    color:white;
+    font-size:1.5rem;
 
-            display: flex;
-            height: 100vh;
+    display: flex;
+    height: 100vh;
 
-            margin: 0;
-            padding: 0;
+    margin: 0;
+    padding: 0;
 
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap:10px;
-        }
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+}
 
 .moon{
     font-size:3rem;
     filter:drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #8a0303) drop-shadow(0 0 40px #590000) drop-shadow(0 0 80px #8a0303);
     margin-bottom:60px;
 }
-        
+
+.opened{
+    display: block;
+}
+
+.hidden{
+    display: none;
+}
+
 button{
     font-size: inherit;
     color: black;
@@ -31,26 +39,54 @@ button{
     border-width: 3px;
     box-shadow: 0 0 5px #fcd34d, 0 0 10px #fcd34d;
     
-padding:20px 50px;
-margin-bottom: 10px;
-width:auto;
+    padding: 30px 50px;
+    margin-bottom: 10px;
+    width:auto;
+    justify-content: center;
+    align-items: center;
 
-border-radius:12px;
+    border-radius:12px;
 
-transition:transform 0.1s, 
-background 0.2s,
-box−shadow 0.2s;
+    transition:transform 0.1s, 
+    background 0.2s,
+    box−shadow 0.2s;
 
-will-change: transform, background, box-shadow;
+    will-change: transform, background, box-shadow;
 }
 
-@media (hover:hover) and (pointer: fine) {
-    button:hover{
-    background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #fcd34d, 0 0 20px #fcd34d;
+#divFlipCard{
+ display: flex !important; 
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    
+    height: 80vh !important; 
+    width: 80% !important;
+    max-width: 600px !important;
+    
+    /* 外観の明確化 */
+    border: 3px solid #590000 !important;
+    border-radius: 20px !important;
+    background-color: #1a1a1a !important; 
+    color: #ffffff !important; 
+    
+    font-size: 3rem !important;
+    padding: 40px !important;
+    text-align: center !important;
+    
+    box-shadow: 0 0 20px rgba(89, 0, 0, 0.5), 0 0 40px rgba(89, 0, 0, 0.2) !important;
+    
+    overflow: hidden !important;
+    box-sizing: border-box !important; 
+}
+
+    @media (hover:hover) and (pointer: fine) {
+        button:hover{
+        background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #fcd34d, 0 0 20px #fcd34d;
+        }
     }
-}
 
 
 button:active {
@@ -62,5 +98,6 @@ button:active {
 
 #buttonsdiv{
     display: flex;
+    height: auto;
     gap: 10px;
 }
