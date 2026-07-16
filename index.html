@@ -40,20 +40,19 @@
     <button onclick="storySwap()" id="idstory">🏰</button>
     </div>
 
-    <button onclick="btnSwap()" class="btn">ボタンシャッフル</button>
-    
-    カテゴリー別カード↓
-    <button onclick="categoryLabelling('all')">全部</button>
-    <button onclick="categoryLabelling('metamorphosis')">変身</button>
-    <button onclick="categoryLabelling('others')">その他</button>
-    
-    <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;">スタート！</div>
-    <button onclick="toNext()">次へ</button>
-
     <div id="natureKekka"></div>
     <div id="animalKekka"></div>
     <div id="storyKekka"></div>
 
+    <button onclick="btnSwap()" class="btn">ボタンシャッフル</button>
+    
+    カテゴリー別カード↓
+    <button onclick="openTheCategory('all')">全部</button>
+    <button onclick="openTheCategory('metamorphosis')">変身</button>
+    <button onclick="openTheCategory('others')">その他</button>
+    
+    <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;"></div>
+    <button onclick="toNext()">次へ</button>
 
   <script src="swap.js" defer></script>
   <script src="flip.js" defer></script>
