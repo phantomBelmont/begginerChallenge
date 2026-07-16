@@ -1,4 +1,4 @@
-.stars{
+ .stars{
             position: fixed;
             height: 100%;
             width: 100%;
@@ -14,7 +14,7 @@
             background-repeat: repeat;
 
             animation: moveDiagonal 5s ease-in-out infinite, twinkle 2s ease-in-out infinite;
-            will-change:opacity, background-position;
+            will-change:opacity;
 
         }
         
