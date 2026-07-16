@@ -26,7 +26,8 @@
                 cardUlooking.textContent = "カード準備中🙇‍♀️";
                 return;
             }
-            cardUlooking.textContent = surface ? categorizedArray[indexUlooking].q : categorizedArray[indexUlooking].a;
+            cardUlooking.textContent = surface ? categorizedArray[indexUlooking].q  : categorizedArray[indexUlooking].a;
+            console.log("textContent 設定:", cardUlooking.textContent);
         }
 
         function flipCard(){
