@@ -34,26 +34,40 @@
     
     <div class="stars"></div>
 
-    <div id="buttonsdiv">
-    <button onclick="natureSwap()" id="idnature">🌹</button>
-    <button onclick="animalSwap()"  id="idanimal">🦄</button>
-    <button onclick="storySwap()" id="idstory">🏰</button>
+    <div id="menu" class="opened">
+      <button onclick="goToSwap()">シャッフルゲーム</button>
+      <button onclick="goToFlipCategory()">フリップゲーム</button>
     </div>
 
-    <div id="natureKekka"></div>
-    <div id="animalKekka"></div>
-    <div id="storyKekka"></div>
+      <div id="swapGameDiv" class="hidden">  
+        <button onclick="natureSwap()" id="idnature">🌹</button>
+        <button onclick="animalSwap()"  id="idanimal">🦄</button>
+        <button onclick="storySwap()" id="idstory">🏰</button>
 
-    <button onclick="btnSwap()" class="btn">ボタンシャッフル</button>
-    
-    カテゴリー別カード↓
-    <button onclick="openTheCategory('all')">全部</button>
-    <button onclick="openTheCategory('metamorphosis')">変身</button>
-    <button onclick="openTheCategory('others')">その他</button>
-    
-    <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;"></div>
-    <button onclick="toNext()">次へ</button>
+        <div id="natureKekka"></div>
+        <div id="animalKekka"></div>
+        <div id="storyKekka"></div>
 
+        <button onclick="btnSwap()" class="btn">ボタンシャッフル</button>
+        <button onclick="goToMenu()">メニューに戻る</button>
+
+      </div>
+
+      <div id="flipGameCategoryDiv" class="hidden">
+        カテゴリー別カード↓
+        <button onclick="switchScreen('flipGameDiv');openTheCategory('all')">全部</button>
+        <button onclick="switchScreen('flipGameDiv');openTheCategory('metamorphosis')">変身</button>
+        <button onclick="switchScreen('flipGameDiv');openTheCategory('others')">その他</button>
+          <button onclick="goToMenu()">メニューに戻る</button>
+      </div>
+
+      <div id="flipGameDiv" class="hidden">
+        <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;"></div>
+        <button onclick="toNext()">次へ</button>
+          <button onclick="goToMenu()">メニューに戻る</button>
+      </div>
+
+  <script src="switchscreen.js" defer></script>
   <script src="swap.js" defer></script>
   <script src="flip.js" defer></script>
 
