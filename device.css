@@ -1,16 +1,35 @@
-@media(min-width:768px){
-button{
-font-size:14px;
-min-height:44px;
-min-width:150px;
-width:auto;
-}
+@media (max-width: 480px){
+    button{
+        width: 80%;
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+     #divFlipCard {           
+        font-size: 2rem;       
+        border-radius: 12px;   
+        }
+
+     .moon {
+        font-size: 2rem;  
+        margin-bottom: 30px;
+    }
 }
 
-@media(min-width:1200px){
-button{
-font-size:16px;
-padding:15px 40px;
+@media (min-width: 481px) and (max-width: 768px){
+    button {
+        font-size: 1.2rem;
+        padding: 25px 40px;
+    }
+    #divFlipCard {
+        font-size: 2.5rem;
+    }
+
 }
+
+@media (min-width: 769px){
+    #divFlipCard {
+        margin: 0 auto;        
+        font-size: 3rem;       
+    }
 
 }
