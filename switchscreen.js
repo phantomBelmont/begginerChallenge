@@ -11,14 +11,31 @@ function switchScreen(roomIDhikisu) {
     theRoom.classList.remove('hidden');
     theRoom.classList.add('opened');
     
-    if (roomIDhikisu === 'flipGameDiv') {
+    if (roomIDhikisu === 'flipcardNbuttonDiv') {
       console.log("ゲーム2開始！カードを初期化します");
       openTheCategory('all'); 
+    }
+    if (roomIDhikisu === 'flipcardNbuttonDiv' || roomIDhikisu === 'swapGameDiv') {
+            document.body.style.overflow = 'hidden';
+    }
+    const moonEmoji = document.querySelector('.moon');
+    if (moonEmoji) {
+        if (roomIDhikisu === 'menu') {
+            moonEmoji.style.display = 'block'; 
+        } else {
+            moonEmoji.style.display = 'none'; 
+        }
     }
   }
 }
 
+function resetScroll() {　
+    document.body.style.overflow = '';
+}
 function goToMenu() {
+  const moonEmoji = document.querySelector('.moon');
+    if (moonEmoji) moonEmoji.style.display = 'block';
+  resetScroll();
   switchScreen('menu');
 }
 
@@ -31,5 +48,5 @@ function goToFlipCategory() {
 }
 
 function goToEachFlipCategory(){
-    switchScreen('flipGameDiv');
+    switchScreen('flipcardNbuttonDiv');
 }
