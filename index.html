@@ -50,18 +50,17 @@
 
         <button onclick="btnSwap()" class="btn">ボタンシャッフル</button>
         <button onclick="goToMenu()">メニューに戻る</button>
-
       </div>
 
       <div id="flipGameCategoryDiv" class="hidden">
         カテゴリー別カード↓
-        <button onclick="switchScreen('flipGameDiv');openTheCategory('all')">全部</button>
-        <button onclick="switchScreen('flipGameDiv');openTheCategory('metamorphosis')">変身</button>
-        <button onclick="switchScreen('flipGameDiv');openTheCategory('others')">その他</button>
+        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('all')">全部</button>
+        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('metamorphosis')">変身</button>
+        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('others')">その他</button>
           <button onclick="goToMenu()">メニューに戻る</button>
       </div>
 
-      <div id="flipGameDiv" class="hidden">
+      <div id="flipcardNbuttonDiv" class="hidden">
         <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;"></div>
         <button onclick="toNext()">次へ</button>
           <button onclick="goToMenu()">メニューに戻る</button>
