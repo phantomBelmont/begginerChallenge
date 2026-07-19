@@ -10,8 +10,6 @@
   <link rel="icon" type="image/png" href="icon192.png">
   <link rel="apple-touch-icon" href="icon192.png">
 
-  <link rel="stylesheet" href="device.css">
-
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -27,6 +25,62 @@
   </script>
 
 <style>
+/*device.css*/
+@media (max-width: 480px){
+     #natureKekka, #animalKekka, #storyKekka{
+        font-size: 2.5rem;
+     }
+     #idnature, #idanimal, #idstory{
+        font-size: 1.5rem;
+     }
+     #divFlipCard {           
+        font-size: 2rem;       
+        border-radius: 12px;   
+        }
+     .moon {
+        font-size: 5rem;  
+        margin-bottom: 80px;
+    }
+}
+@media (min-width: 481px) and (max-width: 768px){
+    #divFlipCard {
+        font-size: 4rem !important;
+    }
+}
+@media (min-width: 769px){
+    body{
+        width: 100%;
+    }
+    #swapGameDiv{
+        margin-top: 0 !important;
+    }
+    #idnature, #idanimal, #idstory{
+        font-size: 2rem !important;
+        padding: 5px 50px !important;
+    }
+    .swapNkekka{
+        margin:5px !important;
+    }
+    #divFlipCard {
+        margin: 0 auto;        
+        font-size: 3rem;       
+    }
+    #btnswapNmenu{
+        margin-top:5px !important;
+    }
+    #natureKekka, #animalKekka, #storyKekka{
+        font-size: 2rem;
+    }
+
+
+
+
+
+
+
+
+
+
     /*body.css*/
     body{
     background-color: #000;
@@ -61,7 +115,7 @@ button{
     border-color:#fcd34d;
     border-width: 3px;
     box-shadow: 0 0 5px #fcd34d, 0 0 10px #fcd34d;
-    
+
     padding: 20px 30px;
     margin: 10px;
     width:auto;
@@ -95,7 +149,7 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     border: 3px solid #590000;
     border-radius: 20px;
     background-color: #1a1a1a;
@@ -109,7 +163,6 @@ button{
     flex: 0 0 auto;  
     box-sizing: border-box;
 }
-
     @media (hover:hover) and (pointer: fine) {
         button:hover{
         background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
@@ -118,8 +171,6 @@ button{
         opacity: 0.8;
         }
     }
-
-
 button:active {
     transform: scale(0.9) translateY(2px);
     background:linear-gradient(to right, black 0%, grey 25%, white 50%, grey 75%, black 100%);
@@ -129,19 +180,20 @@ button:active {
 #swapGameDiv{
     height: 100vh;
     width: 100%;
-    display: flex;
-    justify-content: center !important;
-    align-items: center !important;
+    margin-top:80px;
 }
 .swapNkekka{
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    margin-top:20px;
+    
 }
 #btnswapNmenu{
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-top:50px;
 }
 #idnature, #idanimal, #idstory{
     padding: 10px;
@@ -156,7 +208,7 @@ button:active {
 
 
 
-<!--stars.css-->
+/*stars.css*/
  .stars{
             position: fixed;
             height: 100%;
@@ -176,20 +228,28 @@ button:active {
             will-change:opacity;
 
         }
-        
-        
         @keyframes moveDiagonal{
             from{background-position: 0 0;}
             to{background-position: 200px 200px;}
         }
-        
         @keyframes twinkle{
             0%,100%{opacity:0.4;} 50%{opacity: 1;}
         }
-
-
-
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </head>
@@ -197,7 +257,7 @@ button:active {
 <body>
     <!--HTML-->
     <div class="moon">🌑</div>
-    
+
     <div class="stars"></div>
 
     <div id="menu" class="opened">
@@ -249,7 +309,7 @@ function switchScreen(roomIDhikisu) {
   if (ScreenIwannaGo) {
     ScreenIwannaGo.classList.remove('hidden');
     ScreenIwannaGo.classList.add('opened');
-    
+
     if (roomIDhikisu === 'flipcardNbuttonDiv') {
       console.log("ゲーム2開始！カードを初期化します");
       openTheCategory('all'); 
@@ -301,8 +361,8 @@ function goToEachFlipCategory(){
                 document.getElementById('idanimal').textContent=surfaceOrder[1];
                 document.getElementById('idstory').textContent=surfaceOrder[2];
         }
-      
-      
+
+
         const kekkaIdArray = ['natureKekka', 'animalKekka', 'storyKekka'];
         const funcArray = ['natureSwap', 'animalSwap', 'storySwap'];
         const buttonIdArray = ['idnature', 'idanimal', 'idstory'];
@@ -314,7 +374,7 @@ function goToEachFlipCategory(){
                 const j = Math.floor(Math.random() * (i + 1));
                 [numArray[i], numArray[j]] = [numArray[j], numArray[i]];
             }
-            
+
             getRandomFuncandKekka();
             surfaceSwap();
 
@@ -329,7 +389,7 @@ function goToEachFlipCategory(){
                 if (!anyBtn) return;
                 const shuffledNumArraydenoSonoIndexniattaSuuji = numArray[sonoIndex];
                 const randomFunc = funcArray[shuffledNumArraydenoSonoIndexniattaSuuji];
-                
+
                 anyBtn.onclick = function() {
                     const randomKekkaId = kekkaIdArray[shuffledNumArraydenoSonoIndexniattaSuuji];
                     shffleEmojiNshowKekka(randomKekkaId, randomFunc);
@@ -339,7 +399,7 @@ function goToEachFlipCategory(){
 
         function shffleEmojiNshowKekka(randomKekkaId, randomFunc) {
             let emojiArray = [];
-            
+
             if (randomFunc === 'natureSwap') {
                 emojiArray = ["🌟","🌌","🌲","🌹","🪨","🌅","🏞️","☀️","🌙","🌕","❄️","🔥","⚡","💧","🌪️","🍎","🍓","🍌","🍍","🍄‍🟫","🧅","🥚","🥜","🍞","🍔","🍕","🍜","🍣","🍨","🍺","🍷","🎄","🎃","🎆"];
             } else if (randomFunc === 'animalSwap') {
@@ -358,7 +418,7 @@ function goToEachFlipCategory(){
                 kekka.innerHTML = `${emojiArray[0]}→${emojiArray[1]}→${emojiArray[2]}`;
             }
         }
-        
+
 
         function autoMakeBTNSHUFFLEhaveNumArrayShuffle() {      
             getRandomFuncandKekka();
@@ -367,7 +427,7 @@ function goToEachFlipCategory(){
                 btnshuffleBtn.onclick = numArrayShuffle;
             }
         }
-        
+
         autoMakeBTNSHUFFLEhaveNumArrayShuffle();
 
         window.natureSwap = () => shffleEmojiNshowKekka('natureKekka', 'natureSwap');
@@ -379,7 +439,7 @@ function goToEachFlipCategory(){
 
 
 
-        
+
 
 
 
@@ -437,7 +497,7 @@ function goToEachFlipCategory(){
                     }
                     categorizedArray = pickupNmakeArray();
                 }   
-                
+
     categorizedArray = pickupNmakeArray();
     renderAcard();
       </script>
