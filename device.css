@@ -1,6 +1,6 @@
 @media (max-width: 480px){
      #natureKekka, #animalKekka, #storyKekka{
-        font-size: 1.5rem;
+        font-size: 3rem;
      }
      #idnature, #idanimal, #idstory{
         font-size: 1.5rem;
@@ -14,12 +14,10 @@
         margin-bottom: 80px;
     }
 }
-
 @media (min-width: 481px) and (max-width: 768px){
     #divFlipCard {
         font-size: 4rem !important;
     }
-
 }
 @media (min-width: 769px){
     body{
@@ -27,8 +25,8 @@
         width: 100%;
     }
     #idnature, #idanimal, #idstory{
-        font-size: 2rem;
-        padding: 10px 50px;
+        font-size: 1.2rem;
+        padding: 18px 50px;
     }
     #divFlipCard {
         margin: 0 auto;        
