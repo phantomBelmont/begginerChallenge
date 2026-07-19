@@ -2,14 +2,8 @@ const CACHE_NAME = 'v1';
 const urlsToCache = [
   './',
   './index.html',
-  './body.css',
-  './device.css',
-  './stars.css',
-  './swap.js', 
-  './flip.js',
-  './icon192.png',
-  './icon512.png',
-  './manifest.json'
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -21,6 +15,7 @@ self.addEventListener('install', event => {
   );
 });
 
+// アクティブ時：古いキャッシュを削除
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -39,9 +34,11 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
+    
         if (response) {
           return response;
         }
+    
         return fetch(event.request);
       })
   );
