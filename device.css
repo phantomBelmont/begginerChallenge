@@ -1,17 +1,17 @@
 @media (max-width: 480px){
-    button{
-        width: 80%;
-        font-size: 3rem;
-        margin: 8px;
-    }
+     #natureKekka, #animalKekka, #storyKekka{
+        font-size: 1.5rem;
+     }
+     #idnature, #idanimal, #idstory{
+        font-size: 1.5rem;
+     }
      #divFlipCard {           
         font-size: 2rem;       
         border-radius: 12px;   
         }
-
      .moon {
-        font-size: 3rem;  
-        margin-bottom: 50px;
+        font-size: 5rem;  
+        margin-bottom: 80px;
     }
 }
 
