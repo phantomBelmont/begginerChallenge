@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>習得できたコード</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4B0082">
+  <link rel="icon" type="image/png" href="icon192.png">
+  <link rel="apple-touch-icon" href="icon192.png">
+
+  <link rel="stylesheet" href="device.css">
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+
+<style>
+    <!--body.css-->
+    body{
+    background-color: #000;
+    color:white;
+
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px 10px;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.moon{
+    font-size:3rem;
+    filter:drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #8a0303) drop-shadow(0 0 40px #590000) drop-shadow(0 0 80px #8a0303);
+    margin-bottom:60px;
+}
+
+.opened{
+    display: block !important;
+}
+.hidden{
+    display: none !important;
+}
+
+
+button{
+    color: black;
+    background:linear-gradient(
+    to bottom, black 0%, grey 25%, white 50%, grey 75%, black 100%);
+
+    border-color:#fcd34d;
+    border-width: 3px;
+    box-shadow: 0 0 5px #fcd34d, 0 0 10px #fcd34d;
+    
+    padding: 20px 30px;
+    margin: 10px;
+    width:auto;
+    text-align: center;
+    border-radius:12px;
+
+    transition:transform 0.1s, 
+    background 0.2s,
+    box−shadow 0.2s;
+
+    will-change: transform, background, box-shadow;
+}
+
+#flipcardNbuttonDiv{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+
+    width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+}
+#divFlipCard{
+    width: 90%;
+    max-width: 600px;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    border: 3px solid #590000;
+    border-radius: 20px;
+    background-color: #1a1a1a;
+    color: #fff;
+    font-size: 3rem;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(89, 0, 0, 0.5), 0 0 40px rgba(89, 0, 0, 0.2) !important;
+}
+#flipcardNbuttonDiv button{
+    font-size: 1rem;
+    flex: 0 0 auto;  
+    box-sizing: border-box;
+}
+
+    @media (hover:hover) and (pointer: fine) {
+        button:hover{
+        background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #fcd34d, 0 0 20px #fcd34d;
+        opacity: 0.8;
+        }
+    }
+
+
+button:active {
+    transform: scale(0.9) translateY(2px);
+    background:linear-gradient(to right, black 0%, grey 25%, white 50%, grey 75%, black 100%);
+    box-shadow: 0 0 2px #fcd34d, 0 0 7px #fcd34d;
+}
+
+#swapGameDiv{
+    height: 100vh;
+    width: 100%;
+}
+.swapNkekka{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btnswapNmenu{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+
+
+<!--stars.css-->
+ .stars{
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            top:0; left:0;
+            z-index: -1;
+
+            background-size: 200px 200px;
+            background-image: radial-gradient(2px 2px at 50px 50px, orange, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 20px 20px, rgb(3, 238, 3), rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 10px 30px, pink, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 150px 120px, aqua, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 120px 150px, white, rgba(0,0,0,0));
+            background-repeat: repeat;
+
+            animation: moveDiagonal 5s ease-in-out infinite, twinkle 2s ease-in-out infinite;
+            will-change:opacity;
+
+        }
+        
+        
+        @keyframes moveDiagonal{
+            from{background-position: 0 0;}
+            to{background-position: 200px 200px;}
+        }
+        
+        @keyframes twinkle{
+            0%,100%{opacity:0.4;} 50%{opacity: 1;}
+        }
+
+
+
+</style>
+
+
+</head>
+
+<body>
+    <!--HTML-->
+    <div class="moon">🌑</div>
+    
+    <div class="stars"></div>
+
+    <div id="menu" class="opened">
+      <button onclick="switchScreen('swapGameDiv')">シャッフルゲーム</button>
+      <button onclick="switchScreen('flipGameCategoryDiv')">フリップゲーム</button>
+    </div>
+
+    <div id="swapGameDiv" class="hidden">
+      <div class="swapNkekka">
+            <button onclick="natureSwap()" id="idnature">🌹</button> <div id="natureKekka"></div>
+      </div>
+      <div class="swapNkekka">
+            <button onclick="animalSwap()" id="idanimal">🦄</button><div id="animalKekka"></div>
+      </div>
+      <div class="swapNkekka">
+            <button onclick="storySwap()" id="idstory">🏰</button><div id="storyKekka"></div>
+      </div>  
+      <div id="btnswapNmenu">
+            <button onclick="btnSwap();surfaceSwap()" class="btn">ボタンシャッフル</button>
+            <button onclick="goToMenu()">メニューに戻る</button>
+      </div>
+    </div>
+
+
+      <div id="flipGameCategoryDiv" class="hidden">
+        カテゴリー別カード↓
+        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('all')">全部</button>
+        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('metamorphosis')">変身</button>
+        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('others')">その他</button>
+          <button onclick="goToMenu()">メニューに戻る</button>
+      </div>
+
+      <div id="flipcardNbuttonDiv" class="hidden">
+        <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;"></div>
+        <button onclick="toNext()">次へ</button>
+          <button onclick="goToMenu()">メニューに戻る</button>
+      </div>
+
+      <script>
+        //switchscreen.js
+function switchScreen(roomIDhikisu) {
+  const allTags = document.querySelectorAll('.opened');
+  allTags.forEach(eachDiv => {
+    eachDiv.classList.remove('opened');
+    eachDiv.classList.add('hidden');
+  });
+
+  const ScreenIwannaGo = document.getElementById(roomIDhikisu);
+  if (ScreenIwannaGo) {
+    ScreenIwannaGo.classList.remove('hidden');
+    ScreenIwannaGo.classList.add('opened');
+    
+    if (roomIDhikisu === 'flipcardNbuttonDiv') {
+      console.log("ゲーム2開始！カードを初期化します");
+      openTheCategory('all'); 
+    }
+    if (roomIDhikisu === 'flipcardNbuttonDiv' || roomIDhikisu === 'swapGameDiv') {
+            document.body.style.overflow = 'hidden';
+    }
+    const moonEmoji = document.querySelector('.moon');
+    if (moonEmoji) {
+        if (roomIDhikisu === 'menu') {
+            moonEmoji.style.display = 'block'; 
+        } else {
+            moonEmoji.style.display = 'none'; 
+        }
+    }
+  }
+}
+function resetScroll() {　
+    document.body.style.overflow = '';
+}
+function goToMenu() {
+  const moonEmoji = document.querySelector('.moon');
+    if (moonEmoji) moonEmoji.style.display = 'block';
+  resetScroll();
+  switchScreen('menu');
+}
+function goToEachFlipCategory(){
+    switchScreen('flipcardNbuttonDiv');
+}
+
+
+
+
+
+
+   //swap.js
+           function surfaceSwap(){
+            const btn1 = document.getElementById('idnature').textContent;
+            const btn2 = document.getElementById('idanimal').textContent;
+            const btn3 = document.getElementById('idstory').textContent;
+
+            let surfaceOrder = [btn1, btn2, btn3];
+
+                for(let last = surfaceOrder.length-1; last>0; last--){
+                    let randomPickup=Math.floor(Math.random()*(last+1));
+                    [surfaceOrder[last],surfaceOrder[randomPickup]] = [surfaceOrder[randomPickup],surfaceOrder[last]];
+                };
+                document.getElementById('idnature').textContent=surfaceOrder[0];
+                document.getElementById('idanimal').textContent=surfaceOrder[1];
+                document.getElementById('idstory').textContent=surfaceOrder[2];
+        }
+      
+      
+        const kekkaIdArray = ['natureKekka', 'animalKekka', 'storyKekka'];
+        const funcArray = ['natureSwap', 'animalSwap', 'storySwap'];
+        const buttonIdArray = ['idnature', 'idanimal', 'idstory'];
+
+        let numArray = [0, 1, 2];
+
+        function numArrayShuffle() {
+            for (let i = numArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [numArray[i], numArray[j]] = [numArray[j], numArray[i]];
+            }
+            
+            getRandomFuncandKekka();
+            surfaceSwap();
+
+            const btn = document.querySelector('.btn');
+            btn.textContent = "シャッフル完了！";
+            setTimeout(() => { btn.textContent = "ボタンシャッフル"; }, 1000);
+        }
+
+        function getRandomFuncandKekka() {
+            buttonIdArray.forEach((idNantoka, sonoIndex) => {
+                const anyBtn = document.getElementById(idNantoka);
+                if (!anyBtn) return;
+                const shuffledNumArraydenoSonoIndexniattaSuuji = numArray[sonoIndex];
+                const randomFunc = funcArray[shuffledNumArraydenoSonoIndexniattaSuuji];
+                
+                anyBtn.onclick = function() {
+                    const randomKekkaId = kekkaIdArray[shuffledNumArraydenoSonoIndexniattaSuuji];
+                    shffleEmojiNshowKekka(randomKekkaId, randomFunc);
+                };
+            });
+        }
+
+        function shffleEmojiNshowKekka(randomKekkaId, randomFunc) {
+            let emojiArray = [];
+            
+            if (randomFunc === 'natureSwap') {
+                emojiArray = ["🌟","🌌","🌲","🌹","🪨","🌅","🏞️","☀️","🌙","🌕","❄️","🔥","⚡","💧","🌪️","🍎","🍓","🍌","🍍","🍄‍🟫","🧅","🥚","🥜","🍞","🍔","🍕","🍜","🍣","🍨","🍺","🍷","🎄","🎃","🎆"];
+            } else if (randomFunc === 'animalSwap') {
+                emojiArray = ["🦁","🦄","🐏","🐐","🦇","🐺","🐢","🐍","🕊️","🐣","🐦","🐦‍🔥","🪿","🦢","🐚","🐟","🐸","🦉","🐱","🐙","🐶"];
+            } else if (randomFunc === 'storySwap') {
+                emojiArray = ["🧛🏻","🦇","🐺","🌕","🌬️","🐟","🪺","🧚🏻","👻","☠️","🧟","🦤","🍎","🍖","🍄","🥪","🍷","🧭","⚓","🏰","🗺️","🏹","🪄","💎","🕯️","🧱","🚪","💍","⏱️","🪦","⚰️","📿","⚱️","💣","🗡️","🛡️","🗝️","🪉"];
+            }
+
+            for (let last = emojiArray.length - 1; last > 0; last--) {
+                let randomPickup = Math.floor(Math.random() * (last + 1));
+                [emojiArray[last], emojiArray[randomPickup]] = [emojiArray[randomPickup], emojiArray[last]];
+            }
+
+            const kekka = document.getElementById(randomKekkaId);
+            if (kekka) {
+                kekka.innerHTML = `${emojiArray[0]}→${emojiArray[1]}→${emojiArray[2]}`;
+            }
+        }
+        
+
+        function autoMakeBTNSHUFFLEhaveNumArrayShuffle() {      
+            getRandomFuncandKekka();
+            const btnshuffleBtn = document.querySelector('.btn');
+            if (btnshuffleBtn) {
+                btnshuffleBtn.onclick = numArrayShuffle;
+            }
+        }
+        
+        autoMakeBTNSHUFFLEhaveNumArrayShuffle();
+
+        window.natureSwap = () => shffleEmojiNshowKekka('natureKekka', 'natureSwap');
+        window.animalSwap = () => shffleEmojiNshowKekka('animalKekka', 'animalSwap');
+        window.storySwap = () => shffleEmojiNshowKekka('storyKekka', 'storySwap');
+        window.btnSwap = numArrayShuffle; 
+
+
+
+
+
+        
+
+
+
+        //flip.js
+            const TotalqNa=[{q:"🌕",a:"🐺",category:"metamorphosis"},{q:"🧛🏻",a:"🦇",category:"metamorphosis"},{q:"🐣",a:"🐦‍🔥",category:"metamorphosis"},{q:"🗡️",a:"🛡️",category:"others"}];
+    const cardUlooking = document.getElementById('divFlipCard');
+    let indexUlooking = 0;
+    let surface = true;
+
+    let chosenCategory = 'all';
+    let categorizedArray = [];
+
+        function openTheCategory(chosenCa){
+            chosenCategory = chosenCa;         
+            categorizedArray = pickupNmakeArray();
+            renderAcard();
+            indexUlooking = 0;            
+        }
+
+        function pickupNmakeArray(){
+            if(chosenCategory === 'all'){
+                return TotalqNa;
+            }else{
+                return TotalqNa.filter(EachInqNa => EachInqNa.category === chosenCategory);
+            }
+        }
+
+        function renderAcard(){
+            if(categorizedArray.length === 0){
+                cardUlooking.textContent = "カード準備中🙇‍♀️";
+                return;
+            }
+            cardUlooking.textContent = surface ? categorizedArray[indexUlooking].q  : categorizedArray[indexUlooking].a;
+            console.log("textContent 設定:", cardUlooking.textContent);
+        }
+
+        function flipCard(){
+            surface=!surface;
+            renderAcard();
+        }
+
+        function toNext(){
+            indexUlooking++;
+            if(indexUlooking >= categorizedArray.length){
+                shuffleFY();
+                indexUlooking = 0;
+            }
+            surface = true;
+            renderAcard();
+        }
+        function shuffleFY(){
+                    for(let indexLast = TotalqNa.length-1; indexLast > 0; indexLast--){
+                        let index0toLast = Math.floor(Math.random()*(indexLast+1));
+                        [TotalqNa[indexLast], TotalqNa[index0toLast]] = [TotalqNa[index0toLast], TotalqNa[indexLast]];
+                    }
+                    categorizedArray = pickupNmakeArray();
+                }   
+                
+    categorizedArray = pickupNmakeArray();
+    renderAcard();
+      </script>
+
+</body>
+</html>
