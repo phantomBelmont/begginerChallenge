@@ -1,8 +1,8 @@
 @media (max-width: 480px){
     button{
         width: 80%;
-        font-size: 1rem;
-        margin-bottom: 8px;
+        font-size: 3rem;
+        margin: 8px;
     }
      #divFlipCard {           
         font-size: 2rem;       
@@ -10,23 +10,26 @@
         }
 
      .moon {
-        font-size: 2rem;  
-        margin-bottom: 30px;
+        font-size: 3rem;  
+        margin-bottom: 50px;
     }
 }
 
 @media (min-width: 481px) and (max-width: 768px){
-    button {
-        font-size: 1.2rem;
-        padding: 25px 40px;
-    }
     #divFlipCard {
-        font-size: 2.5rem;
+        font-size: 4rem !important;
     }
 
 }
-
 @media (min-width: 769px){
+    body{
+        font-size: 2rem;
+        width: 100%;
+    }
+    #idnature, #idanimal, #idstory{
+        font-size: 2rem;
+        padding: 10px 50px;
+    }
     #divFlipCard {
         margin: 0 auto;        
         font-size: 3rem;       
