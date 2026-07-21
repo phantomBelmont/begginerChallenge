@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>習得できたコード</title>
+    <title>🐣試作品🐵</title>
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4B0082">
@@ -71,7 +71,7 @@
     #natureKekka, #animalKekka, #storyKekka{
         font-size: 2rem;
     }
-
+}
 
 
 
@@ -236,23 +236,19 @@ button:active {
             0%,100%{opacity:0.4;} 50%{opacity: 1;}
         }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </head>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <body>
     <!--HTML-->
@@ -280,8 +276,6 @@ button:active {
             <button onclick="goToMenu()">メニューに戻る</button>
       </div>
     </div>
-
-
       <div id="flipGameCategoryDiv" class="hidden">
         カテゴリー別カード↓
         <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('all')">全部</button>
@@ -298,54 +292,54 @@ button:active {
 
       <script>
         //switchscreen.js
-function switchScreen(roomIDhikisu) {
-  const allTags = document.querySelectorAll('.opened');
-  allTags.forEach(eachDiv => {
-    eachDiv.classList.remove('opened');
-    eachDiv.classList.add('hidden');
-  });
+        function switchScreen(roomIDhikisu) {
+        const allTags = document.querySelectorAll('.opened');
+        allTags.forEach(eachDiv => {
+            eachDiv.classList.remove('opened');
+            eachDiv.classList.add('hidden');
+        });
 
-  const ScreenIwannaGo = document.getElementById(roomIDhikisu);
-  if (ScreenIwannaGo) {
-    ScreenIwannaGo.classList.remove('hidden');
-    ScreenIwannaGo.classList.add('opened');
+        const ScreenIwannaGo = document.getElementById(roomIDhikisu);
+        if (ScreenIwannaGo) {
+            ScreenIwannaGo.classList.remove('hidden');
+            ScreenIwannaGo.classList.add('opened');
 
-    if (roomIDhikisu === 'flipcardNbuttonDiv') {
-      console.log("ゲーム2開始！カードを初期化します");
-      openTheCategory('all'); 
-    }
-    if (roomIDhikisu === 'flipcardNbuttonDiv' || roomIDhikisu === 'swapGameDiv') {
-            document.body.style.overflow = 'hidden';
-    }
-    const moonEmoji = document.querySelector('.moon');
-    if (moonEmoji) {
-        if (roomIDhikisu === 'menu') {
-            moonEmoji.style.display = 'block'; 
-        } else {
-            moonEmoji.style.display = 'none'; 
+            if (roomIDhikisu === 'flipcardNbuttonDiv') {
+            console.log("ゲーム2開始！カードを初期化します");
+            openTheCategory('all'); 
+            }
+            if (roomIDhikisu === 'flipcardNbuttonDiv' || roomIDhikisu === 'swapGameDiv') {
+                    document.body.style.overflow = 'hidden';
+            }
+            const moonEmoji = document.querySelector('.moon');
+            if (moonEmoji) {
+                if (roomIDhikisu === 'menu') {
+                    moonEmoji.style.display = 'block'; 
+                } else {
+                    moonEmoji.style.display = 'none'; 
+                }
+            }
         }
-    }
-  }
-}
-function resetScroll() {　
-    document.body.style.overflow = '';
-}
-function goToMenu() {
-  const moonEmoji = document.querySelector('.moon');
-    if (moonEmoji) moonEmoji.style.display = 'block';
-  resetScroll();
-  switchScreen('menu');
-}
-function goToEachFlipCategory(){
-    switchScreen('flipcardNbuttonDiv');
-}
+        }
+        function resetScroll() {　
+            document.body.style.overflow = '';
+        }
+        function goToMenu() {
+        const moonEmoji = document.querySelector('.moon');
+            if (moonEmoji) moonEmoji.style.display = 'block';
+        resetScroll();
+        switchScreen('menu');
+        }
+        function goToEachFlipCategory(){
+            switchScreen('flipcardNbuttonDiv');
+        }
 
 
 
 
 
 
-   //swap.js
+             /*swap.js*/
            function surfaceSwap(){
             const btn1 = document.getElementById('idnature').textContent;
             const btn2 = document.getElementById('idanimal').textContent;
@@ -443,14 +437,14 @@ function goToEachFlipCategory(){
 
 
 
-        //flip.js
+        /*flip.js*/
             const TotalqNa=[{q:"🌕",a:"🐺",category:"metamorphosis"},{q:"🧛🏻",a:"🦇",category:"metamorphosis"},{q:"🐣",a:"🐦‍🔥",category:"metamorphosis"},{q:"🗡️",a:"🛡️",category:"others"}];
-    const cardUlooking = document.getElementById('divFlipCard');
-    let indexUlooking = 0;
-    let surface = true;
+            const cardUlooking = document.getElementById('divFlipCard');
+            let indexUlooking = 0;
+            let surface = true;
 
-    let chosenCategory = 'all';
-    let categorizedArray = [];
+            let chosenCategory = 'all';
+            let categorizedArray = [];
 
         function openTheCategory(chosenCa){
             chosenCategory = chosenCa;         
@@ -498,9 +492,9 @@ function goToEachFlipCategory(){
                     categorizedArray = pickupNmakeArray();
                 }   
 
-    categorizedArray = pickupNmakeArray();
-    renderAcard();
-      </script>
+            categorizedArray = pickupNmakeArray();
+            renderAcard();
+    </script>
 
 </body>
 </html>
