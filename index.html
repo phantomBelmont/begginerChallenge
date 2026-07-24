@@ -94,8 +94,6 @@
             /* スクロールバーの見た目 */
             scrollbar-width: thin;
             scrollbar-color: #555 #222;
-            font-family: Merriweather, serif;
-
         }
 
         .menu-title {
@@ -112,7 +110,6 @@
             margin: 12px 0;
             border: none;
             border-radius: 12px;
-            font-family: Merriweather, serif;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
@@ -322,11 +319,92 @@
 
 
 
-        /* code.css */
+        /* code.css コード倉庫 */
         #code-storage-screen{
             display: none;
+            flex-direction: column;
         }
 
+
+
+
+
+        /* codestorage.css コード倉庫 */
+        .marketplace-class{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .code-btn {
+            background-color: #333;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .code-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+            border-color: #007bff;
+        }
+        .code-btn:active {
+            transform: scale(0.95);
+        }
+        /* コード表示エリア */
+        #display-area-id {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            min-height: 100px;
+            position: relative;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            display: none; /* 最初は隠す */
+        }
+        /* コピーボタン類 */
+        .actions {
+            margin-top: 15px;
+            display: none; /* 最初は隠す */
+            gap: 10px;
+            justify-content: center;
+        }
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+     
+        .btn-copy {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-copy:hover { background-color: #218838; }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
 
 
 
@@ -438,8 +516,8 @@
 
     <!-- kensaku.html 検索＆置換-->
     <div id="findReplace-screen">
-        <div class="app-header">←🌙メニューへ
-            <button class="goToMenu-btn" onclick="goToMenu()">← 🌙</button>
+        <div class="app-header">
+            <button class="goToMenu-btn" onclick="goToMenu()">←🌙メニューへ</button>
             <h1 style="margin:0; text-align:left; flex-grow:1;">検索 & 置換</h1>
         </div>
         <div class="textinputDiv">
@@ -501,12 +579,19 @@
 
 
 
-    <!-- code.html コード倉庫-->
+    <!-- codestorage.html コード倉庫-->
     <div id="code-storage-screen">
         <div class="app-header">
             <button class="goToMenu-btn" onclick="goToMenu()">←🌙メニューへ</button>
             <h1 style="margin:0; text-align:left; flex-grow:1;">ボタンを押すとコードが出るよ！</h1>
         </div>
+        <div class="marketplace-class" id="marketplace-id">
+        </div>
+        <div id="display-area-id"></div>
+        <div class="actions" id="actions">
+            <button class="action-btn btn-copy" onclick="copyCode()">コピーする 📋</button>
+        </div>
+        <div class="toast" id="toast">コピーしました！</div>
     </div>  
 
 
@@ -648,7 +733,7 @@
 
 
 
-        /* スワップゲーム　JS */
+        /* swap.js スワップゲーム */
         function surfaceSwap(){
             const btn1 = document.getElementById('idnature').textContent;
             const btn2 = document.getElementById('idanimal').textContent;
@@ -742,7 +827,67 @@
 
 
 
-        /* 単色画像生成 JS */
+        /* codestorage.js コード倉庫 */
+        const allpairs = {
+             "🌑の周囲に影をつける":` 
+             HTML <div class="moon">🌑</div>
+
+             CSS  .moon{
+            font-size:3rem;
+            filter:drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #8a0303) drop-shadow(0 0 40px #590000) drop-shadow(0 0 80px #8a0303);
+            margin-bottom:60px;
+            }`
+
+        };
+
+        const marketplace = document.getElementById('marketplace-id');
+        const displayArea = document.getElementById('display-area-id');
+        const actions = document.getElementById('actions');
+        const toast = document.getElementById('toast');
+
+        // 倉庫からボタンを生成
+        for (const [emoji, code] of Object.entries(allpairs)) {
+            const kokodakeBtn = document.createElement('button');
+            kokodakeBtn.className = 'code-btn';
+            kokodakeBtn.textContent = emoji;
+            kokodakeBtn.onclick = () => showCode(emoji, code);
+            marketplace.appendChild(kokodakeBtn);
+        }
+
+        function showCode(emoji, code) {
+            displayArea.style.display = 'block';
+            actions.style.display = 'flex';
+            displayArea.textContent = code;
+            
+            // 画面をスクロールして表示エリアへ
+            displayArea.scrollIntoView({ behavior: 'smooth' });
+        }
+
+    
+        function copyCode() {
+            const text = displayArea.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('コピー失敗', err);
+                alert('コピーに失敗しました');
+            });
+        }
+
+        function showToast() {
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+
+
+
+
+
+
+        /* singlepalette.js 単色画像生成 */
         const canvas = document.getElementById('myCanvas');
         const ctx = canvas.getContext('2d');
         
