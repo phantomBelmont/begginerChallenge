@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐣試作品🐵</title>
-
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4B0082">
   <link rel="icon" type="image/png" href="icon192.png">
@@ -23,193 +22,36 @@
       });
     }
   </script>
-
-<style>
-/*device.css*/
-@media (max-width: 480px){
-     #natureKekka, #animalKekka, #storyKekka{
-        font-size: 2.5rem;
-     }
-     #idnature, #idanimal, #idstory{
-        font-size: 1.5rem;
-     }
-     #divFlipCard {           
-        font-size: 2rem;       
-        border-radius: 12px;   
+    <style>
+        *,*::before,::after{
+            box-sizing: border-box;
         }
-     .moon {
-        font-size: 5rem;  
-        margin-bottom: 80px;
-    }
-}
-@media (min-width: 481px) and (max-width: 768px){
-    #divFlipCard {
-        font-size: 4rem !important;
-    }
-}
-@media (min-width: 769px){
-    body{
-        width: 100%;
-    }
-    #swapGameDiv{
-        margin-top: 0 !important;
-    }
-    #idnature, #idanimal, #idstory{
-        font-size: 2rem !important;
-        padding: 5px 50px !important;
-    }
-    .swapNkekka{
-        margin:5px !important;
-    }
-    #divFlipCard {
-        margin: 0 auto;        
-        font-size: 3rem;       
-    }
-    #btnswapNmenu{
-        margin-top:5px !important;
-    }
-    #natureKekka, #animalKekka, #storyKekka{
-        font-size: 2rem;
-    }
-}
-
-
-
-
-
-
-
-
-
-    /*body.css*/
-    body{
-    background-color: #000;
-    color:white;
-
-    display: flex;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px 10px;
-
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.moon{
-    font-size:3rem;
-    filter:drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #8a0303) drop-shadow(0 0 40px #590000) drop-shadow(0 0 80px #8a0303);
-    margin-bottom:60px;
-}
-.opened{
-    display: block !important;
-}
-.hidden{
-    display: none !important;
-}
-button{
-    color: black;
-    background:linear-gradient(
-    to bottom, black 0%, grey 25%, white 50%, grey 75%, black 100%);
-
-    border-color:#fcd34d;
-    border-width: 3px;
-    box-shadow: 0 0 5px #fcd34d, 0 0 10px #fcd34d;
-
-    padding: 20px 30px;
-    margin: 10px;
-    width:auto;
-    text-align: center;
-    border-radius:12px;
-
-    transition:transform 0.1s, 
-    background 0.2s,
-    box−shadow 0.2s;
-
-    will-change: transform, background, box-shadow;
-}
-
-#flipcardNbuttonDiv{
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 20px;
-
-    width: 100%;
-    overflow: visible;
-    box-sizing: border-box;
-}
-#divFlipCard{
-    width: 90%;
-    max-width: 600px;
-    box-sizing: border-box;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border: 3px solid #590000;
-    border-radius: 20px;
-    background-color: #1a1a1a;
-    color: #fff;
-    font-size: 3rem;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(89, 0, 0, 0.5), 0 0 40px rgba(89, 0, 0, 0.2) !important;
-}
-#flipcardNbuttonDiv button{
-    font-size: 1rem;
-    flex: 0 0 auto;  
-    box-sizing: border-box;
-}
-    @media (hover:hover) and (pointer: fine) {
-        button:hover{
-        background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
-        transform: scale(1.05);
-        box-shadow: 0 0 15px #fcd34d, 0 0 20px #fcd34d;
-        opacity: 0.8;
+        /* 全体のリセット */
+        html{
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            min-height: 100dvh;
+            width: 100%;
         }
-    }
-button:active {
-    transform: scale(0.9) translateY(2px);
-    background:linear-gradient(to right, black 0%, grey 25%, white 50%, grey 75%, black 100%);
-    box-shadow: 0 0 2px #fcd34d, 0 0 7px #fcd34d;
-}
+        body{
+            min-height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            font-family: sans-serif;
+            background-color: transparent;
+            color: #fff;
+        }
 
-#swapGameDiv{
-    height: 100vh;
-    width: 100%;
-    margin-top:80px;
-}
-.swapNkekka{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top:20px;
-    
-}
-#btnswapNmenu{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top:50px;
-}
-#idnature, #idanimal, #idstory{
-    padding: 10px;
-    font-size: 3rem;
-}
+        .moon{
+            font-size:3rem;
+            filter:drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #8a0303) drop-shadow(0 0 40px #590000) drop-shadow(0 0 80px #8a0303);
+            margin-bottom:60px;
+        }
 
-
-
-
-
-
-
-
-
-/*stars.css*/
- .stars{
+        .stars{
             position: fixed;
             height: 100%;
             width: 100%;
@@ -226,121 +68,588 @@ button:active {
 
             animation: moveDiagonal 5s ease-in-out infinite, twinkle 2s ease-in-out infinite;
             will-change:opacity;
+        }
+            @keyframes moveDiagonal{
+                from{background-position: 0 0;}
+                to{background-position: 200px 200px;}
+            }
+            @keyframes twinkle{
+                0%,100%{opacity:1;} 50%{opacity: 0.2;}
+            }
+
+
+
+
+
+
+        /* --- メニュー画面　CSS --- */
+        #menu-screen {
+            display: flex; /* アプリ起動時に表示 */
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            /* スクロールバーの見た目 */
+            scrollbar-width: thin;
+            scrollbar-color: #555 #222;
+            font-family: Merriweather, serif;
 
         }
-        @keyframes moveDiagonal{
-            from{background-position: 0 0;}
-            to{background-position: 200px 200px;}
+
+        .menu-title {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            color: #fff;
+            text-align: center;
         }
-        @keyframes twinkle{
-            0%,100%{opacity:0.4;} 50%{opacity: 1;}
+
+        .menu-btn {
+            width: 100%;
+            max-width: 320px;
+            padding: 18px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 12px;
+            font-family: Merriweather, serif;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            background: linear-gradient(to right bottom, #070 0%,#000 50%, #070 100%);
+            color: #ddd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-</style>
+
+        .menu-btn:active {
+            transform: scale(0.98);
+            background: #444;
+        }
+        
+        .menu-btn span {
+            pointer-events: none; /* 文字選択時の干渉防止 */
+        }
+
+
+
+
+        /* --- kensaku.css --- */
+        #findReplace-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            /* ↓ スクロール禁止にするなら、ここをhidden */
+            overflow-y: auto; 
+            background: transparent;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 5px 0;
+            flex-shrink: 0;
+        }
+
+        .input-group {
+            margin: 2px 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+        }
+
+        label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #aaa;
+            flex-shrink: 0;
+        }
+
+        input {
+            flex-grow: 1;
+            flex-basis: 0
+            ;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            background: #aaa;
+            flex-shrink: 0;
+            color: #000;
+        }
+
+        .group-o-inputgroups{
+            display: flex;
+        }
+
+        .textinputDiv {
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 4px;
+            font-size: 15px;
+            background: #111;
+            display: flex;
+            flex-grow: 1; /* 残りの高さを全て占有 */
+            min-height: 0; /* Flexboxのオーバーフロー対策 */
+            margin: 2px 10px;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+            /* 　↓　テキストエリアはスクロールできるが、画面全体はしない*/
+            overflow: hidden; 
+        }
+        
+        textarea {
+            background: #aaa;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            border-radius: 4px;
+            padding: 8px;
+            color: #000;
+            border: none;
+            resize: none;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow-y: auto; 
+            min-height: 80px;
+            max-height: 200px;
+        }
+
+        .btn-area {
+            padding: 5px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .all-main-btns {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #btn-execute { background: #007; }
+        #btn-reset { background: #700; font-size: 13px; padding: 8px; }
+        #btn-copy { background: #070; }
+
+        /* エラー表示 */
+        #error-msg {
+            color: red;
+            font-size: 0.8rem;
+            text-align: center;
+            margin: 0 10px 4px;
+            display: none;
+            flex-shrink: 0;
+        }
+
+        .result-area {
+            flex-grow: 1; 
+            padding: 5px 10px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            gap: 4px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .result-box {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            background: #aaa;
+            padding: 8px;
+            overflow-y: auto; /* 結果が多い場合はここだけでスクロール */
+            max-height: 150px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 14px;
+            border-radius: 4px;
+            color: #000;
+            min-height: 0; /* Flexbox対策 */
+        }
+        
+        /* ヘッダーの「🌙メニューへ」ボタン */
+        .app-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            background: #222;
+            flex-shrink: 0;
+        }
+        .goToMenu-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+            padding: 5px;
+        }
+
+
+
+
+
+
+        /* --- swap.css --- */
+        #swapGame-screen {
+            display: none;
+            flex-direction: column;
+        }
+        .swapNkekka{
+            display: flex;
+            gap: 5px;
+        }
+            
+
+
+
+
+        /* code.css */
+        #code-storage-screen{
+            display: none;
+        }
+
+
+
+
+
+
+        /* singlepalette.css */
+        #single-palette-screen{
+            display: none;
+            flex-direction: column;
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .controls {
+            background: transparent;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .color-n-pixel-class {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100px;
+        }
+        input[type="color"] {
+            width: 60px;
+            height: 40px;
+            border: none;
+            cursor: pointer;
+        }
+        .pic-button-class{
+            color: #aaa;
+            border: solid;
+            border-color: #555;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button.pic-button-class {
+            background-color: #700;
+        }
+        button.pic-button-class:hover {
+            background-color: #218838;
+        }
+        #canvas-container {
+            text-align: center;
+            background: #333;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        canvas {
+            max-width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        
+    </style>
 </head>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <body>
-    <!--HTML-->
+    <!-- HTML -->
     <div class="moon">🌑</div>
 
     <div class="stars"></div>
 
-    <div id="menu" class="opened">
-      <button onclick="switchScreen('swapGameDiv')">シャッフルゲーム</button>
-      <button onclick="switchScreen('flipGameCategoryDiv')">フリップゲーム</button>
+    <!-- メニュー画面 (スクロールあり) -->
+    <div id="menu-screen">
+        <h1 class="menu-title">🌙メニュー</h1>
+        
+        <button class="menu-btn find-replace" onclick="showScreen('find-replace')">
+            <span>🔍 検索 & 置換</span>
+            <span style="font-size:0.8em; opacity:0.7;">実用</span>
+        </button>
+        <button class="menu-btn swap-game" onclick="showScreen('swap-game')">
+            <span>🎮 スワップゲーム</span>
+            <span style="font-size:0.8em; opacity:0.7;">想像力</span>
+        </button>
+        <button class="menu-btn code-storage" onclick="showScreen('code-storage')">
+            <span>💎 コード倉庫 </span>
+            <span style="font-size:0.8em; opacity:0.7;">コピペ用</span>
+        </button>
+        <button class="menu-btn single-palette" onclick="showScreen('single-palette')">
+            <span>🎨 単色画像生成</span>
+            <span style="font-size:0.8em; opacity:0.7;">素材</span>
+        </button>
+        <button class="menu-btn other-app" onclick="showScreen('other')">
+            <span>📝 別のツール</span>
+            <span style="font-size:0.8em; opacity:0.7;">準備中</span>
+        </button>
+
     </div>
 
-    <div id="swapGameDiv" class="hidden">
-      <div class="swapNkekka">
+
+
+
+
+
+    <!-- kensaku.html 検索＆置換-->
+    <div id="findReplace-screen">
+        <div class="app-header">←🌙メニューへ
+            <button class="goToMenu-btn" onclick="goToMenu()">← 🌙</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1;">検索 & 置換</h1>
+        </div>
+        <div class="textinputDiv">
+            <label>対象テキスト</label>
+            <textarea id="text" placeholder="ここにテキストを貼り付けて..."></textarea>
+        </div>
+        <div class="group-o-inputgroups">
+            <div class="input-group">
+                <label>探す言葉</label>
+                <input type="text" id="find" placeholder="例：Apple">
+            </div>
+            <div class="input-group">
+                <label>置換する言葉</label>
+                <input type="text" id="replace" placeholder="例：Orange">
+            </div>
+        </div>
+        <div class="btn-area">
+            <button id="btn-execute" onclick="doReplace()" class="all-main-btns">置換実行</button>
+            <button id="btn-reset" onclick="resetAll()" class="all-main-btns">すべてリセット</button>
+        </div>
+
+        <p id="error-msg">「探す言葉」を入力してください。</p>
+
+        <div class="result-area">
+            <div class="result-box" id="result">ここに結果が表示されます</div>
+            <div style="margin-top: 4px;">
+                <button id="btn-copy" onclick="copyResult()" class="all-main-btns">全選択＆コピー</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- swap.html　スワップゲーム-->
+    <div id="swapGame-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn" onclick="goToMenu()">←🌙メニューへ</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1;">スワップゲーム</h1>
+        </div>
+
+        <div class="swapNkekka">
             <button onclick="natureSwap()" id="idnature">🌹</button> <div id="natureKekka"></div>
-      </div>
-      <div class="swapNkekka">
+        </div>
+        <div class="swapNkekka">
             <button onclick="animalSwap()" id="idanimal">🦄</button><div id="animalKekka"></div>
-      </div>
-      <div class="swapNkekka">
+         </div>
+        <div class="swapNkekka">
             <button onclick="storySwap()" id="idstory">🏰</button><div id="storyKekka"></div>
-      </div>  
-      <div id="btnswapNmenu">
-            <button onclick="btnSwap();surfaceSwap()" class="btn">ボタンシャッフル</button>
-            <button onclick="goToMenu()">メニューに戻る</button>
-      </div>
+        </div>  
+        <div id="btnswapNmenu">
+            <button onclick="btnSwap();surfaceSwap()" class="shuffle-btn">ボタンシャッフル</button>
+        </div>
+
     </div>
-      <div id="flipGameCategoryDiv" class="hidden">
-        カテゴリー別カード↓
-        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('all')">全部</button>
-        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('metamorphosis')">変身</button>
-        <button onclick="switchScreen('flipcardNbuttonDiv');openTheCategory('others')">その他</button>
-          <button onclick="goToMenu()">メニューに戻る</button>
-      </div>
 
-      <div id="flipcardNbuttonDiv" class="hidden">
-        <div onclick="flipCard()" id="divFlipCard" tabindex="0" style="padding: 50px;"></div>
-        <button onclick="toNext()">次へ</button>
-          <button onclick="goToMenu()">メニューに戻る</button>
-      </div>
 
-      <script>
-        //switchscreen.js
-        function switchScreen(roomIDhikisu) {
-        const allTags = document.querySelectorAll('.opened');
-        allTags.forEach(eachDiv => {
-            eachDiv.classList.remove('opened');
-            eachDiv.classList.add('hidden');
-        });
 
-        const ScreenIwannaGo = document.getElementById(roomIDhikisu);
-        if (ScreenIwannaGo) {
-            ScreenIwannaGo.classList.remove('hidden');
-            ScreenIwannaGo.classList.add('opened');
 
-            if (roomIDhikisu === 'flipcardNbuttonDiv') {
-            console.log("ゲーム2開始！カードを初期化します");
-            openTheCategory('all'); 
-            }
-            if (roomIDhikisu === 'flipcardNbuttonDiv' || roomIDhikisu === 'swapGameDiv') {
-                    document.body.style.overflow = 'hidden';
-            }
-            const moonEmoji = document.querySelector('.moon');
-            if (moonEmoji) {
-                if (roomIDhikisu === 'menu') {
-                    moonEmoji.style.display = 'block'; 
-                } else {
-                    moonEmoji.style.display = 'none'; 
-                }
+
+    <!-- code.html コード倉庫-->
+    <div id="code-storage-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn" onclick="goToMenu()">←🌙メニューへ</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1;">ボタンを押すとコードが出るよ！</h1>
+        </div>
+    </div>  
+
+
+
+
+
+
+    
+    
+    <!-- singlepalette.html単色画像生成 -->
+    <div id="single-palette-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn" onclick="goToMenu()">←🌙メニューへ</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1; color: #218838;">背景などにどうぞ</h1>
+        </div>
+        <div class="controls">
+            <div class="color-n-pixel-class">
+                <label for="colorPicker">好きな色を選んでください</label>
+                <input type="color" id="colorPicker" value="#3498db">
+            </div>
+            
+            <div class="color-n-pixel-class">
+                <label for="width">幅 (ピクセル)</label>
+                <input type="number" id="width" value="800" min="1" max="10000">
+            </div>
+            
+            <div class="color-n-pixel-class">
+                <label for="height">高さ (ピクセル)</label>
+                <input type="number" id="height" value="600" min="1" max="10000">
+            </div>
+            
+            <button onclick="generateImage()" class="pic-button-class" >画像を生成</button>
+            <button class="pic-button-class" onclick="downloadImage()">画像をダウンロード</button>
+        </div>
+        
+        <div id="canvas-container">
+            <canvas id="myCanvas"></canvas>
+        </div>
+    </div>
+
+
+
+    <script>
+        // --- showScreen JS ---
+        //アプリを増設した際の追加項目２つ。１．したのconst・none・elseif・function　２．CSSでdisplay:none;を。
+        function showScreen(screenName) {
+            const menuScreen = document.getElementById('menu-screen');
+            const findReplaceScreen = document.getElementById('findReplace-screen');
+            const swapGameScreen = document.getElementById('swapGame-screen');
+            const codeStorageScreen = document.getElementById('code-storage-screen');
+            const singlePaletteScreen = document.getElementById('single-palette-screen');
+
+            // 全ての画面を隠す
+            menuScreen.style.display = 'none';
+            findReplaceScreen.style.display = 'none';
+            swapGameScreen.style.display = 'none';
+            codeStorageScreen.style.display = 'none';
+            singlePaletteScreen.style.display = 'none';
+
+            if (screenName === 'find-replace') {
+                findReplaceScreen.style.display = 'flex';
+                // 入力欄のフォーカスを外す（キーボードを閉じるため）
+                document.activeElement.blur();
+            }else if (screenName === 'swap-game') {
+                swapGameScreen.style.display = 'flex';
+            }else if (screenName === 'code-storage') {
+                codeStorageScreen.style.display = 'flex';
+            }else if (screenName === 'single-palette') {
+                singlePaletteScreen.style.display = 'flex';
+
+            } else if (screenName === 'other') {
+                alert('このアプリは準備中です！');
+                // メニュー画面表示↓
+                menuScreen.style.display = 'flex';
             }
         }
-        }
-        function resetScroll() {　
-            document.body.style.overflow = '';
-        }
+
         function goToMenu() {
-        const moonEmoji = document.querySelector('.moon');
-            if (moonEmoji) moonEmoji.style.display = 'block';
-        resetScroll();
-        switchScreen('menu');
+            document.getElementById('menu-screen').style.display = 'flex';
+            document.getElementById('findReplace-screen').style.display = 'none';
+            document.getElementById('swapGame-screen').style.display = 'none';
+            document.getElementById('code-storage-screen').style.display = 'none';
+            document.getElementById('single-palette-screen').style.display = 'none';
+      }
+
+
+
+
+
+
+        // --- kensaku.js 検索&置換 ---
+        function doReplace() {
+            const findText = document.getElementById('find').value;
+            const replaceText = document.getElementById('replace').value;
+            const text = document.getElementById('text').value;
+            const errorMsg = document.getElementById('error-msg');
+            const resultBox = document.getElementById('result');
+
+            if (!findText) {
+                errorMsg.style.display = 'block';
+                return;
+            }
+            errorMsg.style.display = 'none';
+
+            // 特殊文字エスケープ
+            const escapedFind = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(escapedFind, 'g');
+            const newText = text.replace(regex, replaceText);
+            
+            resultBox.textContent = newText;
         }
-        function goToEachFlipCategory(){
-            switchScreen('flipcardNbuttonDiv');
+
+        function resetAll() {
+            document.getElementById('find').value = '';
+            document.getElementById('replace').value = '';
+            document.getElementById('text').value = '';
+            document.getElementById('result').textContent = 'ここに結果が表示されます';
+            document.getElementById('error-msg').style.display = 'none';
+        }
+
+        function copyResult() {
+            const resultText = document.getElementById('result').textContent;
+            navigator.clipboard.writeText(resultText).then(() => {
+                // 一時的なフィードバック（アラートはユーザー体験を妨げる場合があるので、今回は省略または簡易表示）
+                const btn = document.getElementById('btn-copy');
+                const originalText = btn.textContent;
+                btn.textContent = 'コピー完了！';
+                btn.style.background = '#050';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#070';
+                }, 1000);
+            }).catch(err => {
+                console.error('コピー失敗:', err);
+                alert('コピーに失敗しました');
+            });
         }
 
 
 
 
-
-
-             /*swap.js*/
-           function surfaceSwap(){
+        /* スワップゲーム　JS */
+        function surfaceSwap(){
             const btn1 = document.getElementById('idnature').textContent;
             const btn2 = document.getElementById('idanimal').textContent;
             const btn3 = document.getElementById('idstory').textContent;
@@ -372,9 +681,9 @@ button:active {
             getRandomFuncandKekka();
             surfaceSwap();
 
-            const btn = document.querySelector('.btn');
-            btn.textContent = "シャッフル完了！";
-            setTimeout(() => { btn.textContent = "ボタンシャッフル"; }, 1000);
+            const btnShuffle = document.querySelector('.shuffle-btn');
+            btnShuffle.textContent = "シャッフル完了！";
+            setTimeout(() => { btnShuffle.textContent = "ボタンシャッフル"; }, 1000);
         }
 
         function getRandomFuncandKekka() {
@@ -395,11 +704,11 @@ button:active {
             let emojiArray = [];
 
             if (randomFunc === 'natureSwap') {
-                emojiArray = ["🌟","🌌","🌲","🌹","🪨","🌅","🏞️","☀️","🌙","🌕","❄️","🔥","⚡","💧","🌪️","🍎","🍓","🍌","🍍","🍄‍🟫","🧅","🥚","🥜","🍞","🍔","🍕","🍜","🍣","🍨","🍺","🍷","🎄","🎃","🎆"];
+                emojiArray = ["🌌","🌹","☀️","🌙","❄️","🔥","⚡","🍎","🍓","🍌","🍍","🍄‍🟫","🧅","🥚","🥜"];
             } else if (randomFunc === 'animalSwap') {
-                emojiArray = ["🦁","🦄","🐏","🐐","🦇","🐺","🐢","🐍","🕊️","🐣","🐦","🐦‍🔥","🪿","🦢","🐚","🐟","🐸","🦉","🐱","🐙","🐶"];
+                emojiArray = ["🦁","🦄","🐏","🐍","🕊️","🐦‍🔥"];
             } else if (randomFunc === 'storySwap') {
-                emojiArray = ["🧛🏻","🦇","🐺","🌕","🌬️","🐟","🪺","🧚🏻","👻","☠️","🧟","🦤","🍎","🍖","🍄","🥪","🍷","🧭","⚓","🏰","🗺️","🏹","🪄","💎","🕯️","🧱","🚪","💍","⏱️","🪦","⚰️","📿","⚱️","💣","🗡️","🛡️","🗝️","🪉"];
+                emojiArray = ["🧛🏻","🦇","🐺","🌕","🪺","🧚🏻","🧟","🧭","⚓","🏰","🗺️","🏹","🪄","💎","🕯️","⚰️","📿","🗡️","🛡️","🗝️","🪉"];
             }
 
             for (let last = emojiArray.length - 1; last > 0; last--) {
@@ -413,10 +722,9 @@ button:active {
             }
         }
 
-
         function autoMakeBTNSHUFFLEhaveNumArrayShuffle() {      
             getRandomFuncandKekka();
-            const btnshuffleBtn = document.querySelector('.btn');
+            const btnshuffleBtn = document.querySelector('.shuffle-btn');
             if (btnshuffleBtn) {
                 btnshuffleBtn.onclick = numArrayShuffle;
             }
@@ -434,67 +742,35 @@ button:active {
 
 
 
+        /* 単色画像生成 JS */
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 初期画像を生成
+        generateImage();
 
-
-
-        /*flip.js*/
-            const TotalqNa=[{q:"🌕",a:"🐺",category:"metamorphosis"},{q:"🧛🏻",a:"🦇",category:"metamorphosis"},{q:"🐣",a:"🐦‍🔥",category:"metamorphosis"},{q:"🗡️",a:"🛡️",category:"others"}];
-            const cardUlooking = document.getElementById('divFlipCard');
-            let indexUlooking = 0;
-            let surface = true;
-
-            let chosenCategory = 'all';
-            let categorizedArray = [];
-
-        function openTheCategory(chosenCa){
-            chosenCategory = chosenCa;         
-            categorizedArray = pickupNmakeArray();
-            renderAcard();
-            indexUlooking = 0;            
+        function generateImage() {
+            const color = document.getElementById('colorPicker').value;
+            const width = parseInt(document.getElementById('width').value);
+            const height = parseInt(document.getElementById('height').value);
+            
+            // キャンバスのサイズを設定
+            canvas.width = width;
+            canvas.height = height;
+            
+            // 単色で塗りつぶす
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, width, height);
         }
 
-        function pickupNmakeArray(){
-            if(chosenCategory === 'all'){
-                return TotalqNa;
-            }else{
-                return TotalqNa.filter(EachInqNa => EachInqNa.category === chosenCategory);
-            }
+        function downloadImage() {
+            //下記"download"などは名称変更すると、ダウンロードなどできなくなる。
+            const link = document.createElement('a');
+            link.download = 'solid-color-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
-        function renderAcard(){
-            if(categorizedArray.length === 0){
-                cardUlooking.textContent = "カード準備中🙇‍♀️";
-                return;
-            }
-            cardUlooking.textContent = surface ? categorizedArray[indexUlooking].q  : categorizedArray[indexUlooking].a;
-            console.log("textContent 設定:", cardUlooking.textContent);
-        }
-
-        function flipCard(){
-            surface=!surface;
-            renderAcard();
-        }
-
-        function toNext(){
-            indexUlooking++;
-            if(indexUlooking >= categorizedArray.length){
-                shuffleFY();
-                indexUlooking = 0;
-            }
-            surface = true;
-            renderAcard();
-        }
-        function shuffleFY(){
-                    for(let indexLast = TotalqNa.length-1; indexLast > 0; indexLast--){
-                        let index0toLast = Math.floor(Math.random()*(indexLast+1));
-                        [TotalqNa[indexLast], TotalqNa[index0toLast]] = [TotalqNa[index0toLast], TotalqNa[indexLast]];
-                    }
-                    categorizedArray = pickupNmakeArray();
-                }   
-
-            categorizedArray = pickupNmakeArray();
-            renderAcard();
     </script>
-
 </body>
 </html>
