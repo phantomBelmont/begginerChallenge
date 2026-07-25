@@ -158,12 +158,19 @@
         /* コード倉庫 */
         const allpairs = {
              "絵文字の周囲に影をつける":` 
-             HTML <div class="moon">🌑</div>
-             CSS  .moon{
-            font-size:3rem;
-            filter:drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #8a0303) drop-shadow(0 0 40px #590000) drop-shadow(0 0 80px #8a0303);
+            HTML <span class="moon">🌙</span>
+            CSS  .moon{
+        .moon{
+            font-size: 1.7rem;
+            filter:drop-shadow(0 0 2px #333) drop-shadow(0 0 10px #ffdd00);
+            animation: glow 1s infinite alternate;
             margin-bottom:60px;
-            }`
+            }
+            @keyframes glow {
+            from { text-shadow: 0 0 1px #baa800; }
+            to { text-shadow: 0 0 3px #333, 0 0 2px #333; }
+            }
+            `
 
         };
         const marketplace = document.getElementById('marketplace-id');
