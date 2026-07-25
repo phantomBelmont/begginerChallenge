@@ -1,0 +1,576 @@
+
+        *,*::before,::after{
+            box-sizing: border-box;
+        }
+        /* 全体のリセット */
+        html{
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            min-height: 100dvh;
+            width: 100%;
+        }
+        body{
+            min-height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            font-family: sans-serif;
+            background-color: transparent;
+            color: #fff;
+        }
+        .moon{
+            font-size:3rem;
+            filter:drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #8a0303) drop-shadow(0 0 40px #590000) drop-shadow(0 0 80px #8a0303);
+            margin-bottom:60px;
+        }
+        .stars{
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            top:0; left:0;
+            z-index: -1;
+
+            background-size: 200px 200px;
+            background-image: radial-gradient(2px 2px at 50px 50px, orange, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 20px 20px, rgb(3, 238, 3), rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 10px 30px, pink, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 150px 120px, aqua, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 120px 150px, white, rgba(0,0,0,0));
+            background-repeat: repeat;
+
+            animation: moveDiagonal 5s ease-in-out infinite, twinkle 2s ease-in-out infinite;
+            will-change:opacity;
+        }
+            @keyframes moveDiagonal{
+                from{background-position: 0 0;}
+                to{background-position: 200px 200px;}
+            }
+            @keyframes twinkle{
+                0%,100%{opacity:1;} 50%{opacity: 0.2;}
+            }
+        /* --- メニュー画面 --- */
+        #menu-screen {
+            display: flex; /* アプリ起動時に表示 */
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            /* スクロールバーの見た目 */
+            scrollbar-width: thin;
+            scrollbar-color: #555 #222;
+        }
+        .menu-title {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            color: #fff;
+            text-align: center;
+        }
+        .menu-btn {
+            width: 100%;
+            max-width: 320px;
+            padding: 18px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            background: linear-gradient(to right bottom, #070 0%,#000 50%, #070 100%);
+            color: #ddd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .menu-btn:active {
+            transform: scale(0.98);
+            background: #444;
+        }
+        .menu-btn span {
+            pointer-events: none; /* 文字選択時の干渉防止 */
+        }
+        /* --- 検索＆置換 --- */
+        #findReplace-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            /* ↓ スクロール禁止にするなら、ここをhidden */
+            overflow-y: auto; 
+            background: transparent;
+        }
+        h1 {
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 5px 0;
+            flex-shrink: 0;
+        }
+        .input-group {
+            margin: 2px 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+        }
+        label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #aaa;
+            flex-shrink: 0;
+        }
+        input {
+            flex-grow: 1;
+            flex-basis: 0
+            ;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            background: #aaa;
+            flex-shrink: 0;
+            color: #000;
+        }
+        .group-o-inputgroups{
+            display: flex;
+        }
+        .textinputDiv {
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 4px;
+            font-size: 15px;
+            background: #111;
+            display: flex;
+            flex-grow: 1; /* 残りの高さを全て占有 */
+            min-height: 0; /* Flexboxのオーバーフロー対策 */
+            margin: 2px 10px;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+            /* 　↓　テキストエリアはスクロールできるが、画面全体はしない*/
+            overflow: hidden; 
+        }
+        textarea {
+            background: #aaa;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            border-radius: 4px;
+            padding: 8px;
+            color: #000;
+            border: none;
+            resize: none;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow-y: auto; 
+            min-height: 80px;
+            max-height: 200px;
+        }
+        .btn-area {
+            padding: 5px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .all-main-btns {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+        }
+        #btn-execute { background: #007; }
+        #btn-reset { background: #700; font-size: 13px; padding: 8px; }
+        #btn-copy { background: #070; }
+        /* エラー表示 */
+        #error-msg {
+            color: red;
+            font-size: 0.8rem;
+            text-align: center;
+            margin: 0 10px 4px;
+            display: none;
+            flex-shrink: 0;
+        }
+        .result-area {
+            flex-grow: 1; 
+            padding: 5px 10px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            gap: 4px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .result-box {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            background: #aaa;
+            padding: 8px;
+            overflow-y: auto; /* 結果が多い場合はここだけでスクロール */
+            max-height: 150px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 14px;
+            border-radius: 4px;
+            color: #000;
+            min-height: 0; /* Flexbox対策 */
+        }
+    
+        /* ヘッダーの「🌙メニューへ」ボタン */
+        .app-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            background: #222;
+            flex-shrink: 0;
+        }
+        .goToMenu-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+            padding: 5px;
+        }
+
+        /* --- スワップゲーム --- */
+        #swapGame-screen {
+            display: none;
+            flex-direction: column;
+        }
+        .swapNkekka{
+            display: flex;
+            gap: 5px;
+        }
+        /* コード倉庫 */
+        #code-storage-screen{
+            display: none;
+            flex-direction: column;
+        }
+        .marketplace-class{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .code-btn {
+            background-color: #333;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .code-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+            border-color: #007bff;
+        }
+        .code-btn:active {
+            transform: scale(0.95);
+        }
+        /* コード表示エリア */
+        #display-area-id {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            min-height: 100px;
+            position: relative;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            display: none; /* 最初は隠す */
+        }
+        /* コピーボタン類 */
+        .actions {
+            margin-top: 15px;
+            display: none; /* 最初は隠す */
+            gap: 10px;
+            justify-content: center;
+        }
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-copy {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-copy:hover { background-color: #218838; }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        /* カラーピッカー色見本＆ダウンロード */
+        :root {
+            --bg-color: #000;
+            --card-bg: #333;
+            --text-color: #ddd;
+            --accent-color: #707;
+            --error-color: #ff7675;
+            --download-color: #070;
+        }
+
+        #color-picker-screen{
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+        /* プレビューエリア */
+        .preview-box {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            border: 2px solid #eee;
+            transition: background-color 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        /* キャンバス（ダウンロード用プレビュー） */
+        #myCanvas {
+            max-width: 100%;
+            max-height: 100px;
+            border-radius: 8px;
+            display: none; /* 最初は非表示、JSで制御 */
+        }
+        /* 入力エリア */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+            background-color:#000;
+        }
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-family: monospace;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            text-transform: uppercase;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus {
+            border-color: var(--accent-color);
+        }
+        /* エラーメッセージ */
+        .error-msg {
+            color: var(--error-color);
+            font-size: 0.8rem;
+            height: 1rem;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        /* RGB 表示 */
+        .rgb-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background: #aaa;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .rgb-item {
+            text-align: center;
+        }
+        .rgb-label {
+            font-size: 0.7rem;
+            color: #000;
+            display: block;
+        }
+        .rgb-val {
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        /* サイズ設定 */
+        .size-settings {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+            background: #700;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .size-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        .size-input label {
+            font-size: 0.7rem;
+            color: #ddd;
+            margin-bottom: 4px;
+        }
+        .size-input input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+        /* ピッカー */
+        input[type="color"] {
+            border: none;
+            width: 100%;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0; 
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 8px;
+        }
+        /* ボタン共通 */
+        .btn {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-bottom: 10px;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        /* 保存ボタン */
+        .save-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .save-btn:hover {
+            background-color: #5649c0;
+        }
+        /* ダウンロードボタン */
+        .download-btn {
+            background-color: var(--download-color);
+            color: white;
+        }
+        .download-btn:hover {
+            background-color: #00a383;
+        }
+        /* 保存リスト */
+        .saved-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 120px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        .saved-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2sCapacitor
+        }
+        .saved-item:last-child {
+            border-bottom: none;
+        }
+        .saved-item:hover {
+            background-color: #f9f9f9;
+        }
+        .color-swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+        }
+        .color-code {
+            flex: 1;
+            font-family: monospace;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 5px;
+            line-height: 1;
+        }
+        .delete-btn:hover {
+            color: var(--error-color);
+        }
+        .hint {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 15px;
+        }
