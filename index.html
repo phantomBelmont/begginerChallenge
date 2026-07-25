@@ -29,13 +29,11 @@
 </head>
 <body>
     <!-- HTML -->
-    <div class="moon">🌑</div>
-
     <div class="stars"></div>
 
     <!-- メニュー画面 (スクロールあり) -->
     <div id="menu-screen">
-        <h1 class="menu-title">🌙メニュー</h1>
+        <h1 class="menu-title"><span class="moon">🌙メニュー</span></h1>
         
         <button class="menu-btn find-replace" onclick="showScreen('find-replace')">
             <span>🔍 検索 & 置換</span>
@@ -133,6 +131,9 @@
             <h1 style="margin:0; text-align:left; flex-grow:1;">🐣 色見本＆ダウンロード</h1>
         </div>
         <div class="container">
+            カラーピッカー
+            <!-- ピッカー -->
+            <input type="color" id="colorPicker" value="#ffffff">
             <!-- 色見本（プレビュー） -->
             <div class="preview-box" id="preview">
                 <canvas id="myCanvas"></canvas>
@@ -144,7 +145,6 @@
                     <div class="error-msg" id="errorMsg">無効な文字があります</div>
                 </div>
             </div>
-
             <!-- RGB 表示 -->
             <div class="rgb-display">
                 <div class="rgb-item">
@@ -172,10 +172,6 @@
                     <input type="number" id="height" value="1000" min="1" max="5000">
                 </div>
             </div>
-
-            カラーピッカー
-            <!-- ピッカー -->
-            <input type="color" id="colorPicker" value="#ffffff">
             
             <!-- ボタン -->
             <button class="btn save-btn" id="saveBtn">💾 色を保存</button>
