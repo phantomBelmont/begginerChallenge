@@ -3,7 +3,6 @@
                     document.addEventListener('DOMContentLoaded', () => {
             // 「メニューに戻る」ボタンの一括登録
             const menuButtons = document.querySelectorAll('.goToMenu-btn');
-            
             menuButtons.forEach(button => {
                 button.addEventListener('click', () => {
                 // 共通の処理 (goToMenu 関数など)
@@ -12,6 +11,28 @@
                 }
                 });
             });
+                        const btnCopy = document.getElementById('btn-copy');
+            if (btnCopy) {
+                btnCopy.addEventListener('click', () => {
+                if (typeof copyResult === 'function') copyResult();
+                });
+            }
+            });
+            /*カラーピッカー色見本＆ダウンロード*/
+            const btnColorPicker = document.getElementById('btn-color-picker-id');
+            if (btnColorPicker) {
+                btnColorPicker.addEventListener('click', () => {
+                showScreen('color-picker');
+                });
+            }
+                        /* コード倉庫 */
+            const btnCodeStorage = document.getElementById('btn-code-storage-id');
+            if (btnCodeStorage) {
+                btnCodeStorage.addEventListener('click', () => {
+                showScreen('code-storage');
+                });
+            }
+
                         //検索&置換ボタン
                         const btnFindReplace = document.getElementById('btn-find-replace-id');
             if (btnFindReplace) {
@@ -36,8 +57,8 @@
                 btnCopy.addEventListener('click', () => {
                 if (typeof copyResult === 'function') copyResult();
                 });
-            }
-            });
+            };
+            
             //スワップゲームボタン
             const btnSwapGame = document.getElementById('btn-swap-game-id');
             if (btnSwapGame) {
@@ -76,13 +97,7 @@
                 if (typeof surfaceSwap === 'function') surfaceSwap();
                 });
             };
-/*カラーピッカー色見本＆ダウンロード*/
-            const btnColorPicker = document.getElementById('btn-color-picker-id');
-            if (btnColorPicker) {
-                btnColorPicker.addEventListener('click', () => {
-                showScreen('color-picker');
-                });
-            }
+
             
  // --- showScreen メニューの内外へ ---
         //アプリを増設した際の追加項目２つ。１．したのconst・none・elseif・function　２．CSSでdisplay:none;を。
@@ -285,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 各スワップボタンの登録 (HTML 側の onclick は削除済みなので、ここで登録)
     // ※ すでに autoMakeBTNSHUFFLEhaveNumArrayShuffle で登録されていますが、
     //   初期状態でもクリックできるようにするため、ここで再度登録するか、
-    //   autoMake... を DOMContentLoaded 内で呼ぶように調整します。
+    //   autoMake... を 内で呼ぶように調整します。
     // 自然スワップボタン
     const natureBtn = document.querySelector('.natureSwap-bth-class');
     if (natureBtn) natureBtn.addEventListener('click', () => { if (typeof natureSwap === 'function') natureSwap(); });
@@ -433,19 +448,24 @@ function showToast() {
         function updateColor() {
             let val = input.value.toUpperCase().replace(/[^0-9A-F]/g, ''); // 無効文字を自動削除
             
-            // 入力中なので空文字も許容
-            if (val === '') {
-                errorMsg.style.display = 'none';
-                preview.style.backgroundColor = '#ffffff';
-                rVal.textContent = '00';
-                gVal.textContent = '00';
-                bVal.textContent = '00';
-                currentHex = 'FFFFFF';
-                colorPicker.value = '#ffffff'; // ピッカーも同期
-                generateImage(); // 画像も更新
-                return;
-            }
-
+// 修正案：空文字の場合は現在の色を維持（または FF にリセット）
+if (val === '') {
+    errorMsg.style.display = 'none';
+    // 現在の色（または初期の白）を維持
+    preview.style.backgroundColor = `#${currentHex}`; 
+    colorPicker.value = `#${currentHex}`;
+    
+    // RGB 表示も現在の色に合わせて更新
+    const r = parseInt(currentHex.substring(0, 2), 16);
+    const g = parseInt(currentHex.substring(2, 4), 16);
+    const b = parseInt(currentHex.substring(4, 6), 16);
+    rVal.textContent = r.toString(16).padStart(2, '0').toUpperCase();
+    gVal.textContent = g.toString(16).padStart(2, '0').toUpperCase();
+    bVal.textContent = b.toString(16).padStart(2, '0').toUpperCase();
+    
+    generateImage();
+    return;
+}
             // 0-9, A-F のみ許可（6桁以内）
             if (!/^[0-9A-F]{1,6}$/.test(val)) {
                 errorMsg.style.display = 'block';
