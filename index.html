@@ -1,0 +1,204 @@
+  
+テスト
+
+試作品　html デラックス　テスト
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐣試作品🐵</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4B0082">
+  <link rel="icon" type="image/png" href="icon192.png">
+  <link rel="apple-touch-icon" href="icon192.png">
+  
+<!-- 安全な CSP の設定例 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+
+  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <!-- HTML -->
+
+    <div class="stars"></div>
+
+    <!-- メニュー画面 (スクロールあり) -->
+    <div id="menu-screen">
+        <h1 class="menu-title"><span class="moon">🌙メニュー</span></h1>
+        
+        <button class="menu-btn find-replace" id="btn-find-replace-id">
+            <span>🔍 検索 & 置換</span</span>
+            <span style="font-size:0.8em; opacity:0.7;">実用</span>
+        </button>
+        <button class="menu-btn swap-game" id="btn-swap-game-id">
+            <span>🎮 スワップゲーム</span>
+            <span style="font-size:0.8em; opacity:0.7;">想像力</span>
+        </button>
+        <button class="menu-btn code-storage" id="btn-code-storage-id">
+            <span>💎 コード倉庫 </span>
+            <span style="font-size:0.8em; opacity:0.7;">コピペ用</span>
+        </button>
+        <button class="menu-btn single-palette" id="btn-color-picker-id">
+            <span>🎨 色見本＆ダウンロード</span>
+            <span style="font-size:0.8em; opacity:0.7;">素材</span>
+        </button>
+        <button class="menu-btn other-app" id="btn-other-id">
+            <span>📝 別のツール</span>
+            <span style="font-size:0.8em; opacity:0.7;">準備中</span>
+        </button>
+    </div>
+
+    <!-- 検索＆置換-->
+    <div id="findReplace-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1;">検索 & 置換</h1>
+        </div>
+        <div class="textinputDiv">
+            <label>対象テキスト</label>
+            <textarea id="text" placeholder="ここにテキストを貼り付けて..."></textarea>
+        </div>
+        <div class="group-o-inputgroups">
+            <div class="input-group">
+                <label>探す言葉</label>
+                <input type="text" id="find" placeholder="例：Apple">
+            </div>
+            <div class="input-group">
+                <label>置換する言葉</label>
+                <input type="text" id="replace" placeholder="例：Orange">
+            </div>
+        </div>
+        <div class="btn-area">
+            <button id="btn-execute" onclick="doReplace()" class="all-main-btns">置換実行</button>
+            <button id="btn-reset" onclick="resetAll()" class="all-main-btns">すべてリセット</button>
+        </div>
+        <p id="error-msg">「探す言葉」を入力してください。</p>
+        <div class="result-area">
+            <div class="result-box" id="result">ここに結果が表示されます</div>
+            <div style="margin-top: 4px;">
+                <button id="btn-copy" onclick="copyResult()" class="all-main-btns">全選択＆コピー</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- スワップゲーム-->
+ <div id="swapGame-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1;">スワップゲーム</h1>
+        </div>
+    
+    <!-- 自然スワップ -->
+    <div class="swapNkekka">
+        <button class="natureSwap-bth-class" id="idnature">🌹</button> 
+        <div id="natureKekka"></div>
+    </div>
+    <!-- 動物スワップ -->
+    <div class="swapNkekka">
+        <button class="animalSwap-btn-class" id="idanimal">🦄</button>
+        <div id="animalKekka"></div>
+    </div>
+    <!-- 物語スワップ -->
+    <div class="swapNkekka">
+        <button class="storySwap-btn-" id="idstory">🏰</button>
+        <div id="storyKekka"></div>
+    </div>  
+    <!-- シャッフルボタン -->
+    <div id="btnswapNmenu">
+        <button id="funcNsurfaceSwap-btn-id" class="shuffle-btn">ボタンシャッフル</button>
+    </div>
+</div>    <!-- コード倉庫-->
+    <div id="code-storage-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1;">ボタンを押すとコードが出るよ！</h1>
+        </div>
+        <div class="marketplace-class" id="marketplace-id">
+        </div>
+        <div id="display-area-id"></div>
+        <div class="actions" id="actions">
+            <button class="action-btn btn-copy" onclick="copyCode()">コピーする 📋</button>
+        </div>
+        <div class="toast" id="toast">コピーしました！</div>
+    </div>  
+
+    <!-- カラーピッカー色見本＆ダウンロード -->
+     <div id="color-picker-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 style="margin:0; text-align:left; flex-grow:1;">🐣 色見本＆ダウンロード</h1>
+        </div>
+        <div class="container">
+            カラーピッカー
+            <!-- ピッカー -->
+            <input type="color" id="colorPicker" value="#ffffff">
+            <!-- 色見本（プレビュー） -->
+            <div class="preview-box" id="preview">
+                <canvas id="myCanvas"></canvas>
+            </div>
+            <!-- 手入力エリア -->
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="text" id="colorInput" placeholder="#FFFFFF" maxlength="6">
+                    <div class="error-msg" id="errorMsg">無効な文字があります</div>
+                </div>
+            </div>
+            <!-- RGB 表示 -->
+            <div class="rgb-display">
+                <div class="rgb-item">
+                    <span class="rgb-label">R</span>
+                    <span class="rgb-val" id="rVal">FF</span>
+                </div>
+                <div class="rgb-item">
+                    <span class="rgb-label">G</span>
+                    <span class="rgb-val" id="gVal">FF</span>
+                </div>
+                <div class="rgb-item">
+                    <span class="rgb-label">B</span>
+                    <span class="rgb-val" id="bVal">FF</span>
+                </div>
+            </div>
+
+            <!-- サイズ設定 -->
+            <div class="size-settings">
+                <div class="size-input">
+                    <label>幅 (px)</label>
+                    <input type="number" id="width" value="1000" min="1" max="5000">
+                </div>
+                <div class="size-input">
+                    <label>高さ (px)</label>
+                    <input type="number" id="height" value="1000" min="1" max="5000">
+                </div>
+            </div>
+            
+            <!-- ボタン -->
+            <button class="btn save-btn" id="saveBtn">💾 色を保存</button>
+            <button class="btn download-btn" id="downloadBtn">⬇️ 画像をダウンロード</button>
+
+            <!-- 保存リスト -->
+            <h3 style="font-size: 0.9rem; color: #666; margin: 15px 0 5px; text-align: left;">保存済み (クリックでコピー)</h3>
+            <ul class="saved-list" id="savedList"></ul>
+            
+            <p class="hint">色を選んで保存・ダウンロードしよう<br>リストの×で削除できます</p>
+        </div>
+    </div>
+</body>
+</html>
