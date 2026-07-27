@@ -76,6 +76,14 @@
                 if (typeof surfaceSwap === 'function') surfaceSwap();
                 });
             };
+/*カラーピッカー色見本＆ダウンロード*/
+            const btnColorPicker = document.getElementById('btn-color-picker-id');
+            if (btnColorPicker) {
+                btnColorPicker.addEventListener('click', () => {
+                showScreen('color-picker');
+                });
+            }
+            
  // --- showScreen メニューの内外へ ---
         //アプリを増設した際の追加項目２つ。１．したのconst・none・elseif・function　２．CSSでdisplay:none;を。
         function showScreen(screenName) {
