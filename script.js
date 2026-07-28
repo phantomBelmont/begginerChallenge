@@ -410,7 +410,7 @@ function showToast() {
         const ctx = canvas.getContext('2d');
         const downloadBtn = document.getElementById('downloadBtn');
 
-        let currentHex = 'FFFFFF'; // 現在の有効な色（初期値）
+        let currentHex = 'D17A00'; // 現在の有効な色（初期値）
 
         // --- 画像生成・ダウンロード機能 ---
         function generateImage() {
