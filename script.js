@@ -147,22 +147,130 @@
                     to { text-shadow: 0 0 3px #333, 0 0 2px #333; }
                 }`, 
                 "XSS対策":`
-                        HTML  
-            <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+                    HTML  
+                    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
 
-                    ボタンなどのonclickを外し、代わりにidをつける。
+                    HTMLにはボタンなどのonclickを外し、代わりにidをつける。
                     
-                        JSの先頭に
-                        document.addEventListener('DOMContentLoaded', () => {
+                    JSの先頭にこれを書く。
+                    document.addEventListener('DOMContentLoaded', () => {
                         
-            あとは各ボタンidについて下記のように書く。
-            const btnFindReplace = document.getElementById('btn-find-replace');
-            if (btnFindReplace) {
-                btnFindReplace.addEventListener('click', () => {
-                showScreen('find-replace');
-                });
-            }
-                `
+                    あとは各ボタンidについて下記のように書く。
+                    const btnFindReplace = document.getElementById('btn-find-replace');
+                    if (btnFindReplace) {
+                        btnFindReplace.addEventListener('click', () => {
+                        showScreen('find-replace');
+                        });
+                    }`,
+                    "オフラインで動くサービスワーカー":`
+                    🌟 ① script.jsの冒頭に埋め込む!
+
+                    if ('serviceWorker' in navigator) {
+                        window.addEventListener('load', () => {
+                            navigator.serviceWorker.register('./sw.js')
+                            .then(registration => {
+                                console.log('SW registered: ', registration);
+                            })
+                            .catch(registrationError => {
+                                console.log('SW registration failed: ', registrationError);
+                            });
+                        });
+                        }
+
+                    🌟 ② 下記をsw.jsとして保存。
+                    const CACHE_NAME = 'v1';
+                    const urlsToCache = [
+                    './',
+                    './index.html',
+                    './style.css',
+                    './script.js', 
+                    './icon-192.png',
+                    './icon-512.png'
+                    ];
+
+                    // インストール時：キャッシュにファイルを保存
+                    self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME)
+                        .then(cache => {
+                            return cache.addAll(urlsToCache);
+                        })
+                    );
+                    });
+
+                    // アクティブ時：古いキャッシュを削除
+                    self.addEventListener('activate', event => {
+                    event.waitUntil(
+                        caches.keys().then(cacheNames => {
+                        return Promise.all(
+                            cacheNames.map(cacheName => {
+                            if (cacheName !== CACHE_NAME) {
+                                return caches.delete(cacheName);
+                            }
+                            })
+                        );
+                        })
+                    );
+                    });
+
+                    // フェッチ時：オフラインでもキャッシュから返す
+                    self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request)
+                        .then(response => {
+                            // キャッシュにあったらそれを返す
+                            if (response) {
+                            return response;
+                            }
+                            // なかったらネットワークから取得
+                            return fetch(event.request);
+                        })
+                    );
+                    });`,
+                    "PWA化":`
+                    🌟 ① headタグに埋め込む
+                    <!DOCTYPE html>
+                    <html lang="ja">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>🐣試作品🐵</title>
+                    <link rel="manifest" href="manifest.json">
+                    <meta name="theme-color" content="#4B0082">
+                    <link rel="icon" type="image/png" href="icon192.png">
+                    <link rel="apple-touch-icon" href="icon192.png">
+
+                    <script src="script.js" defer></script>
+                    <link rel="stylesheet" href="style.css">
+
+                </head>
+                <body>
+
+                </body>
+                </html>
+
+                🌟 ② manifest.jsonファイルを作り、下記を記載。
+                {
+                    "name": "アプリ起動時に現れるタイトル",
+                    "short_name": "アプリアイコン下の表記",
+                    "start_url": "index.html",
+                    "display": "standalone",
+                    "background_color": "#777",
+                    "theme_color": "#000000",
+                    "icons": [
+                        {
+                        "src": "icon192.png", 
+                        "sizes": "192x192",
+                        "type": "image/png"
+                        },
+                        {
+                        "src": "icon512.png",
+                        "sizes": "512x512",
+                        "type": "image/png"
+                        }
+                    ]
+                }
+                    `
             };
 
             const marketplace = document.getElementById('marketplace-id');
