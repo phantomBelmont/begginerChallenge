@@ -545,7 +545,7 @@
             border-bottom: none;
         }
         .saved-item:hover {
-            background-color: #f9f9f9;
+            background: #FFA5004D;
         }
         .color-swatch {
             width: 24px;
