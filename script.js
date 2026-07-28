@@ -1,20 +1,8 @@
-//サービスワーカー
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(registration => {
-            console.log('SW registered: ', registration);
-          })
-          .catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-          });
-      });
-    }
  
 
-                //XSS対策
-                    document.addEventListener('DOMContentLoaded', () => {
-            // 「メニューに戻る」ボタンの一括登録
+        //XSS対策
+            document.addEventListener('DOMContentLoaded', () => {
+        // 「メニューに戻る」ボタンの一括登録
             const menuButtons = document.querySelectorAll('.goToMenu-btn');
             menuButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -24,21 +12,21 @@
                 }
                 });
             });
-                        const btnCopy = document.getElementById('btn-copy');
+            const btnCopy = document.getElementById('btn-copy');
             if (btnCopy) {
                 btnCopy.addEventListener('click', () => {
                 if (typeof copyResult === 'function') copyResult();
                 });
             }
             });
-            /*カラーピッカー色見本＆ダウンロード*/
+        /*カラーピッカー色見本＆ダウンロード*/
             const btnColorPicker = document.getElementById('btn-color-picker-id');
             if (btnColorPicker) {
                 btnColorPicker.addEventListener('click', () => {
                 showScreen('color-picker');
                 });
             }
-                        /* コード倉庫 */
+        /* コード倉庫 */
             const btnCodeStorage = document.getElementById('btn-code-storage-id');
             if (btnCodeStorage) {
                 btnCodeStorage.addEventListener('click', () => {
@@ -46,8 +34,8 @@
                 });
             }
 
-                        //検索&置換ボタン
-                        const btnFindReplace = document.getElementById('btn-find-replace-id');
+        //検索&置換ボタン
+            const btnFindReplace = document.getElementById('btn-find-replace-id');
             if (btnFindReplace) {
                 btnFindReplace.addEventListener('click', () => {
                 showScreen('find-replace');
@@ -72,84 +60,37 @@
                 });
             };
             
-            //スワップゲームボタン
-            const btnSwapGame = document.getElementById('btn-swap-game-id');
-            if (btnSwapGame) {
-                btnSwapGame.addEventListener('click', () => {
-                showScreen('swap-game');
-                });
-            }
-
-
-            // 1. 自然スワップボタン (クラス名で取得)
-            const natureBtn = document.querySelector('.natureSwap-bth-class');
-            if (natureBtn) {
-                natureBtn.addEventListener('click', () => {
-                if (typeof natureSwap === 'function') natureSwap();
-                });
-            }
-            // 2. 動物スワップボタン (クラス名で取得)
-            const animalBtn = document.querySelector('.animalSwap-btn-class');
-            if (animalBtn) {
-                animalBtn.addEventListener('click', () => {
-                if (typeof animalSwap === 'function') animalSwap();
-                });
-            }
-            // 3. 物語スワップボタン (クラス名で取得)
-            const storyBtn = document.querySelector('.storySwap-btn-');
-            if (storyBtn) {
-                storyBtn.addEventListener('click', () => {
-                if (typeof storySwap === 'function') storySwap();
-                });
-            }
-            // 4. シャッフルボタン (ID で取得)
-            const shuffleBtn = document.getElementById('funcNsurfaceSwap-btn-id');
-            if (shuffleBtn) {
-                shuffleBtn.addEventListener('click', () => {
-                if (typeof btnSwap === 'function') btnSwap();
-                if (typeof surfaceSwap === 'function') surfaceSwap();
-                });
-            };
 
             
- // --- showScreen メニューの内外へ ---
-        //アプリを増設した際の追加項目２つ。１．したのconst・none・elseif・function　２．CSSでdisplay:none;を。
+    // --- showScreen メニューの内外へ ---
+    //アプリを増設した際の追加項目２つ。１．したのconst・none・elseif・function　２．CSSでdisplay:none;を。
         function showScreen(screenName) {
             const menuScreen = document.getElementById('menu-screen');
-            const findReplaceScreen = document.getElementById('findReplace-screen');
-            const swapGameScreen = document.getElementById('swapGame-screen');
+            const findReplaceScreen = document.getElementById('findReplace-screen');            const swapGameScreen = document.getElementById('swapGame-screen');
             const codeStorageScreen = document.getElementById('code-storage-screen');
             const colorPickerScreen = document.getElementById('color-picker-screen');
-            // 全ての画面を隠す
-            const screens = [menuScreen, findReplaceScreen, swapGameScreen, codeStorageScreen, colorPickerScreen];
-screens.forEach(screen => {
-    if (screen) screen.style.display = 'none';
-});
+    // 全ての画面を隠す
+            const screens = [menuScreen, findReplaceScreen, codeStorageScreen, colorPickerScreen];
+            screens.forEach(screen => {
+                if (screen) screen.style.display = 'none';
+            });
             if (screenName === 'find-replace') {
                 findReplaceScreen.style.display = 'flex';
-                // 入力欄のフォーカスを外す（キーボードを閉じるため）
+        // 入力欄のフォーカスを外す（キーボードを閉じるため）
                 document.activeElement.blur();
-            }else if (screenName === 'swap-game') {
-                swapGameScreen.style.display = 'flex';
             }else if (screenName === 'code-storage') {
                 codeStorageScreen.style.display = 'flex';
             }else if (screenName === 'color-picker') {
                 colorPickerScreen.style.display = 'flex';
-
-            } else if (screenName === 'other') {
-                alert('このアプリは準備中です！');
-                // メニュー画面表示↓
-                menuScreen.style.display = 'flex';
             }
         }
         function goToMenu() {
             document.getElementById('menu-screen').style.display = 'flex';
             document.getElementById('findReplace-screen').style.display = 'none';
-            document.getElementById('swapGame-screen').style.display = 'none';
             document.getElementById('code-storage-screen').style.display = 'none';
             document.getElementById('color-picker-screen').style.display = 'none';
-      }
-        // --- 検索&置換 ---
+        }
+    // --- 検索&置換 ---
         function doReplace() {
             const findText = document.getElementById('find').value;
             const replaceText = document.getElementById('replace').value;
@@ -191,241 +132,105 @@ screens.forEach(screen => {
             });
         }
 
-        /* スワップゲーム */
-// 1. グローバル関数の定義 (DOMContentLoaded の外側で定義)
-// これにより、イベントリスナー側での 'typeof' チェックが正しく機能します
-window.natureSwap = () => shuffleEmojiNshowKekka('natureKekka', 'natureSwap');
-window.animalSwap = () => shuffleEmojiNshowKekka('animalKekka', 'animalSwap');
-window.storySwap = () => shuffleEmojiNshowKekka('storyKekka', 'storySwap');
-window.btnSwap = numArrayShuffle; // 後で定義される関数への参照
+    /* コード倉庫 */
+            const allpairs = {
+                "絵文字の周囲に影をつける": ` 
+                HTML <span class="moon">🌙</span>
+                CSS  .moon{
+                    font-size: 1.7rem;
+                    filter: drop-shadow(0 0 2px #333) drop-shadow(0 0 10px #ffdd00);
+                    animation: glow 1s infinite alternate;
+                    margin-bottom: 60px;
+                }
+                @keyframes glow {
+                    from { text-shadow: 0 0 1px #baa800; }
+                    to { text-shadow: 0 0 3px #333, 0 0 2px #333; }
+                }`, 
+                "XSS対策":`
+                        HTML  
+            <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
 
-// 配列と定数の定義
-const kekkaIdArray = ['natureKekka', 'animalKekka', 'storyKekka'];
-const funcArray = ['natureSwap', 'animalSwap', 'storySwap'];
-const buttonIdArray = ['idnature', 'idanimal', 'idstory'];
-let numArray = [0, 1, 2];
+                    ボタンなどのonclickを外し、代わりにidをつける。
+                    
+                        JSの先頭に
+                        document.addEventListener('DOMContentLoaded', () => {
+                        
+            あとは各ボタンidについて下記のように書く。
+            const btnFindReplace = document.getElementById('btn-find-replace');
+            if (btnFindReplace) {
+                btnFindReplace.addEventListener('click', () => {
+                showScreen('find-replace');
+                });
+            }
+                `
+            };
 
-// 2. 関数定義
-function shuffleEmojiNshowKekka(randomKekkaId, randomFunc) {
-    // 関数名の修正: shffle -> shuffle
-    let emojiArray = [];
+            const marketplace = document.getElementById('marketplace-id');
+            const displayArea = document.getElementById('display-area-id');
+            const actions = document.getElementById('actions');
+            const toast = document.getElementById('toast');
 
-    if (randomFunc === 'natureSwap') {
-        emojiArray = ["🌌","🌹","☀️","🌙","❄️","🔥","⚡","🍎","🍓","🍌","🍍","🍄‍🟫","🧅","🥚","🥜"];
-    } else if (randomFunc === 'animalSwap') {
-        emojiArray = ["🦁","🦄","🐏","🐍","🕊️","🐦‍🔥"];
-    } else if (randomFunc === 'storySwap') {
-        emojiArray = ["🧛🏻","🦇","🐺","🌕","🪺","🧚🏻","🧟","🧭","⚓","🏰","🗺️","🏹","🪄","💎","🕯️","⚰️","📿","🗡️","🛡️","🗝️","🪉"];
-    }
-
-    // シャッフル処理
-    for (let last = emojiArray.length - 1; last > 0; last--) {
-        let randomPickup = Math.floor(Math.random() * (last + 1));
-        [emojiArray[last], emojiArray[randomPickup]] = [emojiArray[randomPickup], emojiArray[last]];
-    }
-
-    const kekka = document.getElementById(randomKekkaId);
-    if (kekka) {
-        kekka.innerHTML = `${emojiArray[0]}→${emojiArray[1]}→${emojiArray[2]}`;
-    }
-}
-
-function getRandomFuncandKekka() {
-    buttonIdArray.forEach((idNantoka, sonoIndex) => {
-        const anyBtn = document.getElementById(idNantoka);
-        if (!anyBtn) return;
-
-        // 既存のイベントリスナーを一度クリア (重複防止)
-        // クローンして再追加する方法が確実ですが、シンプルに onclick を null に
-        anyBtn.onclick = null; 
-        // より確実な方法: 一度イベントリスナーを全て外す (要素をクローン)
-        // const newBtn = anyBtn.cloneNode(true);
-        // anyBtn.parentNode.replaceChild(newBtn, anyBtn);
-        // const freshBtn = document.getElementById(idNantoka); // 再取得
-        const shuffledNum = numArray[sonoIndex];
-        const randomFunc = funcArray[shuffledNum];
-        const randomKekkaId = kekkaIdArray[shuffledNum];
-        // CSP 対応: onclick 代入を removeEventListener / addEventListener に変更
-        // ここではシンプルに addEventListener を使用 (既存の onclick がある場合は null でクリア済み)
-        anyBtn.addEventListener('click', function() {
-            shuffleEmojiNshowKekka(randomKekkaId, randomFunc);
-        });
-    });
-}
-function surfaceSwap() {
-    const btn1 = document.getElementById('idnature').textContent;
-    const btn2 = document.getElementById('idanimal').textContent;
-    const btn3 = document.getElementById('idstory').textContent;
-    let surfaceOrder = [btn1, btn2, btn3];
-    for(let last = surfaceOrder.length-1; last > 0; last--){
-        let randomPickup = Math.floor(Math.random() * (last + 1));
-        [surfaceOrder[last], surfaceOrder[randomPickup]] = [surfaceOrder[randomPickup], surfaceOrder[last]];
-    }
-    document.getElementById('idnature').textContent = surfaceOrder[0];
-    document.getElementById('idanimal').textContent = surfaceOrder[1];
-    document.getElementById('idstory').textContent = surfaceOrder[2];
-}
-function numArrayShuffle() {
-    // 配列をリセットしてからシャッフル
-    numArray = [0, 1, 2]; 
-    for (let i = numArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [numArray[i], numArray[j]] = [numArray[j], numArray[i]];
-    }
-    
-    getRandomFuncandKekka();
-    surfaceSwap();
-    
-    const btnShuffle = document.querySelector('.shuffle-btn');
-    if (btnShuffle) {
-        btnShuffle.textContent = "シャッフル完了！";
-        setTimeout(() => { 
-            if(btnShuffle) btnShuffle.textContent = "ボタンシャッフル"; 
-        }, 1000);
-    }
-}
-function autoMakeBTNSHUFFLEhaveNumArrayShuffle() {      
-    // 初期状態のセットアップ
-    getRandomFuncandKekka();
-    const btnshuffleBtn = document.querySelector('.shuffle-btn');
-    if (btnshuffleBtn) {
-        // CSP 対応: onclick 代入を removeEventListener / addEventListener に変更
-        btnshuffleBtn.onclick = null; // 既存の onclick をクリア
-        btnshuffleBtn.addEventListener('click', numArrayShuffle);
-    }
-}
-// 3. DOMContentLoaded 内のイベント登録 (既存のコードと統合)
-document.addEventListener('DOMContentLoaded', () => {
-    // 「メニューに戻る」ボタンの一括登録
-    const menuButtons = document.querySelectorAll('.goToMenu-btn');
-    menuButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (typeof goToMenu === 'function') goToMenu();
-        });
-    });
-    // スワップゲーム画面への遷移ボタン
-    const btnSwapGame = document.getElementById('btn-swap-game-id');
-    if (btnSwapGame) {
-        btnSwapGame.addEventListener('click', () => {
-            if (typeof showScreen === 'function') showScreen('swap-game');
-        });
-    }
-    // 各スワップボタンの登録 (HTML 側の onclick は削除済みなので、ここで登録)
-    // ※ すでに autoMakeBTNSHUFFLEhaveNumArrayShuffle で登録されていますが、
-    //   初期状態でもクリックできるようにするため、ここで再度登録するか、
-    //   autoMake... を 内で呼ぶように調整します。
-    // 自然スワップボタン
-    const natureBtn = document.querySelector('.natureSwap-bth-class');
-    if (natureBtn) natureBtn.addEventListener('click', () => { if (typeof natureSwap === 'function') natureSwap(); });
-    // 動物スワップボタン
-    const animalBtn = document.querySelector('.animalSwap-btn-class');
-    if (animalBtn) animalBtn.addEventListener('click', () => { if (typeof animalSwap === 'function') animalSwap(); });
-    // 物語スワップボタン
-    const storyBtn = document.querySelector('.storySwap-btn-');
-    if (storyBtn) storyBtn.addEventListener('click', () => { if (typeof storySwap === 'function') storySwap(); });
-    // シャッフルボタンの初期化
-    autoMakeBTNSHUFFLEhaveNumArrayShuffle();
-});
-
-        /* コード倉庫 */
-const allpairs = {
-    "絵文字の周囲に影をつける": ` 
-    HTML <span class="moon">🌙</span>
-    CSS  .moon{
-        font-size: 1.7rem;
-        filter: drop-shadow(0 0 2px #333) drop-shadow(0 0 10px #ffdd00);
-        animation: glow 1s infinite alternate;
-        margin-bottom: 60px;
-    }
-    @keyframes glow {
-        from { text-shadow: 0 0 1px #baa800; }
-        to { text-shadow: 0 0 3px #333, 0 0 2px #333; }
-    }`, 
-    "XSS対策":`
-            HTML  
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
-
-          ボタンなどのonclickを外し、代わりにidをつける。
-          
-            JSの先頭に
-            document.addEventListener('DOMContentLoaded', () => {
+        // 倉庫からボタンを生成
+        for (const [emoji, code] of Object.entries(allpairs)) {
+            const kokodakeBtn = document.createElement('button');
+            kokodakeBtn.className = 'code-btn';
+            kokodakeBtn.textContent = emoji;
             
-  あとは各ボタンidについて下記のように書く。
-  const btnFindReplace = document.getElementById('btn-find-replace');
-  if (btnFindReplace) {
-    btnFindReplace.addEventListener('click', () => {
-      showScreen('find-replace');
-    });
-  }
-    `
-};
+            // 🔴 修正: onclick 代入を removeEventListener / addEventListener に変更
+            // CSP 対策: インラインイベントハンドラを避ける
+            kokodakeBtn.addEventListener('click', () => {
+                showCode(emoji, code);
+            });
+            
+            marketplace.appendChild(kokodakeBtn);
+        }
 
-const marketplace = document.getElementById('marketplace-id');
-const displayArea = document.getElementById('display-area-id');
-const actions = document.getElementById('actions');
-const toast = document.getElementById('toast');
+        function showCode(emoji, code) {
+            displayArea.style.display = 'block';
+            if (actions) actions.style.display = 'flex';
+            // ✅ 安全: textContent を使用（CSS コードも文字列として扱われる）
+            displayArea.textContent = code;   
+            
+            // 画面をスクロールして表示エリアへ
+            displayArea.scrollIntoView({ behavior: 'smooth' });
+        }
 
-// 倉庫からボタンを生成
-for (const [emoji, code] of Object.entries(allpairs)) {
-    const kokodakeBtn = document.createElement('button');
-    kokodakeBtn.className = 'code-btn';
-    kokodakeBtn.textContent = emoji;
-    
-    // 🔴 修正: onclick 代入を removeEventListener / addEventListener に変更
-    // CSP 対策: インラインイベントハンドラを避ける
-    kokodakeBtn.addEventListener('click', () => {
-        showCode(emoji, code);
-    });
-    
-    marketplace.appendChild(kokodakeBtn);
-}
+        function copyCode() {
+            const text = displayArea.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('コピー失敗', err);
+                alert('コピーに失敗しました');
+            });
+        }
 
-function showCode(emoji, code) {
-    displayArea.style.display = 'block';
-    if (actions) actions.style.display = 'flex';
-    // ✅ 安全: textContent を使用（CSS コードも文字列として扱われる）
-    displayArea.textContent = code;   
-    
-    // 画面をスクロールして表示エリアへ
-    displayArea.scrollIntoView({ behavior: 'smooth' });
-}
+        function showToast() {
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
 
-function copyCode() {
-    const text = displayArea.textContent;
-    navigator.clipboard.writeText(text).then(() => {
-        showToast();
-    }).catch(err => {
-        console.error('コピー失敗', err);
-        alert('コピーに失敗しました');
-    });
-}
+    /* カラーピッカー色見本＆ダウンロード */
+            const input = document.getElementById('colorInput');
+            const preview = document.getElementById('preview');
+            const errorMsg = document.getElementById('errorMsg');
+            const rVal = document.getElementById('rVal');
+            const gVal = document.getElementById('gVal');
+            const bVal = document.getElementById('bVal');
+            const saveBtn = document.getElementById('saveBtn');
+            const savedList = document.getElementById('savedList');
+            const colorPicker = document.getElementById('colorPicker');
+            const widthInput = document.getElementById('width');
+            const heightInput = document.getElementById('height');
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+            const downloadBtn = document.getElementById('downloadBtn');
 
-function showToast() {
-    toast.style.opacity = '1';
-    setTimeout(() => {
-        toast.style.opacity = '0';
-    }, 2000);
-}
+            let currentHex = 'D17A00'; // 現在の有効な色（初期値）
 
-/* カラーピッカー色見本＆ダウンロード */
-        const input = document.getElementById('colorInput');
-        const preview = document.getElementById('preview');
-        const errorMsg = document.getElementById('errorMsg');
-        const rVal = document.getElementById('rVal');
-        const gVal = document.getElementById('gVal');
-        const bVal = document.getElementById('bVal');
-        const saveBtn = document.getElementById('saveBtn');
-        const savedList = document.getElementById('savedList');
-        const colorPicker = document.getElementById('colorPicker');
-        const widthInput = document.getElementById('width');
-        const heightInput = document.getElementById('height');
-        const canvas = document.getElementById('myCanvas');
-        const ctx = canvas.getContext('2d');
-        const downloadBtn = document.getElementById('downloadBtn');
-
-        let currentHex = 'D17A00'; // 現在の有効な色（初期値）
-
-        // --- 画像生成・ダウンロード機能 ---
+    // --- 画像生成・ダウンロード機能 ---
         function generateImage() {
             const color = colorPicker.value;
             const width = parseInt(widthInput.value) || 1000;
@@ -460,25 +265,25 @@ function showToast() {
         // --- 色更新処理（手入力用） ---
         function updateColor() {
             let val = input.value.toUpperCase().replace(/[^0-9A-F]/g, ''); // 無効文字を自動削除
+                    
+        // 修正案：空文字の場合は現在の色を維持（または FF にリセット）
+        if (val === '') {
+            errorMsg.style.display = 'none';
+            // 現在の色（または初期の白）を維持
+            preview.style.backgroundColor = `#${currentHex}`; 
+            colorPicker.value = `#${currentHex}`;
             
-// 修正案：空文字の場合は現在の色を維持（または FF にリセット）
-if (val === '') {
-    errorMsg.style.display = 'none';
-    // 現在の色（または初期の白）を維持
-    preview.style.backgroundColor = `#${currentHex}`; 
-    colorPicker.value = `#${currentHex}`;
-    
-    // RGB 表示も現在の色に合わせて更新
-    const r = parseInt(currentHex.substring(0, 2), 16);
-    const g = parseInt(currentHex.substring(2, 4), 16);
-    const b = parseInt(currentHex.substring(4, 6), 16);
-    rVal.textContent = r.toString(16).padStart(2, '0').toUpperCase();
-    gVal.textContent = g.toString(16).padStart(2, '0').toUpperCase();
-    bVal.textContent = b.toString(16).padStart(2, '0').toUpperCase();
-    
-    generateImage();
-    return;
-}
+            // RGB 表示も現在の色に合わせて更新
+            const r = parseInt(currentHex.substring(0, 2), 16);
+            const g = parseInt(currentHex.substring(2, 4), 16);
+            const b = parseInt(currentHex.substring(4, 6), 16);
+            rVal.textContent = r.toString(16).padStart(2, '0').toUpperCase();
+            gVal.textContent = g.toString(16).padStart(2, '0').toUpperCase();
+            bVal.textContent = b.toString(16).padStart(2, '0').toUpperCase();
+            
+            generateImage();
+            return;
+        }
             // 0-9, A-F のみ許可（6桁以内）
             if (!/^[0-9A-F]{1,6}$/.test(val)) {
                 errorMsg.style.display = 'block';
@@ -507,7 +312,7 @@ if (val === '') {
             generateImage(); // 画像も更新
         }
 
-        // --- ローカルストレージ機能 ---
+    // --- ローカルストレージ機能 ---
         function loadSavedColors() {
             const saved = JSON.parse(localStorage.getItem('myColors') || '[]');
             savedList.innerHTML = '';
@@ -569,7 +374,7 @@ if (val === '') {
             }
         }
 
-        // --- イベントリスナー設定 ---
+    // --- イベントリスナー設定 ---
         
         // ピッカー変更時
         colorPicker.addEventListener('input', (e) => {
