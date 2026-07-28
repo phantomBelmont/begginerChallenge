@@ -56,7 +56,7 @@
             @keyframes twinkle{
                 0%,100%{opacity:1;} 50%{opacity: 0.2;}
             }
-        /* --- メニュー画面 --- */
+    /* --- メニュー画面 --- */
         #menu-screen {
             display: flex; /* アプリ起動時に表示 */
             flex-direction: column;
@@ -101,7 +101,7 @@
         .menu-btn span {
             pointer-events: none; /* 文字選択時の干渉防止 */
         }
-        /* --- 検索＆置換 --- */
+    /* --- 検索＆置換 --- */
         #findReplace-screen {
             display: none;
             flex-direction: column;
@@ -253,16 +253,7 @@
             padding: 5px;
         }
 
-        /* --- スワップゲーム --- */
-        #swapGame-screen {
-            display: none;
-            flex-direction: column;
-        }
-        .swapNkekka{
-            display: flex;
-            gap: 5px;
-        }
-        /* コード倉庫 */
+    /* コード倉庫 */
         #code-storage-screen{
             display: none;
             flex-direction: column;
@@ -349,7 +340,7 @@
             --error-color: #ff7675;
             --download-color: #070;
         }
-
+    /*カラーピッカー色見本＆ダウンロード*/
         #color-picker-screen{
             font-family: 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--bg-color);
@@ -545,7 +536,7 @@
             border-bottom: none;
         }
         .saved-item:hover {
-            background: #FFA5004D;
+            background-color: #f9f9f9;
         }
         .color-swatch {
             width: 24px;
