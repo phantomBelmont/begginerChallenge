@@ -253,84 +253,6 @@
             padding: 5px;
         }
 
-    /* コード倉庫 */
-        #code-storage-screen{
-            display: none;
-            flex-direction: column;
-        }
-        .marketplace-class{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .code-btn {
-            background-color: #333;
-            border: 2px solid #ddd;
-            border-radius: 15px;
-            padding: 15px;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .code-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
-            border-color: #007bff;
-        }
-        .code-btn:active {
-            transform: scale(0.95);
-        }
-        /* コード表示エリア */
-        #display-area-id {
-            background-color: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: left;
-            min-height: 100px;
-            position: relative;
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre-wrap;
-            overflow-x: auto;
-            display: none; /* 最初は隠す */
-        }
-        /* コピーボタン類 */
-        .actions {
-            margin-top: 15px;
-            display: none; /* 最初は隠す */
-            gap: 10px;
-            justify-content: center;
-        }
-        .action-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn-copy {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-copy:hover { background-color: #218838; }
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
         /* カラーピッカー色見本＆ダウンロード */
         :root {
             --bg-color: transparent;
@@ -562,9 +484,4 @@
         }
         .delete-btn:hover {
             color: var(--error-color);
-        }
-        .hint {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 15px;
         }
