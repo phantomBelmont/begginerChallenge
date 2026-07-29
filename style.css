@@ -243,6 +243,11 @@
             background: #222;
             flex-shrink: 0;
         }
+        .h1class{
+            margin:0;
+            text-align:left; 
+            flex-grow:1;
+        }
         .goToMenu-btn {
             background: none;
             border: none;
@@ -427,6 +432,12 @@
         }
         .save-btn:hover {
             background-color: #5649c0;
+        }
+        .color-saved-msg{
+            font-size: 0.9rem; 
+            color: #555; 
+            margin: 15px 0 5px; 
+            text-align: left;
         }
         /* ダウンロードボタン */
         .download-btn {
