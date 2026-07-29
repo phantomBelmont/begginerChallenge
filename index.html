@@ -19,6 +19,7 @@
     connect-src 'self';
     base-uri 'self';
     form-action 'self';
+    worker-src 'self';
     ">
 
   <script src="script.js" defer></script>
@@ -33,12 +34,10 @@
         <h1 class="menu-title"><span class="moon">🌙メニュー</span></h1>
         
         <button class="menu-btn find-replace" id="btn-find-replace-id">
-            <span>🔍 検索 & 置換</span</span>
-            <span style="font-size:0.8em; opacity:0.7;">実用</span>
+            <span>🔍 検索 & 置換</span>
         </button>
         <button class="menu-btn single-palette" id="btn-color-picker-id">
             <span>🎨 色見本＆ダウンロード</span>
-            <span style="font-size:0.8em; opacity:0.7;">素材</span>
         </button>
     </div>
 
@@ -46,7 +45,7 @@
     <div id="findReplace-screen">
         <div class="app-header">
             <button class="goToMenu-btn">←🌙メニューへ</button>
-            <h1 style="margin:0; text-align:left; flex-grow:1;">検索 & 置換</h1>
+            <h1 class="h1class">検索 & 置換</h1>
         </div>
         <div class="textinputDiv">
             <label>対象テキスト</label>
@@ -69,7 +68,6 @@
         <p id="error-msg">「探す言葉」を入力してください。</p>
         <div class="result-area">
             <div class="result-box" id="result">ここに結果が表示されます</div>
-            <div style="margin-top: 4px;">
                 <button id="btn-copy" onclick="copyResult()" class="all-main-btns">全選択＆コピー</button>
             </div>
         </div>
@@ -79,7 +77,7 @@
      <div id="color-picker-screen">
         <div class="app-header">
             <button class="goToMenu-btn">←🌙メニューへ</button>
-            <h1 style="margin:0; text-align:left; flex-grow:1;">🐣 色見本＆ダウンロード</h1>
+            <h1 class="h1class">🐣 色見本＆ダウンロード</h1>
         </div>
         <div class="container">
             カラーピッカー
@@ -129,7 +127,7 @@
             <button class="btn download-btn" id="downloadBtn">⬇️ 画像をダウンロード</button>
 
             <!-- 保存リスト -->
-            <h3 style="font-size: 0.9rem; color: #666; margin: 15px 0 5px; text-align: left;">保存済み (クリックでコピー)</h3>
+            <h3 class="color-saved-msg">保存済み (クリックでコピー)</h3>
             <ul class="saved-list" id="savedList"></ul>
             </div>
     </div>
