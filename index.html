@@ -10,7 +10,16 @@
   <link rel="apple-touch-icon" href="icon192.png">
   
 <!-- 安全な CSP の設定例 -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; clipboard-write *; style-src 'self' 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self';
+    img-src 'self' data: https:;
+    font-src 'self' data:;
+    connect-src 'self';
+    base-uri 'self';
+    form-action 'self';
+    ">
 
   <script src="script.js" defer></script>
   <link rel="stylesheet" href="style.css">
@@ -26,10 +35,6 @@
         <button class="menu-btn find-replace" id="btn-find-replace-id">
             <span>🔍 検索 & 置換</span</span>
             <span style="font-size:0.8em; opacity:0.7;">実用</span>
-        </button>
-        <button class="menu-btn code-storage" id="btn-code-storage-id">
-            <span>💎 コード倉庫 </span>
-            <span style="font-size:0.8em; opacity:0.7;">コピペ用</span>
         </button>
         <button class="menu-btn single-palette" id="btn-color-picker-id">
             <span>🎨 色見本＆ダウンロード</span>
@@ -70,21 +75,6 @@
         </div>
     </div>
     
-     <!-- コード倉庫-->
-    <div id="code-storage-screen">
-        <div class="app-header">
-            <button class="goToMenu-btn">←🌙メニューへ</button>
-            <h1 style="margin:0; text-align:left; flex-grow:1;">ボタンを押すとコードが出るよ！</h1>
-        </div>
-        <div class="marketplace-class" id="marketplace-id">
-        </div>
-        <div id="display-area-id"></div>
-        <div class="actions" id="actions">
-            <button class="action-btn btn-copy" onclick="copyCode()">コピーする 📋</button>
-        </div>
-        <div class="toast" id="toast">コピーしました！</div>
-    </div>  
-
     <!-- カラーピッカー色見本＆ダウンロード -->
      <div id="color-picker-screen">
         <div class="app-header">
@@ -141,9 +131,7 @@
             <!-- 保存リスト -->
             <h3 style="font-size: 0.9rem; color: #666; margin: 15px 0 5px; text-align: left;">保存済み (クリックでコピー)</h3>
             <ul class="saved-list" id="savedList"></ul>
-            
-            <p class="hint">色を選んで保存・ダウンロードしよう<br>リストの×で削除できます</p>
-        </div>
+            </div>
     </div>
 </body>
 </html>
