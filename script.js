@@ -26,13 +26,6 @@
                 showScreen('color-picker');
                 });
             }
-        /* コード倉庫 */
-            const btnCodeStorage = document.getElementById('btn-code-storage-id');
-            if (btnCodeStorage) {
-                btnCodeStorage.addEventListener('click', () => {
-                showScreen('code-storage');
-                });
-            }
 
         //検索&置換ボタン
             const btnFindReplace = document.getElementById('btn-find-replace-id');
@@ -67,10 +60,9 @@
         function showScreen(screenName) {
             const menuScreen = document.getElementById('menu-screen');
             const findReplaceScreen = document.getElementById('findReplace-screen');            const swapGameScreen = document.getElementById('swapGame-screen');
-            const codeStorageScreen = document.getElementById('code-storage-screen');
             const colorPickerScreen = document.getElementById('color-picker-screen');
     // 全ての画面を隠す
-            const screens = [menuScreen, findReplaceScreen, codeStorageScreen, colorPickerScreen];
+            const screens = [menuScreen, findReplaceScreen, colorPickerScreen];
             screens.forEach(screen => {
                 if (screen) screen.style.display = 'none';
             });
@@ -78,8 +70,6 @@
                 findReplaceScreen.style.display = 'flex';
         // 入力欄のフォーカスを外す（キーボードを閉じるため）
                 document.activeElement.blur();
-            }else if (screenName === 'code-storage') {
-                codeStorageScreen.style.display = 'flex';
             }else if (screenName === 'color-picker') {
                 colorPickerScreen.style.display = 'flex';
             }
@@ -87,7 +77,6 @@
         function goToMenu() {
             document.getElementById('menu-screen').style.display = 'flex';
             document.getElementById('findReplace-screen').style.display = 'none';
-            document.getElementById('code-storage-screen').style.display = 'none';
             document.getElementById('color-picker-screen').style.display = 'none';
         }
     // --- 検索&置換 ---
@@ -130,194 +119,6 @@
                 console.error('コピー失敗:', err);
                 alert('コピーに失敗しました');
             });
-        }
-
-    /* コード倉庫 */
-            const allpairs = {
-                "絵文字の周囲に影をつける": ` 
-                HTML <span class="moon">🌙</span>
-                CSS  .moon{
-                    font-size: 1.7rem;
-                    filter: drop-shadow(0 0 2px #333) drop-shadow(0 0 10px #ffdd00);
-                    animation: glow 1s infinite alternate;
-                    margin-bottom: 60px;
-                }
-                @keyframes glow {
-                    from { text-shadow: 0 0 1px #baa800; }
-                    to { text-shadow: 0 0 3px #333, 0 0 2px #333; }
-                }`, 
-                "XSS対策":`
-                    HTML  
-                    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
-
-                    HTMLにはボタンなどのonclickを外し、代わりにidをつける。
-                    
-                    JSの先頭にこれを書く。
-                    document.addEventListener('DOMContentLoaded', () => {
-                        
-                    あとは各ボタンidについて下記のように書く。
-                    const btnFindReplace = document.getElementById('btn-find-replace');
-                    if (btnFindReplace) {
-                        btnFindReplace.addEventListener('click', () => {
-                        showScreen('find-replace');
-                        });
-                    }`,
-                    "オフラインで動くサービスワーカー":`
-                    🌟 ① script.jsの冒頭に埋め込む!
-
-                    if ('serviceWorker' in navigator) {
-                        window.addEventListener('load', () => {
-                            navigator.serviceWorker.register('./sw.js')
-                            .then(registration => {
-                                console.log('SW registered: ', registration);
-                            })
-                            .catch(registrationError => {
-                                console.log('SW registration failed: ', registrationError);
-                            });
-                        });
-                        }
-
-                    🌟 ② 下記をsw.jsとして保存。
-                    const CACHE_NAME = 'v1';
-                    const urlsToCache = [
-                    './',
-                    './index.html',
-                    './style.css',
-                    './script.js', 
-                    './icon-192.png',
-                    './icon-512.png'
-                    ];
-
-                    // インストール時：キャッシュにファイルを保存
-                    self.addEventListener('install', event => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME)
-                        .then(cache => {
-                            return cache.addAll(urlsToCache);
-                        })
-                    );
-                    });
-
-                    // アクティブ時：古いキャッシュを削除
-                    self.addEventListener('activate', event => {
-                    event.waitUntil(
-                        caches.keys().then(cacheNames => {
-                        return Promise.all(
-                            cacheNames.map(cacheName => {
-                            if (cacheName !== CACHE_NAME) {
-                                return caches.delete(cacheName);
-                            }
-                            })
-                        );
-                        })
-                    );
-                    });
-
-                    // フェッチ時：オフラインでもキャッシュから返す
-                    self.addEventListener('fetch', event => {
-                    event.respondWith(
-                        caches.match(event.request)
-                        .then(response => {
-                            // キャッシュにあったらそれを返す
-                            if (response) {
-                            return response;
-                            }
-                            // なかったらネットワークから取得
-                            return fetch(event.request);
-                        })
-                    );
-                    });`,
-                    "PWA化":`
-                    🌟 ① headタグに埋め込む
-                    <!DOCTYPE html>
-                    <html lang="ja">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>🐣試作品🐵</title>
-                    <link rel="manifest" href="manifest.json">
-                    <meta name="theme-color" content="#4B0082">
-                    <link rel="icon" type="image/png" href="icon192.png">
-                    <link rel="apple-touch-icon" href="icon192.png">
-
-                    <script src="script.js" defer></script>
-                    <link rel="stylesheet" href="style.css">
-
-                </head>
-                <body>
-
-                </body>
-                </html>
-
-                🌟 ② manifest.jsonファイルを作り、下記を記載。
-                {
-                    "name": "アプリ起動時に現れるタイトル",
-                    "short_name": "アプリアイコン下の表記",
-                    "start_url": "index.html",
-                    "display": "standalone",
-                    "background_color": "#777",
-                    "theme_color": "#000000",
-                    "icons": [
-                        {
-                        "src": "icon192.png", 
-                        "sizes": "192x192",
-                        "type": "image/png"
-                        },
-                        {
-                        "src": "icon512.png",
-                        "sizes": "512x512",
-                        "type": "image/png"
-                        }
-                    ]
-                }
-                    `
-            };
-
-            const marketplace = document.getElementById('marketplace-id');
-            const displayArea = document.getElementById('display-area-id');
-            const actions = document.getElementById('actions');
-            const toast = document.getElementById('toast');
-
-        // 倉庫からボタンを生成
-        for (const [emoji, code] of Object.entries(allpairs)) {
-            const kokodakeBtn = document.createElement('button');
-            kokodakeBtn.className = 'code-btn';
-            kokodakeBtn.textContent = emoji;
-            
-            // 🔴 修正: onclick 代入を removeEventListener / addEventListener に変更
-            // CSP 対策: インラインイベントハンドラを避ける
-            kokodakeBtn.addEventListener('click', () => {
-                showCode(emoji, code);
-            });
-            
-            marketplace.appendChild(kokodakeBtn);
-        }
-
-        function showCode(emoji, code) {
-            displayArea.style.display = 'block';
-            if (actions) actions.style.display = 'flex';
-            // ✅ 安全: textContent を使用（CSS コードも文字列として扱われる）
-            displayArea.textContent = code;   
-            
-            // 画面をスクロールして表示エリアへ
-            displayArea.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function copyCode() {
-            const text = displayArea.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast();
-            }).catch(err => {
-                console.error('コピー失敗', err);
-                alert('コピーに失敗しました');
-            });
-        }
-
-        function showToast() {
-            toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 2000);
         }
 
     /* カラーピッカー色見本＆ダウンロード */
@@ -364,7 +165,7 @@
             
             // ボタンフィードバック
             const originalText = downloadBtn.textContent;
-            downloadBtn.textContent = "ダウンロード完了！";
+            downloadBtn.textContent = "ダウンロード中...";
             setTimeout(() => {
                 downloadBtn.textContent = originalText;
             }, 1500);
