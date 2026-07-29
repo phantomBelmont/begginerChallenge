@@ -1,4 +1,11 @@
- 
+        //サービスワーカー
+        if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW登録成功:', reg.scope))
+            .catch(err => console.log('SW登録失敗:', err));
+        });
+        }
 
         //XSS対策
             document.addEventListener('DOMContentLoaded', () => {
