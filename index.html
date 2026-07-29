@@ -24,6 +24,7 @@
 
   <script src="script.js" defer></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="template.css">
 
 </head>
 <body>
@@ -39,6 +40,9 @@
         <button class="menu-btn single-palette" id="btn-color-picker-id">
             <span>🎨 色見本＆ダウンロード</span>
         </button>
+        <button class="menu-btn template-storage" id="btn-template-storage-id">
+            <span>📦 テンプレート倉庫</span>
+        </button>
     </div>
 
     <!-- 検索＆置換-->
@@ -49,26 +53,26 @@
         </div>
         <div class="textinputDiv">
             <label>対象テキスト</label>
-            <textarea id="text" placeholder="ここにテキストを貼り付けて..."></textarea>
+            <textarea id="yourtext" placeholder="ここにテキストを貼り付けて..."></textarea>
         </div>
         <div class="group-o-inputgroups">
-            <div class="input-group">
+            <div class="find-or-replace-input">
                 <label>探す言葉</label>
                 <input type="text" id="find" placeholder="例：Apple">
             </div>
-            <div class="input-group">
+            <div class="find-or-replace-input">
                 <label>置換する言葉</label>
                 <input type="text" id="replace" placeholder="例：Orange">
             </div>
         </div>
-        <div class="btn-area">
+        <div class="replace-reset-btns">
             <button id="btn-execute" onclick="doReplace()" class="all-main-btns">置換実行</button>
             <button id="btn-reset" onclick="resetAll()" class="all-main-btns">すべてリセット</button>
         </div>
         <p id="error-msg">「探す言葉」を入力してください。</p>
         <div class="result-area">
-            <div class="result-box" id="result">ここに結果が表示されます</div>
-                <button id="btn-copy" onclick="copyResult()" class="all-main-btns">全選択＆コピー</button>
+            <div class="FnR-result-box" id="result">ここに結果が表示されます</div>
+                <button id="btn-FnR-copy" onclick="copyResult()" class="all-main-btns">全選択＆コピー</button>
             </div>
         </div>
     </div>
@@ -77,9 +81,9 @@
      <div id="color-picker-screen">
         <div class="app-header">
             <button class="goToMenu-btn">←🌙メニューへ</button>
-            <h1 class="h1class">🐣 色見本＆ダウンロード</h1>
+            <h1 class="h1class">色見本＆ダウンロード</h1>
         </div>
-        <div class="container">
+        <div class="color-container">
             カラーピッカー
             <!-- ピッカー -->
             <input type="color" id="colorPicker" value="#ffffff">
@@ -88,7 +92,7 @@
                 <canvas id="myCanvas"></canvas>
             </div>
             <!-- 手入力エリア -->
-            <div class="input-group">
+            <div class="color-input-div">
                 <div class="input-wrapper">
                     <input type="text" id="colorInput" placeholder="#FFFFFF" maxlength="6">
                     <div class="error-msg" id="errorMsg">無効な文字があります</div>
@@ -131,5 +135,45 @@
             <ul class="saved-list" id="savedList"></ul>
             </div>
     </div>
+
+    <!--コードテンプレート倉庫-->
+    <div id="template-storage-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 class="h1class">📦 テンプレート倉庫</h1>
+        </div>
+        <div class="template-container">
+            <!-- 入力エリア -->
+            <div class="template-input-area">
+                <input type="text" id="title" placeholder="タイトル（例：絵文字に影をつける）">
+                <textarea id="code" placeholder="コード（HTML/CSSなど）"></textarea>
+                <button id="add-template" class="allBtns-in-CTapp">テンプレート追加</button>
+            </div>
+            <!-- コード表示エリア -->
+            <div id="code-display-area">
+                <div class="code-header">
+                    <h3 id="display-title">タイトル</h3>
+                    <button class="CT-close-btn allBtns-in-CTapp" id="close-display">&times;</button>
+                </div>
+                <div id="code-text"></div>
+                <button class="CT-copy-btn allBtns-in-CTapp" id="ct-copy-btn-id">全コピー</button>
+            </div>
+            <!-- リストエリア -->
+            <div class="list-section" id="list-section">
+                <div class="list-header">
+                    <h3>登録済みテンプレート</h3>
+                    <button id="delete-selected-btn" class="delete-selected-btn allBtns-in-CTapp" disabled>選択したものを削除</button>
+                </div>
+                <ul class="template-list" id="template-list">
+                    <!-- ここにアイテムが追加されます -->
+                </ul>
+                <div class="empty-state" id="empty-msg">
+                    テンプレートが登録されていません。上から追加してください！
+                </div>
+            </div>
+        </div>
+        <div id="telling-id">コピーしました！</div>
+    </div>
+        
 </body>
 </html>
