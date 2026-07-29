@@ -4,7 +4,8 @@ const urlsToCache = [
   '/index.html',
   '/script.js',
   '/style.css',
-  '/images/icon.png' // 画像があれば
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 // 1. インストール時：キャッシュにファイルを保存
