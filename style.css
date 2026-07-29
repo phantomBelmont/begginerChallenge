@@ -117,7 +117,7 @@
             margin: 5px 0;
             flex-shrink: 0;
         }
-        .input-group {
+        .find-or-replace-input {
             margin: 2px 10px;
             display: flex;
             flex-direction: row;
@@ -164,7 +164,7 @@
             /* 　↓　テキストエリアはスクロールできるが、画面全体はしない*/
             overflow: hidden; 
         }
-        textarea {
+        #yourtext {
             background: #aaa;
             display: flex;
             flex-direction: column;
@@ -181,7 +181,7 @@
             min-height: 80px;
             max-height: 200px;
         }
-        .btn-area {
+        .replace-reset-btns {
             padding: 5px 10px;
             display: flex;
             flex-direction: column;
@@ -200,7 +200,7 @@
         }
         #btn-execute { background: #007; }
         #btn-reset { background: #700; font-size: 13px; padding: 8px; }
-        #btn-copy { background: #070; }
+        #btn-FnR-copy { background: #070; }
         /* エラー表示 */
         #error-msg {
             color: red;
@@ -210,7 +210,7 @@
             display: none;
             flex-shrink: 0;
         }
-        .result-area {
+        .FnR-result-area {
             flex-grow: 1; 
             padding: 5px 10px;
             display: flex;
@@ -220,7 +220,7 @@
             flex-shrink: 0;
             overflow: hidden;
         }
-        .result-box {
+        .FnR-result-box {
             flex-grow: 1;
             border: 1px solid #ccc;
             background: #aaa;
@@ -279,7 +279,7 @@
             padding: 20px;
             width: 100%;
         }
-        .container {
+        .color-container {
             display: flex;
             flex-direction: column;
             background-color: var(--card-bg);
@@ -306,7 +306,7 @@
             display: none; /* 最初は非表示、JSで制御 */
         }
         /* 入力エリア */
-        .input-group {
+        .color-input-div {
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
@@ -495,4 +495,226 @@
         }
         .delete-btn:hover {
             color: var(--error-color);
+        }
+
+    /* コードテンプレート倉庫 */
+        #template-storage-screen {
+            display: none;
+            flex-direction: column;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .template-container {
+            background-color: #000;
+            color: #ddd;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* 入力エリア */
+        .template-input-area {
+            background: #555;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .template-input-area input, .template-input-area textarea {
+            background: #777;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .template-input-area textarea {
+            min-height: 100px;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        #add-template {
+            background-color: #770000;
+            color: white;
+            align-self: flex-end;
+        }
+
+        /* リストエリア */
+        .list-section {
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .delete-selected-btn {
+            background-color: #995500;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .delete-selected-btn:disabled {
+            background-color: #007777;
+            cursor: not-allowed;
+        }
+
+        .template-list {
+            background: #333;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .template-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .template-item:hover {
+            background-color: #777;
+        }
+
+        .template-item input[type="checkbox"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        .template-content {
+            background:transparent;
+            flex-grow: 1;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .template-title {
+            font-weight: bold;
+            color: #D17A00;
+        }
+
+        .template-preview {
+            font-size: 0.85rem;
+            color: #777;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+
+        .delete-single-btn {
+            background: none;
+            color: #999;
+            font-size: 1.2rem;
+            padding: 5px 10px;
+        }
+
+        .delete-single-btn:hover {
+            color: red;
+        }
+
+        /* コード表示モーダル（簡易） */
+        #code-display-area {
+            display: none;
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #code-text {
+            background: #999;
+            color: #000;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            border: 1px solid var;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
+        .allBtns-in-CTapp{
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        .allBtns-in-CTapp:hover {
+            opacity: 0.9;
+        }
+        
+        .CT-copy-btn {
+            background-color: #070;
+            color: white;
+            font-weight: bold;
+        }
+
+        .CT-close-btn {
+            background: none;
+            color: #777;
+            font-size: 1.5rem;
+            padding: 0;
+        }
+
+        /* 空状態 */
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 0;
+        }
+
+        /* トースト通知 */
+        #telling-id {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            pointer-events: none;
         }
