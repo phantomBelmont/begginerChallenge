@@ -1,8 +1,7 @@
- 
 
         //XSS対策
             document.addEventListener('DOMContentLoaded', () => {
-        // 「メニューに戻る」ボタンの一括登録
+        // 「🌙メニューに戻る」ボタンの一括登録
             const menuButtons = document.querySelectorAll('.goToMenu-btn');
             menuButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -12,14 +11,15 @@
                 }
                 });
             });
-            const btnCopy = document.getElementById('btn-copy');
+            const btnCopy = document.getElementById('btn-FnR-copy');
             if (btnCopy) {
                 btnCopy.addEventListener('click', () => {
                 if (typeof copyResult === 'function') copyResult();
                 });
             }
             });
-        /*カラーピッカー色見本＆ダウンロード*/
+        
+        /* showScreen　カラーピッカー色見本＆ダウンロード*/
             const btnColorPicker = document.getElementById('btn-color-picker-id');
             if (btnColorPicker) {
                 btnColorPicker.addEventListener('click', () => {
@@ -27,7 +27,7 @@
                 });
             }
 
-        //検索&置換ボタン
+        // showScreenなどボタン　検索&置換
             const btnFindReplace = document.getElementById('btn-find-replace-id');
             if (btnFindReplace) {
                 btnFindReplace.addEventListener('click', () => {
@@ -46,10 +46,17 @@
                 if (typeof resetAll === 'function') resetAll();
                 });
             }
-            const btnCopy = document.getElementById('btn-copy');
+            const btnCopy = document.getElementById('btn-FnR-copy');
             if (btnCopy) {
                 btnCopy.addEventListener('click', () => {
                 if (typeof copyResult === 'function') copyResult();
+                });
+            };
+            //showScreen　コードテンプレート倉庫
+            const templateStorage = document.getElementById('btn-template-storage-id');
+            if (templateStorage) {
+                templateStorage.addEventListener('click', () => {
+                    showScreen('template-storage');
                 });
             };
             
@@ -59,10 +66,11 @@
     //アプリを増設した際の追加項目２つ。１．したのconst・none・elseif・function　２．CSSでdisplay:none;を。
         function showScreen(screenName) {
             const menuScreen = document.getElementById('menu-screen');
-            const findReplaceScreen = document.getElementById('findReplace-screen');            const swapGameScreen = document.getElementById('swapGame-screen');
+            const findReplaceScreen = document.getElementById('findReplace-screen');           
             const colorPickerScreen = document.getElementById('color-picker-screen');
+            const templateStorageScreen = document.getElementById('template-storage-screen');
     // 全ての画面を隠す
-            const screens = [menuScreen, findReplaceScreen, colorPickerScreen];
+            const screens = [menuScreen, findReplaceScreen, colorPickerScreen, templateStorageScreen];
             screens.forEach(screen => {
                 if (screen) screen.style.display = 'none';
             });
@@ -72,18 +80,22 @@
                 document.activeElement.blur();
             }else if (screenName === 'color-picker') {
                 colorPickerScreen.style.display = 'flex';
+            }else if (screenName === 'template-storage') {
+                templateStorageScreen.style.display = 'flex';
             }
         }
         function goToMenu() {
             document.getElementById('menu-screen').style.display = 'flex';
             document.getElementById('findReplace-screen').style.display = 'none';
             document.getElementById('color-picker-screen').style.display = 'none';
+            document.getElementById('template-storage-screen').style.display = 'none';
+
         }
-    // --- 検索&置換 ---
+    // --- 🔍検索&置換 ---
         function doReplace() {
             const findText = document.getElementById('find').value;
             const replaceText = document.getElementById('replace').value;
-            const text = document.getElementById('text').value;
+            const text = document.getElementById('yourtext').value;
             const errorMsg = document.getElementById('error-msg');
             const resultBox = document.getElementById('result');
             if (!findText) {
@@ -92,14 +104,15 @@
             }
             errorMsg.style.display = 'none';
             // 検索機能のバグ防止。特殊文字を「エスケープ（文字として扱うように）」して、検索機能を安定。DoS 攻撃の防止などに間接的に役立つ。
-            const escapedFind = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');               const regex = new RegExp(escapedFind, 'g');
+            const escapedFind = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');               
+            const regex = new RegExp(escapedFind, 'g');
             const newText = text.replace(regex, replaceText);
             resultBox.textContent = newText;
         }
         function resetAll() {
             document.getElementById('find').value = '';
             document.getElementById('replace').value = '';
-            document.getElementById('text').value = '';
+            document.getElementById('yourtext').value = '';
             document.getElementById('result').textContent = 'ここに結果が表示されます';
             document.getElementById('error-msg').style.display = 'none';
         }
@@ -107,7 +120,7 @@
             const resultText = document.getElementById('result').textContent;
             navigator.clipboard.writeText(resultText).then(() => {
                 // 一時的なフィードバック（アラートはユーザー体験を妨げる場合があるので、今回は省略または簡易表示）
-                const btn = document.getElementById('btn-copy');
+                const btn = document.getElementById('btn-FnR-copy');
                 const originalText = btn.textContent;
                 btn.textContent = 'コピー完了！';
                 btn.style.background = '#050';
@@ -121,7 +134,7 @@
             });
         }
 
-    /* カラーピッカー色見本＆ダウンロード */
+    /* 🎨カラーピッカー色見本＆ダウンロード */
             const input = document.getElementById('colorInput');
             const preview = document.getElementById('preview');
             const errorMsg = document.getElementById('errorMsg');
@@ -139,7 +152,7 @@
 
             let currentHex = 'D17A00'; // 現在の有効な色（初期値）
 
-    // --- 画像生成・ダウンロード機能 ---
+        // --- 画像生成・ダウンロード機能 ---
         function generateImage() {
             const color = colorPicker.value;
             const width = parseInt(widthInput.value) || 1000;
@@ -221,7 +234,7 @@
             generateImage(); // 画像も更新
         }
 
-    // --- ローカルストレージ機能 ---
+        // --- ローカルストレージ機能 ---
         function loadSavedColors() {
             const saved = JSON.parse(localStorage.getItem('myColors') || '[]');
             savedList.innerHTML = '';
@@ -308,3 +321,171 @@
         // --- 初期化 ---
         loadSavedColors();
         updateColor(); // 初期色設定と画像生成
+    
+    /* コードテンプレート */
+    // データ管理
+    let templates = JSON.parse(localStorage.getItem('myTemplates')) || [];
+    
+    // DOM 要素
+    const titleInput = document.getElementById('title');
+    const codeInput = document.getElementById('code');
+    const addBtn = document.getElementById('add-template');
+    
+    const listSection = document.getElementById('list-section');
+    const templateList = document.getElementById('template-list');
+    const deleteSelectedBtn = document.getElementById('delete-selected-btn');
+    const emptyMsg = document.getElementById('empty-msg');
+    
+    const displayArea = document.getElementById('code-display-area');
+    const displayTitle = document.getElementById('display-title');
+    const codeText = document.getElementById('code-text');
+    const copyBtn = document.getElementById('ct-copy-btn-id');
+    const closeDisplayBtn = document.getElementById('close-display');
+    
+    const telling = document.getElementById('telling-id');
+
+    // 初期化
+    renderList();
+
+    // テンプレート追加機能
+    addBtn.addEventListener('click', () => {
+        const t = titleInput.value.trim();
+        const c = codeInput.value.trim();
+
+        if (t && c) {
+            templates.push({ title: t, code: c, id: Date.now() });
+            localStorage.setItem('myTemplates', JSON.stringify(templates));
+            
+            titleInput.value = '';
+            codeInput.value = '';
+            
+            renderList();
+        } else {
+            alert('タイトルとコードを入力してください！');
+        }
+    });
+
+    // 削除ボタンの状態更新
+    function updateDeleteButtonState() {
+        const checkboxes = document.querySelectorAll('.template-item input[type="checkbox"]:checked');
+        deleteSelectedBtn.disabled = checkboxes.length === 0;
+    }
+
+    // リスト描画関数
+    function renderList() {
+        templateList.innerHTML = '';
+        
+        if (templates.length === 0) {
+            templateList.style.display = 'none';
+            emptyMsg.style.display = 'block';
+            deleteSelectedBtn.disabled = true;
+            return;
+        }
+
+        templateList.style.display = 'block';
+        emptyMsg.style.display = 'none';
+
+        templates.forEach((item) => {
+            const li = document.createElement('li');
+            li.className = 'template-item';
+            
+            // チェックボックス
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.dataset.id = item.id;
+            checkbox.addEventListener('change', updateDeleteButtonState);
+
+            // コンテンツ（クリックで表示）
+            const content = document.createElement('div');
+            content.className = 'template-content';
+            content.innerHTML = `
+                <span class="template-title">${escapeHtml(item.title)}</span>
+                <span class="template-preview">${escapeHtml(item.code.substring(0, 40))}...</span>
+            `;
+            
+            // クリックイベント（コード表示）
+            content.addEventListener('click', () => {
+                showCode(item.title, item.code);
+            });
+
+            // 個別削除ボタン
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-single-btn';
+            delBtn.innerHTML = '🗑️';
+            delBtn.title = 'この 1 つを削除';
+            delBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // コンテンツクリックを防止
+                if (confirm(`「${item.title}」を削除しますか？`)) {
+                    templates = templates.filter(t => t.id !== item.id);
+                    localStorage.setItem('myTemplates', JSON.stringify(templates));
+                    renderList();
+                }
+            });
+
+            li.appendChild(checkbox);
+            li.appendChild(content);
+            li.appendChild(delBtn);
+            templateList.appendChild(li);
+        });
+
+        updateDeleteButtonState();
+    }
+
+    // 選択したものを一括削除
+    deleteSelectedBtn.addEventListener('click', () => {
+        const checkboxes = document.querySelectorAll('.template-item input[type="checkbox"]:checked');
+        if (checkboxes.length === 0) return;
+
+        if (!confirm(`${checkboxes.length}件のテンプレートを削除します。よろしいですか？`)) return;
+
+        const idsToDelete = Array.from(checkboxes).map(cb => parseInt(cb.dataset.id));
+        
+        templates = templates.filter(t => !idsToDelete.includes(t.id));
+        localStorage.setItem('myTemplates', JSON.stringify(templates));
+        
+        renderList();
+    });
+
+    // コード表示機能
+    function showCode(title, code) {
+        displayTitle.textContent = title;
+        codeText.textContent = code; // XSS 対策: textContent
+        displayArea.style.display = 'block';
+        displayArea.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 表示閉じる
+    closeDisplayBtn.addEventListener('click', () => {
+        displayArea.style.display = 'none';
+    });
+
+    // コピー機能
+    copyBtn.addEventListener('click', () => {
+        const text = codeText.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            showTelling();
+        }).catch(err => {
+            console.error('コピー失敗', err);
+            alert('コピーに失敗しました');
+        });
+    });
+
+    // トースト通知
+    function showTelling() {
+        telling.style.opacity = '1';
+        setTimeout(() => {
+            telling.style.opacity = '0';
+        }, 2000);
+    }
+
+    // XSS 対策用エスケープ関数
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
