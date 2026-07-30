@@ -28,9 +28,14 @@
 
 </head>
 <body>
-    <div class="stars"></div>
-
-    <!-- メニュー画面 -->
+    <div class="ocean">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+   <!-- メニュー画面 -->
     <div id="menu-screen">
         <h1 class="menu-title"><span class="moon">🌙メニュー</span></h1>
         
@@ -84,7 +89,7 @@
             <h1 class="h1class">色見本＆ダウンロード</h1>
         </div>
         <div class="color-container">
-            カラーピッカー
+            カラーピッカー タッチするとパレットが開くよ ↓
             <!-- ピッカー -->
             <input type="color" id="colorPicker" value="#ffffff">
             <!-- 色見本（プレビュー） -->
@@ -94,7 +99,7 @@
             <!-- 手入力エリア -->
             <div class="color-input-div">
                 <div class="input-wrapper">
-                    <input type="text" id="colorInput" placeholder="#FFFFFF" maxlength="6">
+                    <input type="text" id="colorInput" placeholder="#なし・６ケタの半角英数字(例:123abc)" maxlength="6">
                     <div class="error-msg" id="errorMsg">無効な文字があります</div>
                 </div>
             </div>
@@ -136,7 +141,7 @@
             </div>
     </div>
 
-    <!--コードテンプレート倉庫-->
+    <!--テンプレート倉庫-->
     <div id="template-storage-screen">
         <div class="app-header">
             <button class="goToMenu-btn">←🌙メニューへ</button>
@@ -147,6 +152,8 @@
             <div class="template-input-area">
                 <input type="text" id="title" placeholder="タイトル（例：絵文字に影をつける）">
                 <textarea id="code" placeholder="コード（HTML/CSSなど）"></textarea>
+                <p class="tate-msg">ひっぱると、たてに伸びるよ ↑</p>
+                <button id="ts-reset-input" class="allBtns-in-CTapp"> 上記をリセット</button>
                 <button id="add-template" class="allBtns-in-CTapp">テンプレート追加</button>
             </div>
             <!-- コード表示エリア -->
