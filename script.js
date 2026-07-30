@@ -4,47 +4,49 @@
 // screenId: 表示する画面の ID (画面要素の ID)
 // label: ボタンに付けるラベル (必要なら)
 
-    // 設定リストに基づき、各アプリボタンを自動登録
+// --- 1. 設定ファイル (ここだけいじれば追加可能) ---
 const appConfig = [
     { id: 'btn-find-replace-id', screenId: 'findReplace-screen', label: '検索・置換' },
     { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
     { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'コードテンプレート' },
-    { id: 'btn-reset', screenId: null, label: '全てリセット', action: 'resetAll' },
-    { id: 'btn-execute', screenId: null, label: '実行', action: 'doReplace' } // 実行ボタンも設定に追加
+    { id: 'btn-reset', screenId: null, action: 'resetAll', label: '全てリセット' },
+    { id: 'btn-execute', screenId: null, action: 'doReplace', label: '実行' }
 ];
 
-// 許可する画面 ID のホワイトリスト (XSS 対策)
-// 画面 ID と、メニュー画面を許可リストに含める
-const allowedScreens = new Set([
-    ...appConfig.map(app => app.screenId).filter(Boolean),
-    'menu-screen' // メニュー画面も許可
+// 許可されるアクション関数のリスト (セキュリティ用ホワイトリスト)
+const allowedActions = new Set([
+    'resetAll',
+    'doReplace',
+    'copyResult' // 後述で追加する場合はここに追記
 ]);
 
-// --- 2. 共通処理関数 ---
+// 許可される画面ID (XSS対策)
+const allowedScreens = new Set([
+    ...appConfig.map(c => c.screenId).filter(Boolean),
+    'menu-screen'
+]);
+
+// --- 2. 共通処理関数 (セキュリティ強化版) ---
 
 function showScreen(screenName) {
-    // XSS 対策：許可された画面 ID かどうか確認
     if (!allowedScreens.has(screenName)) {
-        console.warn(`Unauthorized screen access blocked: ${screenName}`);
+        console.warn(`[Security] Unauthorized screen access blocked: ${screenName}`);
         return;
     }
 
-    // 全ての画面を隠す（許可リストにあるものだけ）
-    const allScreens = [...allowedScreens];
-    
-    allScreens.forEach(id => {
+    // 全ての画面を隠す
+    allowedScreens.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
 
-    // 指定された画面を表示
-    const targetScreen = document.getElementById(screenName);
-    if (targetScreen) {
-        targetScreen.style.display = 'flex'; 
-        
-        // 入力フォーカスを外す (モバイルのキーボード対策)
+    // 指定画面を表示
+    const target = document.getElementById(screenName);
+    if (target) {
+        target.style.display = 'flex';
+        // フォーカス処理
         if (screenName === 'findReplace-screen') {
-            document.activeElement.blur();
+            document.activeElement?.blur();
         }
     }
 }
@@ -53,44 +55,42 @@ function goToMenu() {
     showScreen('menu-screen');
 }
 
-// --- 3. 自動イベント登録 (ここだけ！古いコードは削除) ---
+// --- 3. 自動イベント登録 (最適化版) ---
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. 「🌙メニューに戻る」ボタンの一括登録
+    // A. 共通メニューボタン (既存機能)
     document.querySelectorAll('.goToMenu-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (typeof goToMenu === 'function') goToMenu();
-        });
+        btn.addEventListener('click', goToMenu);
     });
 
-    // 2. copyResult ボタン (特殊処理)
+    // B. 特殊ボタン（copyResult）は明示的に登録
     const btnCopy = document.getElementById('btn-FnR-copy');
-    if (btnCopy) {
-        btnCopy.addEventListener('click', () => {
-            if (typeof copyResult === 'function') copyResult();
-        });
+    if (btnCopy && typeof copyResult === 'function') {
+        btnCopy.addEventListener('click', copyResult);
     }
 
-    // 3. 設定リスト (appConfig) に基づく自動登録
+    // C. 設定ベースの自動登録 (ここがメイン)
     appConfig.forEach(config => {
         const btn = document.getElementById(config.id);
         if (!btn) return;
 
         btn.addEventListener('click', () => {
-            // アクション関数がある場合 (例: リセット、実行)
-            if (config.action && typeof window[config.action] === 'function') {
-                window[config.action]();
-                return;
+            // ① アクション実行 (セキュリティチェック付き)
+            if (config.action && allowedActions.has(config.action)) {
+                const func = window[config.action];
+                if (typeof func === 'function') {
+                    func();
+                    return;
+                }
             }
 
-            // 画面切り替えの場合
+            // ② 画面遷移
             if (config.screenId) {
                 showScreen(config.screenId);
             }
         });
     });
-});        
-
+});
             
 
             
