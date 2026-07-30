@@ -1,96 +1,100 @@
 
-        //XSS対策
-            document.addEventListener('DOMContentLoaded', () => {
-        // 「🌙メニューに戻る」ボタンの一括登録
-            const menuButtons = document.querySelectorAll('.goToMenu-btn');
-            menuButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                // 共通の処理 (goToMenu 関数など)
-                if (typeof goToMenu === 'function') {
-                    goToMenu();
-                }
-                });
-            });
-            const btnCopy = document.getElementById('btn-FnR-copy');
-            if (btnCopy) {
-                btnCopy.addEventListener('click', () => {
-                if (typeof copyResult === 'function') copyResult();
-                });
-            }
-            });
+// --- 1. アプリ設定リスト (ここだけを編集する) ---
+// id: ボタンの ID
+// screenId: 表示する画面の ID (画面要素の ID)
+// label: ボタンに付けるラベル (必要なら)
+
+    // 設定リストに基づき、各アプリボタンを自動登録
+// --- 1. アプリ設定リスト (ここだけ編集！) ---
+const appConfig = [
+    { id: 'btn-find-replace-id', screenId: 'findReplace-screen', label: '検索・置換' },
+    { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
+    { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'コードテンプレート' },
+    { id: 'btn-reset-id', screenId: null, label: '全てリセット', action: 'resetAll' },
+    { id: 'btn-execute', screenId: null, label: '実行', action: 'doReplace' } // 実行ボタンも設定に追加
+];
+
+// 許可する画面 ID のホワイトリスト (XSS 対策)
+// 画面 ID と、メニュー画面を許可リストに含める
+const allowedScreens = new Set([
+    ...appConfig.map(app => app.screenId).filter(Boolean),
+    'menu-screen' // メニュー画面も許可
+]);
+
+// --- 2. 共通処理関数 ---
+
+function showScreen(screenName) {
+    // XSS 対策：許可された画面 ID かどうか確認
+    if (!allowedScreens.has(screenName)) {
+        console.warn(`Unauthorized screen access blocked: ${screenName}`);
+        return;
+    }
+
+    // 全ての画面を隠す（許可リストにあるものだけ）
+    const allScreens = [...allowedScreens];
+    
+    allScreens.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+
+    // 指定された画面を表示
+    const targetScreen = document.getElementById(screenName);
+    if (targetScreen) {
+        targetScreen.style.display = 'flex'; 
         
-        /* showScreen　カラーピッカー色見本＆ダウンロード*/
-            const btnColorPicker = document.getElementById('btn-color-picker-id');
-            if (btnColorPicker) {
-                btnColorPicker.addEventListener('click', () => {
-                showScreen('color-picker');
-                });
+        // 入力フォーカスを外す (モバイルのキーボード対策)
+        if (screenName === 'findReplace-screen') {
+            document.activeElement.blur();
+        }
+    }
+}
+
+function goToMenu() {
+    showScreen('menu-screen');
+}
+
+// --- 3. 自動イベント登録 (ここだけ！古いコードは削除) ---
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. 「🌙メニューに戻る」ボタンの一括登録
+    document.querySelectorAll('.goToMenu-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (typeof goToMenu === 'function') goToMenu();
+        });
+    });
+
+    // 2. copyResult ボタン (特殊処理)
+    const btnCopy = document.getElementById('btn-FnR-copy');
+    if (btnCopy) {
+        btnCopy.addEventListener('click', () => {
+            if (typeof copyResult === 'function') copyResult();
+        });
+    }
+
+    // 3. 設定リスト (appConfig) に基づく自動登録
+    appConfig.forEach(config => {
+        const btn = document.getElementById(config.id);
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+            // アクション関数がある場合 (例: リセット、実行)
+            if (config.action && typeof window[config.action] === 'function') {
+                window[config.action]();
+                return;
             }
 
-        // showScreenなどボタン　検索&置換
-            const btnFindReplace = document.getElementById('btn-find-replace-id');
-            if (btnFindReplace) {
-                btnFindReplace.addEventListener('click', () => {
-                showScreen('find-replace');
-                });
+            // 画面切り替えの場合
+            if (config.screenId) {
+                showScreen(config.screenId);
             }
-            const btnExecute = document.getElementById('btn-execute');
-            if (btnExecute) {
-                btnExecute.addEventListener('click', () => {
-                if (typeof doReplace === 'function') doReplace();
-                });
-            }
-            const btnReset = document.getElementById('btn-reset');
-            if (btnReset) {
-                btnReset.addEventListener('click', () => {
-                if (typeof resetAll === 'function') resetAll();
-                });
-            }
-            const btnCopy = document.getElementById('btn-FnR-copy');
-            if (btnCopy) {
-                btnCopy.addEventListener('click', () => {
-                if (typeof copyResult === 'function') copyResult();
-                });
-            };
-            //showScreen　コードテンプレート倉庫
-            const templateStorage = document.getElementById('btn-template-storage-id');
-            if (templateStorage) {
-                templateStorage.addEventListener('click', () => {
-                    showScreen('template-storage');
-                });
-            };
+        });
+    });
+});        
+
             
 
             
-    // --- showScreen メニューの内外へ ---
-    //アプリを増設した際の追加項目２つ。１．したのconst・none・elseif・function　２．CSSでdisplay:none;を。
-        function showScreen(screenName) {
-            const menuScreen = document.getElementById('menu-screen');
-            const findReplaceScreen = document.getElementById('findReplace-screen');           
-            const colorPickerScreen = document.getElementById('color-picker-screen');
-            const templateStorageScreen = document.getElementById('template-storage-screen');
-    // 全ての画面を隠す
-            const screens = [menuScreen, findReplaceScreen, colorPickerScreen, templateStorageScreen];
-            screens.forEach(screen => {
-                if (screen) screen.style.display = 'none';
-            });
-            if (screenName === 'find-replace') {
-                findReplaceScreen.style.display = 'flex';
-        // 入力欄のフォーカスを外す（キーボードを閉じるため）
-                document.activeElement.blur();
-            }else if (screenName === 'color-picker') {
-                colorPickerScreen.style.display = 'flex';
-            }else if (screenName === 'template-storage') {
-                templateStorageScreen.style.display = 'flex';
-            }
-        }
-        function goToMenu() {
-            document.getElementById('menu-screen').style.display = 'flex';
-            document.getElementById('findReplace-screen').style.display = 'none';
-            document.getElementById('color-picker-screen').style.display = 'none';
-            document.getElementById('template-storage-screen').style.display = 'none';
-
-        }
     // --- 🔍検索&置換 ---
         function doReplace() {
             const findText = document.getElementById('find').value;
