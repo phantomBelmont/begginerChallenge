@@ -1,16 +1,15 @@
 
-// --- 1. アプリ設定リスト (ここだけを編集する) ---
+// --- 1. アプリ設定リスト (ここだけを編集!) ---
 // id: ボタンの ID
 // screenId: 表示する画面の ID (画面要素の ID)
 // label: ボタンに付けるラベル (必要なら)
 
     // 設定リストに基づき、各アプリボタンを自動登録
-// --- 1. アプリ設定リスト (ここだけ編集！) ---
 const appConfig = [
     { id: 'btn-find-replace-id', screenId: 'findReplace-screen', label: '検索・置換' },
     { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
     { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'コードテンプレート' },
-    { id: 'btn-reset-id', screenId: null, label: '全てリセット', action: 'resetAll' },
+    { id: 'btn-reset', screenId: null, label: '全てリセット', action: 'resetAll' },
     { id: 'btn-execute', screenId: null, label: '実行', action: 'doReplace' } // 実行ボタンも設定に追加
 ];
 
