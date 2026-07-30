@@ -497,7 +497,7 @@
             color: var(--error-color);
         }
 
-    /* コードテンプレート倉庫 */
+    /* テンプレート倉庫 */
         #template-storage-screen {
             display: none;
             flex-direction: column;
@@ -509,7 +509,7 @@
         }
 
         .template-container {
-            background-color: #000;
+            background-color: transparent;
             color: #ddd;
             max-width: 800px;
             margin: 0 auto;
@@ -518,18 +518,18 @@
 
         /* 入力エリア */
         .template-input-area {
-            background: #555;
+            background: transparent;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
         .template-input-area input, .template-input-area textarea {
-            background: #777;
+            background: #999;
+            text-align:left;
             padding: 10px;
             border: 1px solid var(--border);
             border-radius: 4px;
@@ -543,40 +543,47 @@
             font-family: monospace;
             resize: vertical;
         }
-
+        .tate-msg{
+            align-self: flex-end;
+            font-size: 0.8rem;
+        }
+        #ts-reset-input{
+            width: auto;
+            background-color: #550000;
+            color: #ddd;
+            align-self: flex-end;
+        }
         #add-template {
-            background-color: #770000;
-            color: white;
+            background-color: #077;
+            color: #ddd;
             align-self: flex-end;
         }
 
         /* リストエリア */
         .list-section {
-            background: #000;
-            padding: 20px;
+            background: transparent;
+            padding: 5px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
         }
 
         .list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
         }
 
         .delete-selected-btn {
             background-color: #995500;
-            color: white;
-            padding: 8px 15px;
+            color: #aaa;
             font-size: 0.9rem;
+            margin-left:5px;
         }
 
         .delete-selected-btn:disabled {
-            background-color: #007777;
+            background-color: #770000;
             cursor: not-allowed;
         }
 
@@ -610,12 +617,13 @@
             cursor: pointer;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items:center;
         }
 
         .template-title {
             font-weight: bold;
-            color: #D17A00;
+            color: #ddd;
+            text-align: left;
         }
 
         .template-preview {
@@ -641,11 +649,11 @@
         /* コード表示モーダル（簡易） */
         #code-display-area {
             display: none;
-            background: #333;
-            padding: 20px;
+            background: rgba(0,0,0,0.7);
+            font-size: 1.5rem;
+            padding: 0px 20px 20px 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             position: relative;
         }
 
@@ -718,3 +726,53 @@
             z-index: 1000;
             pointer-events: none;
         }
+
+        /* 海背景のコンテナ */
+.ocean {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* 手前のコンテンツの下に配置 */
+        background: linear-gradient(to bottom, #001f3f 0%, #003366 40%, #001a33 100%);
+    /* より深みを出したい場合は下のグラデーションを参考に */
+    /* background: linear-gradient(to bottom, #006994 0%, #003366 100%); */
+    overflow: hidden;
+}
+
+/* 泡のスタイル */
+.bubble {
+    position: absolute;
+    bottom: -50px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    animation: rise 10s infinite ease-in;
+}
+
+/* 泡のサイズと位置をランダムに設定（CSS変数で制御可能ですが、ここでは固定値で例示） */
+.bubble:nth-child(1) { width: 40px; height: 40px; left: 10%; animation-duration: 8s; animation-delay: 0s; }
+.bubble:nth-child(2) { width: 20px; height: 20px; left: 20%; animation-duration: 5s; animation-delay: 2s; }
+.bubble:nth-child(3) { width: 50px; height: 50px; left: 35%; animation-duration: 10s; animation-delay: 4s; }
+.bubble:nth-child(4) { width: 80px; height: 80px; left: 50%; animation-duration: 12s; animation-delay: 0s; }
+.bubble:nth-child(5) { width: 35px; height: 35px; left: 55%; animation-duration: 6s; animation-delay: 3s; }
+.bubble:nth-child(6) { width: 45px; height: 45px; left: 65%; animation-duration: 9s; animation-delay: 5s; }
+.bubble:nth-child(7) { width: 90px; height: 90px; left: 70%; animation-duration: 11s; animation-delay: 2s; }
+.bubble:nth-child(8) { width: 25px; height: 25px; left: 80%; animation-duration: 7s; animation-delay: 1s; }
+
+/* 泡が上に浮くアニメーション */
+@keyframes rise {
+    0% {
+        bottom: -50px;
+        transform: translateX(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        bottom: 110%; /* 画面外まで浮く */
+        transform: translateX(-50px); /* 少し横に揺れる */
+        opacity: 0;
+    }
+}
