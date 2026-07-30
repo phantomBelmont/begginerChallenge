@@ -10,14 +10,17 @@ const appConfig = [
     { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
     { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'コードテンプレート' },
     { id: 'btn-reset', screenId: null, action: 'resetAll', label: '全てリセット' },
-    { id: 'btn-execute', screenId: null, action: 'doReplace', label: '実行' }
+    { id: 'btn-execute', screenId: null, action: 'doReplace', label: '実行' },
+    { id: 'ts-reset-input', screenId: null, action: 'tsReset', label: '↑リセット' }
+
 ];
 
 // 許可されるアクション関数のリスト (セキュリティ用ホワイトリスト)
 const allowedActions = new Set([
     'resetAll',
     'doReplace',
-    'copyResult' // 後述で追加する場合はここに追記
+    'copyResult',
+    'tsReset'
 ]);
 
 // 許可される画面ID (XSS対策)
@@ -153,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const ctx = canvas.getContext('2d');
             const downloadBtn = document.getElementById('downloadBtn');
 
-            let currentHex = 'D17A00'; // 現在の有効な色（初期値）
+            let currentHex = '777'; // 🌟カラーピッカーの初期値
 
         // --- 画像生成・ダウンロード機能 ---
         function generateImage() {
@@ -367,7 +370,13 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('タイトルとコードを入力してください！');
         }
     });
-
+    
+    //インプットのリセット
+    function tsReset() {
+        document.getElementById('title').value = '';
+        document.getElementById('code').value = '';
+    }
+    
     // 削除ボタンの状態更新
     function updateDeleteButtonState() {
         const checkboxes = document.querySelectorAll('.template-item input[type="checkbox"]:checked');
