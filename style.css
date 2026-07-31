@@ -560,9 +560,8 @@
         /* リストエリア */
         .list-section {
             background: transparent;
-            padding: 5px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            align-self: flex-start;
         }
 
         .list-header {
@@ -574,14 +573,14 @@
         }
 
         .delete-selected-btn {
-            background-color: #995500;
-            color: #aaa;
+            background-color: #700;
+            color: #ddd;
             font-size: 0.9rem;
-            margin-left:5px;
+            margin-top: 15px;
         }
 
         .delete-selected-btn:disabled {
-            background-color: #770000;
+            background-color: transparent;
             cursor: not-allowed;
         }
 
