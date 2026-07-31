@@ -8,10 +8,10 @@
 const appConfig = [
     { id: 'btn-find-replace-id', screenId: 'findReplace-screen', label: '検索・置換' },
     { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
-    { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'コードテンプレート' },
+    { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'テンプレート倉庫' },
     { id: 'btn-reset', screenId: null, action: 'resetAll', label: '全てリセット' },
     { id: 'btn-execute', screenId: null, action: 'doReplace', label: '実行' },
-    { id: 'ts-reset-input', screenId: null, action: 'tsReset', label: '↑リセット' }
+    { id: 'ts-reset-input', screenId: null, action: 'tsReset', label: 'リセット' }
 
 ];
 
@@ -32,28 +32,53 @@ const allowedScreens = new Set([
 // --- 2. 共通処理関数 (セキュリティ強化版) ---
 
 function showScreen(screenName) {
+    // 1. 空白を削除して正規化
+    screenName = screenName.trim();
+    
+    // 2. セキュリティチェック（許可された画面か確認）
     if (!allowedScreens.has(screenName)) {
         console.warn(`[Security] Unauthorized screen access blocked: ${screenName}`);
         return;
     }
+    
+    // 3. 背景の切り替え（Ocean と Stars）
+    const ocean = document.querySelector('.ocean');
+    const stars = document.querySelector('.stars');
 
-    // 全ての画面を隠す
+    if (screenName === 'menu-screen') {
+        if (ocean) ocean.style.display = 'block';
+        if (stars) stars.style.display = 'none';
+    } else {
+        if (ocean) ocean.style.display = 'none';
+        if (stars) stars.style.display = 'block';
+    }
+
+    // 4. 全ての画面を隠す
     allowedScreens.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
 
-    // 指定画面を表示
+    // 5. 指定された画面を取得して表示
     const target = document.getElementById(screenName);
+    
     if (target) {
+        // 画面が見つかった場合：表示
         target.style.display = 'flex';
-        // フォーカス処理
+        
+        // フォーカス処理（必要に応じて）
         if (screenName === 'findReplace-screen') {
             document.activeElement?.blur();
         }
+        
+        // 成功ログ（デバッグ用）
+        console.log(`[Success] Screen displayed: ${screenName}`);
+    } else {
+        // 画面が見つからなかった場合：エラーログ
+        console.error(`[Error] Screen not found: ${screenName}`);
+        console.error(`Allowed screens: ${Array.from(allowedScreens).join(', ')}`);
     }
 }
-
 function goToMenu() {
     showScreen('menu-screen');
 }
@@ -187,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             downloadBtn.textContent = "ダウンロード中...";
             setTimeout(() => {
                 downloadBtn.textContent = originalText;
-            }, 1500);
+            }, 2000);
         }
 
         // --- 色更新処理（手入力用） ---
