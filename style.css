@@ -1,778 +1,528 @@
 
-        *,*::before,::after{
-            box-sizing: border-box;
-        }
-        /* 全体のリセット */
-        html{
-            background-color: #000;
-            margin: 0;
-            padding: 0;
-            min-height: 100dvh;
-            width: 100%;
-        }
-        body{
-            min-height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            font-family: sans-serif;
-            background-color: transparent;
-            color: #fff;
-        }
-        .moon{
-            font-size: 1.7rem;
-            filter:drop-shadow(0 0 2px #333) drop-shadow(0 0 10px #ffdd00);
-            animation: glow 1s infinite alternate;
-            margin-bottom:60px;
-            }
-            @keyframes glow {
-            from { text-shadow: 0 0 1px #baa800; }
-            to { text-shadow: 0 0 3px #333, 0 0 2px #333; }
-            }
-        
-        .stars{
-            position: fixed;
-            height: 100%;
-            width: 100%;
-            top:0; left:0;
-            z-index: -1;
+// --- 1. アプリ設定リスト (ここだけを編集!) ---
+// id: ボタンの ID
+// screenId: 表示する画面の ID (画面要素の ID)
+// label: ボタンに付けるラベル (必要なら)
 
-            background-size: 200px 200px;
-            background-image: radial-gradient(2px 2px at 50px 50px, orange, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 20px 20px, rgb(3, 238, 3), rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 10px 30px, pink, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 150px 120px, aqua, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 120px 150px, white, rgba(0,0,0,0));
-            background-repeat: repeat;
+// --- 1. 設定ファイル (ここだけいじれば追加可能) ---
+const appConfig = [
+    { id: 'btn-find-replace-id', screenId: 'findReplace-screen', label: '検索・置換' },
+    { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
+    { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'テンプレート倉庫' },
+    { id: 'btn-reset', screenId: null, action: 'resetAll', label: '全てリセット' },
+    { id: 'btn-execute', screenId: null, action: 'doReplace', label: '実行' },
+    { id: 'ts-reset-input', screenId: null, action: 'tsReset', label: 'リセット' }
 
-            animation: moveDiagonal 5s ease-in-out infinite, twinkle 2s ease-in-out infinite;
-            will-change:opacity;
-        }
-            @keyframes moveDiagonal{
-                from{background-position: 0 0;}
-                to{background-position: 200px 200px;}
-            }
-            @keyframes twinkle{
-                0%,100%{opacity:1;} 50%{opacity: 0.2;}
-            }
-    /* --- メニュー画面 --- */
-        #menu-screen {
-            display: flex; /* アプリ起動時に表示 */
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-            padding: 40px 20px;
-            box-sizing: border-box;
-            /* スクロールバーの見た目 */
-            scrollbar-width: thin;
-            scrollbar-color: #555 #222;
-        }
-        .menu-title {
-            font-size: 1.8rem;
-            margin-bottom: 40px;
-            color: #fff;
-            text-align: center;
-        }
-        .menu-btn {
-            width: 100%;
-            max-width: 320px;
-            padding: 18px;
-            margin: 12px 0;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
-            background: linear-gradient(to right bottom, #070 0%,#000 50%, #070 100%);
-            color: #ddd;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            text-align: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .menu-btn:active {
-            transform: scale(0.98);
-            background: #444;
-        }
-        .menu-btn span {
-            pointer-events: none; /* 文字選択時の干渉防止 */
-        }
-    /* --- 検索＆置換 --- */
-        #findReplace-screen {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            /* ↓ スクロール禁止にするなら、ここをhidden */
-            overflow-y: auto; 
-            background: transparent;
-        }
-        h1 {
-            font-size: 1.2rem;
-            text-align: center;
-            margin: 5px 0;
-            flex-shrink: 0;
-        }
-        .find-or-replace-input {
-            margin: 2px 10px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 4px;
-            width: 100%;
-        }
-        label {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #aaa;
-            flex-shrink: 0;
-        }
-        input {
-            flex-grow: 1;
-            flex-basis: 0
-            ;
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 15px;
-            background: #aaa;
-            flex-shrink: 0;
-            color: #000;
-        }
-        .group-o-inputgroups{
-            display: flex;
-        }
-        .textinputDiv {
-            padding: 0;
-            box-sizing: border-box;
-            border-radius: 4px;
-            font-size: 15px;
-            background: #111;
-            display: flex;
-            flex-grow: 1; /* 残りの高さを全て占有 */
-            min-height: 0; /* Flexboxのオーバーフロー対策 */
-            margin: 2px 10px;
-            flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
-            /* 　↓　テキストエリアはスクロールできるが、画面全体はしない*/
-            overflow: hidden; 
-        }
-        #yourtext {
-            background: #aaa;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            border-radius: 4px;
-            padding: 8px;
-            color: #000;
-            border: none;
-            resize: none;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            overflow-y: auto; 
-            min-height: 80px;
-            max-height: 200px;
-        }
-        .replace-reset-btns {
-            padding: 5px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-        .all-main-btns {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 15px;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
-        }
-        #btn-execute { background: #007; }
-        #btn-reset { background: #700; font-size: 13px; padding: 8px; }
-        #btn-FnR-copy { background: #070; }
-        /* エラー表示 */
-        #error-msg {
-            color: red;
-            font-size: 0.8rem;
-            text-align: center;
-            margin: 0 10px 4px;
-            display: none;
-            flex-shrink: 0;
-        }
-        .FnR-result-area {
-            flex-grow: 1; 
-            padding: 5px 10px;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            gap: 4px;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-        .FnR-result-box {
-            flex-grow: 1;
-            border: 1px solid #ccc;
-            background: #aaa;
-            padding: 8px;
-            overflow-y: auto; /* 結果が多い場合はここだけでスクロール */
-            max-height: 150px;
-            white-space: pre-wrap;
-            word-break: break-all;
-            font-size: 14px;
-            border-radius: 4px;
-            color: #000;
-            min-height: 0; /* Flexbox対策 */
-        }
+];
+
+// 許可されるアクション関数のリスト (セキュリティ用ホワイトリスト)
+const allowedActions = new Set([
+    'resetAll',
+    'doReplace',
+    'copyResult',
+    'tsReset'
+]);
+
+// 許可される画面ID (XSS対策)
+const allowedScreens = new Set([
+    ...appConfig.map(c => c.screenId).filter(Boolean),
+    'menu-screen'
+]);
+
+// --- 2. 共通処理関数 (セキュリティ強化版) ---
+
+function showScreen(screenName) {
+    // 1. 空白を削除して正規化
+    screenName = screenName.trim();
     
-        /* ヘッダーの「🌙メニューへ」ボタン */
-        .app-header {
-            display: flex;
-            align-items: center;
-            padding: 8px 10px;
-            background: #222;
-            flex-shrink: 0;
-        }
-        .h1class{
-            margin:0;
-            text-align:left; 
-            flex-grow:1;
-        }
-        .goToMenu-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            margin-right: 10px;
-            padding: 5px;
-        }
+    // 2. セキュリティチェック（許可された画面か確認）
+    if (!allowedScreens.has(screenName)) {
+        console.warn(`[Security] Unauthorized screen access blocked: ${screenName}`);
+        return;
+    }
+    
+    // 3. 背景の切り替え（Ocean と Stars）
+    const ocean = document.querySelector('.ocean');
+    const stars = document.querySelector('.stars');
 
-        /* カラーピッカー色見本＆ダウンロード */
-        :root {
-            --bg-color: transparent;
-            --card-bg: transparent;
-            --text-color: #ddd;
-            --accent-color: #5500ff;
-            --error-color: #ff7675;
-            --download-color: #070;
+    if (screenName === 'menu-screen') {
+        if (ocean) ocean.style.display = 'block';
+        if (stars) stars.style.display = 'none';
+    } else {
+        if (ocean) ocean.style.display = 'none';
+        if (stars) stars.style.display = 'block';
+    }
+
+    // 4. 全ての画面を隠す
+    allowedScreens.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+
+    // 5. 指定された画面を取得して表示
+    const target = document.getElementById(screenName);
+    
+    if (target) {
+        // 画面が見つかった場合：表示
+        target.style.display = 'flex';
+        
+        // フォーカス処理（必要に応じて）
+        if (screenName === 'findReplace-screen') {
+            document.activeElement?.blur();
         }
-    /*カラーピッカー色見本＆ダウンロード*/
-        #color-picker-screen{
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: none;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            width: 100%;
-        }
-        .color-container {
-            display: flex;
-            flex-direction: column;
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-        #colorPicker{
-            max-width: 100%;
-            max-height: 100px;
-            min-height: 200px;
-            border-radius: 8px;
-            background-color: transparent;
-        }
-        /* プレビューエリア */
-        .preview-box {
-            display: none;
-        }
-        /* キャンバス（ダウンロード用プレビュー） */
-        #myCanvas {
-            display: none; /* 最初は非表示、JSで制御 */
-        }
-        /* 入力エリア */
-        .color-input-div {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            align-items: center;
+        
+        // 成功ログ（デバッグ用）
+        console.log(`[Success] Screen displayed: ${screenName}`);
+    } else {
+        // 画面が見つからなかった場合：エラーログ
+        console.error(`[Error] Screen not found: ${screenName}`);
+        console.error(`Allowed screens: ${Array.from(allowedScreens).join(', ')}`);
+    }
+}
+function goToMenu() {
+    showScreen('menu-screen');
+}
+
+// --- 3. 自動イベント登録 (最適化版) ---
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // A. 共通メニューボタン (既存機能)
+    document.querySelectorAll('.goToMenu-btn').forEach(btn => {
+        btn.addEventListener('click', goToMenu);
+    });
+
+    // B. 特殊ボタン（copyResult）は明示的に登録
+    const btnCopy = document.getElementById('btn-FnR-copy');
+    if (btnCopy && typeof copyResult === 'function') {
+        btnCopy.addEventListener('click', copyResult);
+    }
+
+    // C. 設定ベースの自動登録 (ここがメイン)
+    appConfig.forEach(config => {
+        const btn = document.getElementById(config.id);
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+            // ① アクション実行 (セキュリティチェック付き)
+            if (config.action && allowedActions.has(config.action)) {
+                const func = window[config.action];
+                if (typeof func === 'function') {
+                    func();
+                    return;
+                }
+            }
+
+            // ② 画面遷移
+            if (config.screenId) {
+                showScreen(config.screenId);
+            }
+        });
+    });
+});
             
+
+            
+    // --- 🔍検索&置換 ---
+        function doReplace() {
+            const findText = document.getElementById('find').value;
+            const replaceText = document.getElementById('replace').value;
+            const text = document.getElementById('yourtext').value;
+            const errorMsg = document.getElementById('error-msg');
+            const resultBox = document.getElementById('result');
+            if (!findText) {
+                errorMsg.style.display = 'block';
+                return;
+            }
+            errorMsg.style.display = 'none';
+            // 検索機能のバグ防止。特殊文字を「エスケープ（文字として扱うように）」して、検索機能を安定。DoS 攻撃の防止などに間接的に役立つ。
+            const escapedFind = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');               
+            const regex = new RegExp(escapedFind, 'g');
+            const newText = text.replace(regex, replaceText);
+            resultBox.textContent = newText;
         }
-        .input-wrapper {
-            flex: 1;
-            position: relative;
+        function resetAll() {
+            document.getElementById('find').value = '';
+            document.getElementById('replace').value = '';
+            document.getElementById('yourtext').value = '';
+            document.getElementById('result').textContent = 'ここに結果が表示されます';
+            document.getElementById('error-msg').style.display = 'none';
         }
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-family: monospace;
-            border: 2px solid #007;
-            border-radius: 8px;
-            text-align: center;
-            text-transform: uppercase;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]:focus {
-            border-color: var(--accent-color);
-        }
-        /* エラーメッセージ */
-        .error-msg {
-            color: var(--error-color);
-            font-size: 0.8rem;
-            height: 1rem;
-            margin-top: -10px;
-            margin-bottom: 10px;
-            display: none;
-        }
-        /* RGB 表示 */
-        .rgb-display {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            background: transparent;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .rgb-item {
-            text-align: center;
-        }
-        .rgb-label {
-            font-size: 0.7rem;
-            color: #ddd;
-            display: block;
-        }
-        .rgb-val {
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        /* サイズ設定 */
-        .size-settings {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            justify-content: center;
-            background: #700;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .size-input {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-        }
-        .size-input label {
-            font-size: 0.7rem;
-            color: #ddd;
-            margin-bottom: 4px;
-        }
-        .size-input input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 0.9rem;
-            box-sizing: border-box;
-        }
-        /* ピッカー */
-        input[type="color"] {
-            border: none;
-            width: 100%;
-            height: 40px;
-            cursor: pointer;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0; 
-        }
-        input[type="color"]::-webkit-color-swatch {
-            border: none;
-            border-radius: 8px;
-        }
-        /* ボタン共通 */
-        .btn {
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-bottom: 10px;
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        /* 保存ボタン */
-        .save-btn {
-            background-color: var(--accent-color);
-            color: #ddd;
-        }
-        .save-btn:hover {
-            background-color: #5649c0;
-        }
-        .color-saved-msg{
-            font-size: 0.9rem; 
-            color: #555; 
-            margin: 15px 0 5px; 
-            text-align: left;
-        }
-        /* ダウンロードボタン */
-        .download-btn {
-            background-color: var(--download-color);
-            color: #ddd;
-        }
-        .download-btn:hover {
-            background-color: #005555;
-        }
-        /* 保存リスト */
-        .saved-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            max-height: 120px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 8px;
-        }
-        .saved-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 10px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.2sCapacitor
-        }
-        .saved-item:last-child {
-            border-bottom: none;
-        }
-        .saved-item:hover {
-            background-color: #f9f9f9;
-        }
-        .color-swatch {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            margin-right: 10px;
-            border: 1px solid #ddd;
-        }
-        .color-code {
-            flex: 1;
-            font-family: monospace;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0 5px;
-            line-height: 1;
-        }
-        .delete-btn:hover {
-            color: var(--error-color);
+        function copyResult() {
+            const resultText = document.getElementById('result').textContent;
+            navigator.clipboard.writeText(resultText).then(() => {
+                // 一時的なフィードバック（アラートはユーザー体験を妨げる場合があるので、今回は省略または簡易表示）
+                const btn = document.getElementById('btn-FnR-copy');
+                const originalText = btn.textContent;
+                btn.textContent = 'コピー完了！';
+                btn.style.background = '#050';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#070';
+                }, 1000);
+            }).catch(err => {
+                console.error('コピー失敗:', err);
+                alert('コピーに失敗しました');
+            });
         }
 
-    /* テンプレート倉庫 */
-        #template-storage-screen {
-            display: none;
-            flex-direction: column;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+    /* 🎨カラーピッカー色見本＆ダウンロード */
+            const input = document.getElementById('colorInput');
+            const preview = document.getElementById('preview');
+            const errorMsg = document.getElementById('errorMsg');
+            const rVal = document.getElementById('rVal');
+            const gVal = document.getElementById('gVal');
+            const bVal = document.getElementById('bVal');
+            const saveBtn = document.getElementById('saveBtn');
+            const savedList = document.getElementById('savedList');
+            const colorPicker = document.getElementById('colorPicker');
+            const widthInput = document.getElementById('width');
+            const heightInput = document.getElementById('height');
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            let currentHex = '777'; // 🌟カラーピッカーの初期値
+
+        // --- 画像生成・ダウンロード機能 ---
+        function generateImage() {
+            const color = colorPicker.value;
+            const width = parseInt(widthInput.value) || 1000;
+            const height = parseInt(heightInput.value) || 1000;
+            
+            // キャンバスのサイズを設定
+            canvas.width = width;
+            canvas.height = height;
+            
+            // 単色で塗りつぶす
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, width, height);
+            
+            // キャンバスを表示（プレビュー用）
+            canvas.style.display = 'block';
         }
 
-        .template-container {
-            background-color: transparent;
-            color: #ddd;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = `solid-color-${currentHex}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            // ボタンフィードバック
+            const originalText = downloadBtn.textContent;
+            downloadBtn.textContent = "ダウンロード中...";
+            setTimeout(() => {
+                downloadBtn.textContent = originalText;
+            }, 2000);
         }
 
-        /* 入力エリア */
-        .template-input-area {
-            background: transparent;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        // --- 色更新処理（手入力用） ---
+        function updateColor() {
+            let val = input.value.toUpperCase().replace(/[^0-9A-F]/g, ''); // 無効文字を自動削除
+                    
+        // 修正案：空文字の場合は現在の色を維持（または FF にリセット）
+        if (val === '') {
+            errorMsg.style.display = 'none';
+            // 現在の色（または初期の白）を維持
+            preview.style.backgroundColor = `#${currentHex}`; 
+            colorPicker.value = `#${currentHex}`;
+            
+            // RGB 表示も現在の色に合わせて更新
+            const r = parseInt(currentHex.substring(0, 2), 16);
+            const g = parseInt(currentHex.substring(2, 4), 16);
+            const b = parseInt(currentHex.substring(4, 6), 16);
+            rVal.textContent = r.toString(16).padStart(2, '0').toUpperCase();
+            gVal.textContent = g.toString(16).padStart(2, '0').toUpperCase();
+            bVal.textContent = b.toString(16).padStart(2, '0').toUpperCase();
+            
+            generateImage();
+            return;
+        }
+            // 0-9, A-F のみ許可（6桁以内）
+            if (!/^[0-9A-F]{1,6}$/.test(val)) {
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            errorMsg.style.display = 'none';
+
+            // 値が6桁になるまで0埋め
+            let paddedVal = val.padEnd(6, '0');
+            currentHex = paddedVal; // 現在の有効な色を更新
+            
+            // 色を適用
+            preview.style.backgroundColor = `#${paddedVal}`;
+            colorPicker.value = `#${paddedVal}`; // ピッカーも同期
+            
+            // 16進数を10進数に変換して表示（表示用）
+            const r = parseInt(paddedVal.substring(0, 2), 16);
+            const g = parseInt(paddedVal.substring(2, 4), 16);
+            const b = parseInt(paddedVal.substring(4, 6), 16);
+
+            rVal.textContent = r.toString(16).padStart(2, '0').toUpperCase();
+            gVal.textContent = g.toString(16).padStart(2, '0').toUpperCase();
+            bVal.textContent = b.toString(16).padStart(2, '0').toUpperCase();
+            
+            generateImage(); // 画像も更新
         }
 
-        .template-input-area input, .template-input-area textarea {
-            background: #999;
-            text-align:left;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 1rem;
-            width: 100%;
-            box-sizing: border-box;
+        // --- ローカルストレージ機能 ---
+        function loadSavedColors() {
+            const saved = JSON.parse(localStorage.getItem('myColors') || '[]');
+            savedList.innerHTML = '';
+            saved.forEach(color => renderColorItem(color));
         }
 
-        .template-input-area textarea {
-            min-height: 100px;
-            font-family: monospace;
-            resize: vertical;
-        }
-        .tate-msg{
-            align-self: flex-end;
-            font-size: 0.8rem;
-        }
-        #ts-reset-input{
-            width: auto;
-            background-color: #550000;
-            color: #ddd;
-            align-self: flex-end;
-        }
-        #add-template {
-            background-color: #077;
-            color: #ddd;
-            align-self: flex-end;
+        function renderColorItem(hex) {
+            const li = document.createElement('li');
+            li.className = 'saved-item';
+            
+            const swatch = document.createElement('div');
+            swatch.className = 'color-swatch';
+            swatch.style.backgroundColor = `#${hex}`;
+            
+            const code = document.createElement('span');
+            code.className = 'color-code';
+            code.textContent = '#' + hex;
+            
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-btn';
+            delBtn.textContent = '×';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                deleteColor(hex);
+            };
+
+            li.onclick = () => {
+                navigator.clipboard.writeText('#' + hex).then(() => {
+                    code.textContent = 'コピー！';
+                    setTimeout(() => {
+                        code.textContent = '#' + hex;
+                    }, 1000);
+                });
+            };
+            
+            li.appendChild(swatch);
+            li.appendChild(code);
+            li.appendChild(delBtn);
+            savedList.appendChild(li);
         }
 
-        /* リストエリア */
-        .list-section {
-            background: transparent;
-            padding: 5px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        // 色の削除
+        function deleteColor(hex) {
+            let saved = JSON.parse(localStorage.getItem('myColors') || '[]');
+            saved = saved.filter(c => c !== hex);
+            localStorage.setItem('myColors', JSON.stringify(saved));
+            loadSavedColors();
         }
 
-        .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-            padding-bottom: 5px;
+        // 色を保存
+        function saveCurrentColor() {
+            if (!errorMsg.style.display || errorMsg.style.display === 'none') {
+                let saved = JSON.parse(localStorage.getItem('myColors') || '[]');
+                if (!saved.includes(currentHex)) {
+                    saved.unshift(currentHex); // 先頭に追加
+                    localStorage.setItem('myColors', JSON.stringify(saved));
+                    loadSavedColors();
+                }
+            }
         }
 
-        .delete-selected-btn {
-            background-color: #995500;
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-left:5px;
-        }
-
-        .delete-selected-btn:disabled {
-            background-color: #770000;
-            cursor: not-allowed;
-        }
-
-        .template-list {
-            background: #333;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .template-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            transition: background 0.2s;
-        }
-
-        .template-item:hover {
-            background-color: #777;
-        }
-
-        .template-item input[type="checkbox"] {
-            margin-right: 15px;
-            transform: scale(1.2);
-        }
-
-        .template-content {
-            background:transparent;
-            flex-grow: 1;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items:center;
-        }
-
-        .template-title {
-            font-weight: bold;
-            color: #ddd;
-            text-align: left;
-        }
-
-        .template-preview {
-            font-size: 0.85rem;
-            color: #777;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 300px;
-        }
-
-        .delete-single-btn {
-            background: none;
-            color: #999;
-            font-size: 1.2rem;
-            padding: 5px 10px;
-        }
-
-        .delete-single-btn:hover {
-            color: red;
-        }
-
-        /* コード表示モーダル（簡易） */
-        #code-display-area {
-            display: none;
-            background: rgba(0,0,0,0.7);
-            font-size: 1.5rem;
-            padding: 0px 20px 20px 20px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            position: relative;
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        #code-text {
-            background: #999;
-            color: #000;
-            padding: 15px;
-            border-radius: 4px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-break: break-all;
-            border: 1px solid var;
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-        }
+    // --- イベントリスナー設定 ---
         
-        .allBtns-in-CTapp{
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            transition: opacity 0.2s;
-        }
+        // ピッカー変更時
+        colorPicker.addEventListener('input', (e) => {
+            const val = e.target.value.substring(1); // # を除く
+            input.value = val;
+            updateColor();
+        });
 
-        .allBtns-in-CTapp:hover {
-            opacity: 0.9;
-        }
+        // 手入力変更時
+        input.addEventListener('input', updateColor);
         
-        .CT-copy-btn {
-            background-color: #070;
-            color: white;
-            font-weight: bold;
+        // サイズ変更時（画像再生成）
+        widthInput.addEventListener('input', generateImage);
+        heightInput.addEventListener('input', generateImage);
+
+        // 保存ボタン
+        saveBtn.addEventListener('click', saveCurrentColor);
+        
+        // ダウンロードボタン
+        downloadBtn.addEventListener('click', downloadImage);
+
+        // --- 初期化 ---
+        loadSavedColors();
+        updateColor(); // 初期色設定と画像生成
+    
+    /* コードテンプレート */
+    // データ管理
+    let templates = JSON.parse(localStorage.getItem('myTemplates')) || [];
+    
+    // DOM 要素
+    const titleInput = document.getElementById('title');
+    const codeInput = document.getElementById('code');
+    const addBtn = document.getElementById('add-template');
+    
+    const listSection = document.getElementById('list-section');
+    const templateList = document.getElementById('template-list');
+    const deleteSelectedBtn = document.getElementById('delete-selected-btn');
+    const emptyMsg = document.getElementById('empty-msg');
+    
+    const displayArea = document.getElementById('code-display-area');
+    const displayTitle = document.getElementById('display-title');
+    const codeText = document.getElementById('code-text');
+    const copyBtn = document.getElementById('ct-copy-btn-id');
+    const closeDisplayBtn = document.getElementById('close-display');
+    
+    const telling = document.getElementById('telling-id');
+
+    // 初期化
+    renderList();
+
+    // テンプレート追加機能
+    addBtn.addEventListener('click', () => {
+        const t = titleInput.value.trim();
+        const c = codeInput.value.trim();
+
+        if (t && c) {
+            templates.push({ title: t, code: c, id: Date.now() });
+            localStorage.setItem('myTemplates', JSON.stringify(templates));
+            
+            titleInput.value = '';
+            codeInput.value = '';
+            
+            renderList();
+        } else {
+            alert('タイトルとコードを入力してください！');
         }
-
-        .CT-close-btn {
-            background: none;
-            color: #777;
-            font-size: 1.5rem;
-            padding: 0;
-        }
-
-        /* 空状態 */
-        .empty-state {
-            text-align: center;
-            color: #999;
-            padding: 40px 0;
-        }
-
-        /* トースト通知 */
-        #telling-id {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 4px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1000;
-            pointer-events: none;
-        }
-
-        /* 海背景のコンテナ */
-.ocean {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* 手前のコンテンツの下に配置 */
-        background: linear-gradient(to bottom, #001f3f 0%, #003366 40%, #001a33 100%);
-    /* より深みを出したい場合は下のグラデーションを参考に */
-    /* background: linear-gradient(to bottom, #006994 0%, #003366 100%); */
-    overflow: hidden;
-}
-
-/* 泡のスタイル */
-.bubble {
-    position: absolute;
-    bottom: -50px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    animation: rise 10s infinite ease-in;
-}
-
-/* 泡のサイズと位置をランダムに設定（CSS変数で制御可能ですが、ここでは固定値で例示） */
-.bubble:nth-child(1) { width: 40px; height: 40px; left: 10%; animation-duration: 8s; animation-delay: 0s; }
-.bubble:nth-child(2) { width: 20px; height: 20px; left: 20%; animation-duration: 5s; animation-delay: 2s; }
-.bubble:nth-child(3) { width: 50px; height: 50px; left: 35%; animation-duration: 10s; animation-delay: 4s; }
-.bubble:nth-child(4) { width: 80px; height: 80px; left: 50%; animation-duration: 12s; animation-delay: 0s; }
-.bubble:nth-child(5) { width: 35px; height: 35px; left: 55%; animation-duration: 6s; animation-delay: 3s; }
-.bubble:nth-child(6) { width: 45px; height: 45px; left: 65%; animation-duration: 9s; animation-delay: 5s; }
-.bubble:nth-child(7) { width: 90px; height: 90px; left: 70%; animation-duration: 11s; animation-delay: 2s; }
-.bubble:nth-child(8) { width: 25px; height: 25px; left: 80%; animation-duration: 7s; animation-delay: 1s; }
-
-/* 泡が上に浮くアニメーション */
-@keyframes rise {
-    0% {
-        bottom: -50px;
-        transform: translateX(0);
-        opacity: 0;
+    });
+    
+    //インプットのリセット
+    function tsReset() {
+        document.getElementById('title').value = '';
+        document.getElementById('code').value = '';
     }
-    50% {
-        opacity: 1;
+    
+    // 削除ボタンの状態更新
+    function updateDeleteButtonState() {
+        const checkboxes = document.querySelectorAll('.template-item input[type="checkbox"]:checked');
+        deleteSelectedBtn.disabled = checkboxes.length === 0;
     }
-    100% {
-        bottom: 110%; /* 画面外まで浮く */
-        transform: translateX(-50px); /* 少し横に揺れる */
-        opacity: 0;
+
+    // リスト描画関数
+    function renderList() {
+        templateList.innerHTML = '';
+        
+        if (templates.length === 0) {
+            templateList.style.display = 'none';
+            emptyMsg.style.display = 'block';
+            deleteSelectedBtn.disabled = true;
+            return;
+        }
+
+        templateList.style.display = 'block';
+        emptyMsg.style.display = 'none';
+
+        templates.forEach((item) => {
+            const li = document.createElement('li');
+            li.className = 'template-item';
+            
+            // チェックボックス
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.dataset.id = item.id;
+            checkbox.addEventListener('change', updateDeleteButtonState);
+
+            // コンテンツ（クリックで表示）
+            const content = document.createElement('div');
+            content.className = 'template-content';
+            content.innerHTML = `
+                <span class="template-title">${escapeHtml(item.title)}</span>
+                <span class="template-preview">${escapeHtml(item.code.substring(0, 40))}...</span>
+            `;
+            
+            // クリックイベント（コード表示）
+            content.addEventListener('click', () => {
+                showCode(item.title, item.code);
+            });
+
+            // 個別削除ボタン
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-single-btn';
+            delBtn.innerHTML = '🗑️';
+            delBtn.title = 'この 1 つを削除';
+            delBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // コンテンツクリックを防止
+                if (confirm(`「${item.title}」を削除しますか？`)) {
+                    templates = templates.filter(t => t.id !== item.id);
+                    localStorage.setItem('myTemplates', JSON.stringify(templates));
+                    renderList();
+                }
+            });
+
+            li.appendChild(checkbox);
+            li.appendChild(content);
+            li.appendChild(delBtn);
+            templateList.appendChild(li);
+        });
+
+        updateDeleteButtonState();
     }
-}
+
+    // 選択したものを一括削除
+    deleteSelectedBtn.addEventListener('click', () => {
+        const checkboxes = document.querySelectorAll('.template-item input[type="checkbox"]:checked');
+        if (checkboxes.length === 0) return;
+
+        if (!confirm(`${checkboxes.length}件のテンプレートを削除します。よろしいですか？`)) return;
+
+        const idsToDelete = Array.from(checkboxes).map(cb => parseInt(cb.dataset.id));
+        
+        templates = templates.filter(t => !idsToDelete.includes(t.id));
+        localStorage.setItem('myTemplates', JSON.stringify(templates));
+        
+        renderList();
+    });
+
+    // コード表示機能
+    function showCode(title, code) {
+        displayTitle.textContent = title;
+        codeText.textContent = code; // XSS 対策: textContent
+        displayArea.style.display = 'block';
+        displayArea.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 表示閉じる
+    closeDisplayBtn.addEventListener('click', () => {
+        displayArea.style.display = 'none';
+    });
+
+    // コピー機能
+    copyBtn.addEventListener('click', () => {
+        const text = codeText.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            showTelling();
+        }).catch(err => {
+            console.error('コピー失敗', err);
+            alert('コピーに失敗しました');
+        });
+    });
+
+    // トースト通知
+    function showTelling() {
+        telling.style.opacity = '1';
+        setTimeout(() => {
+            telling.style.opacity = '0';
+        }, 2000);
+    }
+
+    // XSS 対策用エスケープ関数
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
