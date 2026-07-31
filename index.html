@@ -28,6 +28,7 @@
 
 </head>
 <body>
+    <div class="stars"></div>
     <div class="ocean">
         <div class="bubble"></div>
         <div class="bubble"></div>
@@ -89,7 +90,7 @@
             <h1 class="h1class">色見本＆ダウンロード</h1>
         </div>
         <div class="color-container">
-            カラーピッカー タッチするとパレットが開くよ ↓
+            カラーピッカー ↓ タッチするとパレットが開くよ
             <!-- ピッカー -->
             <input type="color" id="colorPicker" value="#ffffff">
             <!-- 色見本（プレビュー） -->
@@ -99,7 +100,7 @@
             <!-- 手入力エリア -->
             <div class="color-input-div">
                 <div class="input-wrapper">
-                    <input type="text" id="colorInput" placeholder="#なし・６ケタの半角英数字(例:123abc)" maxlength="6">
+                    <input type="text" id="colorInput" placeholder="#はあってもなくてもOK・6桁半角のみ可(例:123abc, #123abc)" maxlength="7">
                     <div class="error-msg" id="errorMsg">無効な文字があります</div>
                 </div>
             </div>
@@ -118,7 +119,11 @@
                     <span class="rgb-val" id="bVal">FF</span>
                 </div>
             </div>
-
+            <button class="btn save-btn" id="saveBtn">💾 色を保存</button>
+            <!-- 保存リスト -->
+            <h3 class="color-saved-msg">保存済み (クリックでコピー)</h3>
+            <ul class="saved-list" id="savedList"></ul>
+            </div>
             <!-- サイズ設定 -->
             <div class="size-settings">
                 <div class="size-input">
@@ -132,13 +137,8 @@
             </div>
             
             <!-- ボタン -->
-            <button class="btn save-btn" id="saveBtn">💾 色を保存</button>
             <button class="btn download-btn" id="downloadBtn">⬇️ 画像をダウンロード</button>
 
-            <!-- 保存リスト -->
-            <h3 class="color-saved-msg">保存済み (クリックでコピー)</h3>
-            <ul class="saved-list" id="savedList"></ul>
-            </div>
     </div>
 
     <!--テンプレート倉庫-->
@@ -153,8 +153,9 @@
                 <input type="text" id="title" placeholder="タイトル（例：絵文字に影をつける）">
                 <textarea id="code" placeholder="コード（HTML/CSSなど）"></textarea>
                 <p class="tate-msg">ひっぱると、たてに伸びるよ ↑</p>
-                <button id="ts-reset-input" class="allBtns-in-CTapp"> 上記をリセット</button>
                 <button id="add-template" class="allBtns-in-CTapp">テンプレート追加</button>
+                <button id="ts-reset-input" class="allBtns-in-CTapp"> 上記をリセット</button>
+
             </div>
             <!-- コード表示エリア -->
             <div id="code-display-area">
