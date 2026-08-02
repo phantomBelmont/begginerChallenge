@@ -20,11 +20,14 @@
     base-uri 'self';
     form-action 'self';
     worker-src 'self';
+    upgrade-insecure-requests;
+    block-all-mixed-content;
     ">
+
+    <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <script src="script.js" defer></script>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="template.css">
 
 </head>
 <body>
@@ -40,6 +43,9 @@
     <div id="menu-screen">
         <h1 class="menu-title"><span class="moon">🌙メニュー</span></h1>
         
+        <button class="menu-btn memoApp" id="btn-memoapp-id">
+            <span>📝 一時メモ帳</span>
+        </button>        
         <button class="menu-btn find-replace" id="btn-find-replace-id">
             <span>🔍 検索 & 置換</span>
         </button>
@@ -59,16 +65,16 @@
         </div>
         <div class="textinputDiv">
             <label>対象テキスト</label>
-            <textarea id="yourtext" placeholder="ここにテキストを貼り付けて..."></textarea>
+            <textarea id="yourtext"  placeholder="ここにテキストを貼り付けて..."></textarea>
         </div>
         <div class="group-o-inputgroups">
             <div class="find-or-replace-input">
                 <label>探す言葉</label>
-                <input type="text" id="find" placeholder="例：Apple">
+                <input type="text" class="FnRinput" id="find" placeholder="例：Apple">
             </div>
             <div class="find-or-replace-input">
                 <label>置換する言葉</label>
-                <input type="text" id="replace" placeholder="例：Orange">
+                <input type="text" class="FnRinput" id="replace" placeholder="例：Orange">
             </div>
         </div>
         <div class="replace-reset-btns">
@@ -182,6 +188,47 @@
         </div>
         <div id="telling-id">コピーしました！</div>
     </div>
-        
+
+    <!-- 📝一時メモ帳 -->
+    <div id="memoApp-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 class="h1class">📝 一時メモ帳</h1>
+        </div>
+        <div class="app-container">
+            <!-- サイドバー -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">メモ帳</div>
+                    <button class="green-btn common-btn-states" id="btnNewNote">+ 新規</button>
+                </div>
+                <div class="note-list" id="noteList">
+                    <!-- メモアイテムがここに入る -->
+                </div>
+            </div>
+
+            <!-- メインエリア -->
+            <div class="memo-main-area">
+                <button class="mobile-toggle" id="mobileToggle">☰</button>
+                
+                <div class="editor-header">
+                    <input type="text" class="editor-title-input" id="noteTitle" placeholder="タイトル">
+                    <div class="editor-actions">
+                        <button id="memo-btnSelectAll" class="green-btn common-btn-states">📋 全選択</button>
+                        <button id="memobtnCopySelection" class="green-btn common-btn-states">コピー</button>
+                        <button id="btn-quick-clear" class="yellow-btn common-btn-states">クリア</button> 
+                        <button class="memo-delete-btn red-btn common-btn-states" id="btnDeleteNote">🗑 削除</button>
+                    </div>
+                </div>
+
+                <div class="status-bar">
+                    <span id="saveStatus">保存済み</span>
+                    <span id="charCount">0 文字</span>
+                </div>
+
+                <textarea id="noteArea" class="firefly-input" placeholder="ここにメモを入力してください..."></textarea>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
