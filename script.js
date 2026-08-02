@@ -5,120 +5,121 @@
 // label: ボタンに付けるラベル (必要なら)
 
 // --- 1. 設定ファイル (ここだけいじれば追加可能) ---
-const appConfig = [
-    { id: 'btn-find-replace-id', screenId: 'findReplace-screen', label: '検索・置換' },
-    { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
-    { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'テンプレート倉庫' },
-    { id: 'btn-reset', screenId: null, action: 'resetAll', label: '全てリセット' },
-    { id: 'btn-execute', screenId: null, action: 'doReplace', label: '実行' },
-    { id: 'ts-reset-input', screenId: null, action: 'tsReset', label: 'リセット' }
+        const appConfig = [
+            { id: 'btn-find-replace-id', screenId: 'findReplace-screen', label: '検索・置換' },
+            { id: 'btn-color-picker-id', screenId: 'color-picker-screen', label: 'カラーピッカー' },
+            { id: 'btn-template-storage-id', screenId: 'template-storage-screen', label: 'テンプレート倉庫' },
+            { id: 'btn-memoapp-id', screenId: 'memoApp-screen', label: 'メモ帳' },
+            { id: 'btn-reset', screenId: null, action: 'resetAll', label: '全てリセット' },
+            { id: 'btn-execute', screenId: null, action: 'doReplace', label: '実行' },
+            { id: 'ts-reset-input', screenId: null, action: 'tsReset', label: 'リセット' },
+            { id: 'btn-FnR-copy', screenId: null, action: 'copyResult', label: 'コピー' },
+            { id: 'btnNewNote', screenId: null, action: 'createNewNote', label: 'メモ新規' },
+            { id: 'btnDeleteNote', screenId: null, action: 'deleteCurrentNote', label: 'メモ削除' }
+        ];
 
-];
+        // 許可されるアクション関数のリスト (セキュリティ用ホワイトリスト)
+        const allowedActions = new Set([
+            'resetAll',
+            'doReplace',
+            'copyResult',
+            'tsReset',
+            'createNewNote',
+            'deleteCurrentNote'
+        ]);
 
-// 許可されるアクション関数のリスト (セキュリティ用ホワイトリスト)
-const allowedActions = new Set([
-    'resetAll',
-    'doReplace',
-    'copyResult',
-    'tsReset'
-]);
+        // 許可される画面ID (XSS対策)
+        const allowedScreens = new Set([
+            ...appConfig.map(c => c.screenId).filter(Boolean),
+            'menu-screen'
+        ]);
 
-// 許可される画面ID (XSS対策)
-const allowedScreens = new Set([
-    ...appConfig.map(c => c.screenId).filter(Boolean),
-    'menu-screen'
-]);
+        // --- 2. 共通処理関数 (セキュリティ強化版) ---
 
-// --- 2. 共通処理関数 (セキュリティ強化版) ---
+        function showScreen(screenName) {
+            // 1. idの前後にスペースなど余計なものあれば削除
+            screenName = screenName.trim();
+            
+            // 2. セキュリティチェック（許可された画面か確認）
+            if (!allowedScreens.has(screenName)) {
+                console.warn(`[Security] Unauthorized screen access blocked: ${screenName}`);
+                return;
+            }
+            
+            // 3. 背景の切り替え（Ocean と Stars）
+            const ocean = document.querySelector('.ocean');
+            const stars = document.querySelector('.stars');
+            const firefly = document.querySelector('.firefly-input');
 
-function showScreen(screenName) {
-    // 1. 空白を削除して正規化
-    screenName = screenName.trim();
-    
-    // 2. セキュリティチェック（許可された画面か確認）
-    if (!allowedScreens.has(screenName)) {
-        console.warn(`[Security] Unauthorized screen access blocked: ${screenName}`);
-        return;
-    }
-    
-    // 3. 背景の切り替え（Ocean と Stars）
-    const ocean = document.querySelector('.ocean');
-    const stars = document.querySelector('.stars');
+            if (screenName === 'menu-screen') {
+                if (ocean) ocean.style.display = 'block';
+                if (stars) stars.style.display = 'none';
+            } else {
+                if (ocean) ocean.style.display = 'none';
+                if (stars) stars.style.display = 'block';
+            }
 
-    if (screenName === 'menu-screen') {
-        if (ocean) ocean.style.display = 'block';
-        if (stars) stars.style.display = 'none';
-    } else {
-        if (ocean) ocean.style.display = 'none';
-        if (stars) stars.style.display = 'block';
-    }
+            // 4. 全ての画面を隠す
+            allowedScreens.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
 
-    // 4. 全ての画面を隠す
-    allowedScreens.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-    });
-
-    // 5. 指定された画面を取得して表示
-    const target = document.getElementById(screenName);
-    
-    if (target) {
-        // 画面が見つかった場合：表示
-        target.style.display = 'flex';
-        
-        // フォーカス処理（必要に応じて）
-        if (screenName === 'findReplace-screen') {
-            document.activeElement?.blur();
-        }
-        
-        // 成功ログ（デバッグ用）
-        console.log(`[Success] Screen displayed: ${screenName}`);
-    } else {
-        // 画面が見つからなかった場合：エラーログ
-        console.error(`[Error] Screen not found: ${screenName}`);
-        console.error(`Allowed screens: ${Array.from(allowedScreens).join(', ')}`);
-    }
-}
-function goToMenu() {
-    showScreen('menu-screen');
-}
-
-// --- 3. 自動イベント登録 (最適化版) ---
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // A. 共通メニューボタン (既存機能)
-    document.querySelectorAll('.goToMenu-btn').forEach(btn => {
-        btn.addEventListener('click', goToMenu);
-    });
-
-    // B. 特殊ボタン（copyResult）は明示的に登録
-    const btnCopy = document.getElementById('btn-FnR-copy');
-    if (btnCopy && typeof copyResult === 'function') {
-        btnCopy.addEventListener('click', copyResult);
-    }
-
-    // C. 設定ベースの自動登録 (ここがメイン)
-    appConfig.forEach(config => {
-        const btn = document.getElementById(config.id);
-        if (!btn) return;
-
-        btn.addEventListener('click', () => {
-            // ① アクション実行 (セキュリティチェック付き)
-            if (config.action && allowedActions.has(config.action)) {
-                const func = window[config.action];
-                if (typeof func === 'function') {
-                    func();
-                    return;
+            // 5. 指定された画面を取得して表示
+            const target = document.getElementById(screenName);
+            
+            if (target) {
+                // 画面が見つかった場合：表示
+                target.style.display = 'flex';
+                
+                // フォーカス処理（必要に応じて）
+                if (screenName === 'findReplace-screen') {
+                    document.activeElement?.blur();
                 }
+                
+                // 成功ログ（デバッグ用）
+                console.log(`[Success] Screen displayed: ${screenName}`);
+            } else {
+                // 画面が見つからなかった場合：エラーログ
+                console.error(`[Error] Screen not found: ${screenName}`);
+                console.error(`Allowed screens: ${Array.from(allowedScreens).join(', ')}`);
             }
+        }
+        function goToMenu() {
+            showScreen('menu-screen');
+        }
 
-            // ② 画面遷移
-            if (config.screenId) {
-                showScreen(config.screenId);
-            }
+        // --- 3. 自動イベント登録 (最適化版) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // A. 共通メニューボタン (既存機能)
+            document.querySelectorAll('.goToMenu-btn').forEach(btn => {
+                btn.addEventListener('click', goToMenu);
+            });
+
+
+            // C. 設定ベースの自動登録 (ここがメイン)
+            appConfig.forEach(config => {
+                const btn = document.getElementById(config.id);
+                if (!btn) return;
+
+                btn.addEventListener('click', () => {
+                    // ① アクション実行 (セキュリティチェック付き)
+                    if (config.action && allowedActions.has(config.action)) {
+                        const func = window[config.action];
+                        if (typeof func === 'function') {
+                            func();
+                            return;
+                        }
+                    }
+
+                    // ② 画面遷移
+                    if (config.screenId) {
+                        showScreen(config.screenId);
+                    }
+                });
+            });
         });
-    });
-});
             
 
             
@@ -353,7 +354,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSavedColors();
         updateColor(); // 初期色設定と画像生成
     
-    /* コードテンプレート */
+
+    /* 📦コードテンプレート */
     // データ管理
     let templates = JSON.parse(localStorage.getItem('myTemplates')) || [];
     
@@ -526,3 +528,318 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         return text.replace(/[&<>"']/g, m => map[m]);
     }
+
+    /* 📝一時メモ帳 */
+        // 状態管理
+        let notes = [];
+        let currentNoteId = null;
+        const STORAGE_KEY = 'advancedDarkNotes';
+
+        // DOM 要素
+        const noteListEl = document.getElementById('noteList');
+        const noteTitleInput = document.getElementById('noteTitle');
+        const noteArea = document.getElementById('noteArea');
+        const saveStatusEl = document.getElementById('saveStatus');
+        const charCountEl = document.getElementById('charCount');
+        const btnNewNote = document.getElementById('btnNewNote');
+        const memobtnSelectAll = document.getElementById('memo-btnSelectAll');
+        const btnDeleteNote = document.getElementById('btnDeleteNote');
+        const sidebar = document.getElementById('sidebar');
+        const mobileToggle = document.getElementById('mobileToggle');
+        const btnQuickClear = document.getElementById('btn-quick-clear');
+
+        // 初期化
+        window.addEventListener('load', () => {
+            loadNotes();
+            if (notes.length === 0) {
+                createNewNote();
+            } else {
+                selectNote(notes[0].id);
+            }
+        });
+
+        // メモの読み込み
+        function loadNotes() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                notes = JSON.parse(stored);
+            }
+            renderNoteList();
+        }
+
+        // メモの保存
+        function saveNotes() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+        }
+
+        // 新しいメモの作成
+        function createNewNote() {
+            const newNote = {
+                id: Date.now().toString(),
+                title: '新しいメモ',
+                content: '',
+                updated: Date.now()
+            };
+            notes.unshift(newNote);
+            saveNotes();
+            selectNote(newNote.id);
+            renderNoteList();
+            if (window.innerWidth <= 768) sidebar.classList.remove('open');
+        }
+
+        // メモの選択
+        function selectNote(id) {
+            currentNoteId = id;
+            const note = notes.find(n => n.id === id);
+            
+            if (note) {
+                noteTitleInput.value = note.title;
+                noteArea.value = note.content;
+                updateCharCount();
+                updateStatus('保存済み');
+                
+                // UI 更新
+                document.querySelectorAll('.note-item').forEach(el => el.classList.remove('active'));
+                const activeItem = document.querySelector(`.note-item[data-id="${id}"]`);
+                if (activeItem) activeItem.classList.add('active');
+            }
+        }
+
+        // メモの削除
+        function deleteCurrentNote() {
+            if (!currentNoteId) return;
+            if (confirm('このメモを削除しますか？')) {
+                notes = notes.filter(n => n.id !== currentNoteId);
+                saveNotes();
+                
+                if (notes.length > 0) {
+                    selectNote(notes[0].id);
+                } else {
+                    createNewNote();
+                }
+                renderNoteList();
+            }
+        }
+
+        // リストの描画
+        function renderNoteList() {
+            noteListEl.innerHTML = '';
+            notes.forEach(note => {
+                const item = document.createElement('div');
+                item.className = `note-item ${note.id === currentNoteId ? 'active' : ''}`;
+                item.dataset.id = note.id;
+
+                const title = note.title || '無題';
+                const preview = note.content.substring(0, 30) + (note.content.length > 30 ? '...' : '') || '本文なし';
+
+                // テキストとして設定（XSS 防止）
+                const titleEl = document.createElement('div');
+                titleEl.className = 'note-item-title';
+                titleEl.textContent = title;
+
+                const previewEl = document.createElement('div');
+                previewEl.className = 'note-item-preview';
+                previewEl.textContent = preview;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'note-item-delete';
+                deleteBtn.textContent = '×';
+                deleteBtn.setAttribute('aria-label', 'メモを削除');
+
+                // イベントリスナーを追加（innerHTML 内で onclick しない）
+                item.addEventListener('click', (e) => {
+                    if (!deleteBtn.contains(e.target)) {
+                        selectNote(note.id);
+                    }
+                });
+
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteNote(note.id);
+                });
+
+                item.appendChild(titleEl);
+                item.appendChild(previewEl);
+                item.appendChild(deleteBtn);
+                noteListEl.appendChild(item);
+            });
+        }
+
+        // 特定のメモの削除（リストから直接）
+        function deleteNote(id) {
+            const note = notes.find(n => n.id === id);
+            if (confirm(`${note?.title || 'メモ'}を削除しますか？`)) {
+                notes = notes.filter(n => n.id !== id);
+                saveNotes();
+
+                if (currentNoteId === id) {
+                    if (notes.length > 0) {
+                        selectNote(notes[0].id);
+                    } else {
+                        createNewNote();
+                    }
+                } else {
+                    renderNoteList();
+                }
+                renderNoteList();
+            }
+        }
+        // 更新処理
+        function updateCurrentNote() {
+            if (!currentNoteId) return;
+            
+            const note = notes.find(n => n.id === currentNoteId);
+            if (note) {
+                note.title = noteTitleInput.value || '無題';
+                note.content = noteArea.value;
+                note.updated = Date.now();
+                
+                // リストの順序更新（更新順）
+                notes.sort((a, b) => b.updated - a.updated);
+                
+                saveNotes();
+                renderNoteList();
+                updateCharCount();
+                updateStatus('保存中...');
+                
+                setTimeout(() => {
+                    updateStatus('保存完了');
+                    setTimeout(() => updateStatus('保存済み'), 1500);
+                }, 300);
+            }
+        }
+
+        // ステータス更新
+        function updateStatus(msg) {
+            saveStatusEl.textContent = msg;
+            if (msg === '保存完了') {
+                saveStatusEl.style.color = '#4caf50';
+            } else if (msg === '保存中...') {
+                saveStatusEl.style.color = 'var(--accent-color)';
+            } else {
+                saveStatusEl.style.color = 'var(--text-secondary)';
+            }
+        }
+
+        // 文字数カウント更新
+        function updateCharCount() {
+            const count = noteArea.value.length;
+            charCountEl.textContent = `${count} 文字`;
+        }
+
+        // ステータス更新（CSP 対策：クラス切り替えに変更）
+        function updateStatus(msg) {
+            saveStatusEl.textContent = msg;
+            
+            // クラスをリセット
+            saveStatusEl.classList.remove('status-success', 'status-saving', 'status-default');
+
+            if (msg === '保存完了') {
+                saveStatusEl.classList.add('status-success');
+            } else if (msg === '保存中...') {
+                saveStatusEl.classList.add('status-saving');
+            } else {
+                saveStatusEl.classList.add('status-default');
+            }
+        }
+
+        // Toast 通知機能（CSP 対策：クラスベースに修正）
+        function showToast(message) {
+            // 既存の Toast があるなら削除（重複防止）
+            const existingToast = document.querySelector('.toast-message');
+            if (existingToast) existingToast.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message; // XSS 対策で textContent を使用
+            
+            document.body.appendChild(toast);
+            
+            // フェードイン（アニメーション用）
+            requestAnimationFrame(() => {
+                toast.classList.add('toast-show');
+            });
+
+            // 2 秒後に消す
+            setTimeout(() => {
+                toast.classList.remove('toast-show');
+                // アニメーションが終わってから DOM から削除
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // イベントリスナーの設定
+        // タイトルや内容が変わったら自動保存
+        noteTitleInput.addEventListener('input', updateCurrentNote);
+        noteArea.addEventListener('input', updateCurrentNote);
+
+    
+        // 全選択ボタンのイベントリスナー
+        memobtnSelectAll.addEventListener('click', () => {
+        noteArea.select();
+        updateStatus('全選択完了');
+        });
+
+        // 選択範囲コピーボタンのイベントリスナー
+        const memobtnCopySelection = document.getElementById('memobtnCopySelection');
+        memobtnCopySelection.addEventListener('click', async () => {
+        // 現在の選択範囲を取得
+        const selectedText = window.getSelection().toString();
+
+        if (!selectedText) {
+            updateStatus('選択されたテキストがありません');
+            showToast('選択範囲がありません');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(selectedText);
+            updateStatus('選択範囲コピー完了');
+            setTimeout(() => updateStatus('保存済み'), 1500);
+        } catch (err) {
+            console.error('コピーに失敗しました:', err);
+            updateStatus('コピーに失敗しました');
+            showToast('クリップボードコピーに失敗しました');
+        }
+        });
+        // クイッククリアボタン（バグ修正版）
+        btnQuickClear.addEventListener('click', () => {
+            if (!currentNoteId) return;
+            if (noteArea.value === '') return; // 空なら何もしない
+
+            // 1. 画面を空にする
+            noteArea.value = '';
+            
+            // 2. データを空にする（ここが重要！）
+            const note = notes.find(n => n.id === currentNoteId);
+            if (note) {
+                note.content = '';
+                note.updated = Date.now();
+                // 保存とリスト更新を呼ぶ
+                saveNotes();
+                renderNoteList(); // リストのプレビューも更新
+                updateCharCount();
+                
+                // ステータス更新
+                updateStatus('保存完了');
+                setTimeout(() => updateStatus('保存済み'), 1500);
+                
+                showToast('内容を消去しました');
+            }
+        });
+
+        // モバイル用サイドバー切り替え
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // サイドバーの外をクリックしたら閉じる（モバイル用）
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target) && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+
+
