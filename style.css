@@ -1,1073 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐣試作品🐵</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4B0082">
+  <link rel="icon" type="image/png" href="icon192.png">
+  <link rel="apple-touch-icon" href="icon192.png">
+  
+<!-- 安全な CSP の設定例 -->
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self';
+    img-src 'self' data: https:;
+    font-src 'self' data:;
+    connect-src 'self';
+    base-uri 'self';
+    form-action 'self';
+    worker-src 'self';
+    upgrade-insecure-requests;
+    block-all-mixed-content;
+    ">
 
-        *,*::before,::after{
-            box-sizing: border-box;
-        }
-        /* 全体のリセット */
-        html{
-            background-color: #000;
-            margin: 0;
-            padding: 0;
-            min-height: 100dvh;
-            width: 100%;
-        }
-        body{
-            min-height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            font-family: sans-serif;
-            background-color: transparent;
-            color: #fff;
-        }
-        .moon{
-            font-size: 1.7rem;
-            filter:drop-shadow(0 0 2px #333) drop-shadow(0 0 10px #ffdd00);
-            animation: glow 1s infinite alternate;
-            margin-bottom:60px;
-            }
-            @keyframes glow {
-            from { text-shadow: 0 0 1px #baa800; }
-            to { text-shadow: 0 0 3px #333, 0 0 2px #333; }
-            }
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="ocean">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+   <!-- メニュー画面 -->
+    <div id="menu-screen">
+        <h1 class="menu-title"><span class="moon">🌙メニュー</span></h1>
         
-        .stars{
-            position: fixed;
-            height: 100%;
-            width: 100%;
-            top:0; left:0;
-            z-index: -1;
+        <button class="menu-btn memoApp" id="btn-memoapp-id">
+            <span>📝 一時メモ帳</span>
+        </button>        
+        <button class="menu-btn find-replace" id="btn-find-replace-id">
+            <span>🔍 検索 & 置換</span>
+        </button>
+        <button class="menu-btn single-palette" id="btn-color-picker-id">
+            <span>🎨 色見本＆ダウンロード</span>
+        </button>
+        <button class="menu-btn template-storage" id="btn-template-storage-id">
+            <span>📦 テンプレート倉庫</span>
+        </button>
+    </div>
 
-            background-size: 200px 200px;
-            background-image: radial-gradient(2px 2px at 50px 50px, orange, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 20px 20px, rgb(3, 238, 3), rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 10px 30px, pink, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 150px 120px, aqua, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 120px 150px, white, rgba(0,0,0,0));
-            background-repeat: repeat;
-
-            animation: moveDiagonal 5s ease-in-out infinite, twinkle 2s ease-in-out infinite;
-            will-change:opacity;
-        }
-            @keyframes moveDiagonal{
-                from{background-position: 0 0;}
-                to{background-position: 200px 200px;}
-            }
-            @keyframes twinkle{
-                0%,100%{opacity:1;} 50%{opacity: 0.2;}
-            }
-    /* --- メニュー画面 --- */
-        #menu-screen {
-            display: flex; /* アプリ起動時に表示 */
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-            padding: 40px 20px;
-            box-sizing: border-box;
-            /* スクロールバーの見た目 */
-            scrollbar-width: thin;
-            scrollbar-color: #555 #222;
-        }
-        .menu-title {
-            font-size: 1.8rem;
-            margin-bottom: 40px;
-            color: #fff;
-            text-align: center;
-        }
-        .menu-btn {
-            width: 100%;
-            max-width: 320px;
-            padding: 18px;
-            margin: 12px 0;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
-            background: linear-gradient(to right bottom, #070 0%,#000 50%, #070 100%);
-            color: #ddd;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            text-align: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .menu-btn:active {
-            transform: scale(0.98);
-            background: #444;
-        }
-        .menu-btn span {
-            pointer-events: none; /* 文字選択時の干渉防止 */
-        }
-    /* --- 検索＆置換 --- */
-        #findReplace-screen {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            /* ↓ スクロール禁止にするなら、ここをhidden */
-            overflow-y: auto; 
-            background: transparent;
-        }
-        h1 {
-            font-size: 1.2rem;
-            text-align: center;
-            margin: 5px 0;
-            flex-shrink: 0;
-        }
-        .find-or-replace-input {
-            margin: 2px 10px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 4px;
-            width: 100%;
-        }
-        label {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #aaa;
-            flex-shrink: 0;
-        }
-        .FnRinput {
-            flex-grow: 1;
-            flex-basis: 0;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 15px;
-            background: #aaa;
-            flex-shrink: 0;
-            color: #000;
-        }
-        .group-o-inputgroups{
-            display: flex;
-        }
-        .textinputDiv {
-            padding: 0;
-            box-sizing: border-box;
-            border-radius: 4px;
-            font-size: 15px;
-            background: #111;
-            display: flex;
-            flex-grow: 1; /* 残りの高さを全て占有 */
-            min-height: 0; /* Flexboxのオーバーフロー対策 */
-            margin: 2px 10px;
-            flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
-            /* 　↓　テキストエリアはスクロールできるが、画面全体はしない*/
-            overflow: hidden; 
-        }
-        #yourtext {
-            background: #aaa;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            border-radius: 4px;
-            padding: 20px;
-            color: #000;
-            border: none;
-            resize: none;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            overflow-y: auto; 
-            min-height: 80px;
-            max-height: 200px;
-        }
-        .replace-reset-btns {
-            padding: 5px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-        .all-main-btns {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 15px;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
-        }
-        #btn-execute { background: #007; }
-        #btn-reset { background: #700; font-size: 13px; padding: 8px; }
-        #btn-FnR-copy { background: #070; margin-top: 5px;}
-        /* エラー表示 */
-        #error-msg {
-            color: red;
-            font-size: 0.8rem;
-            text-align: center;
-            margin: 0 10px 4px;
-            display: none;
-            flex-shrink: 0;
-        }
-        .FnR-result-area {
-            flex-grow: 1; 
-            padding: 5px 10px;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            gap: 4px;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-        .FnR-result-box {
-            flex-grow: 1;
-            border: 1px solid #ccc;
-            background: #aaa;
-            padding: 8px;
-            overflow-y: auto; /* 結果が多い場合はここだけでスクロール */
-            max-height: 150px;
-            white-space: pre-wrap;
-            word-break: break-all;
-            font-size: 14px;
-            border-radius: 4px;
-            color: #000;
-            min-height: 0; /* Flexbox対策 */
-        }
+    <!-- 検索＆置換-->
+    <div id="findReplace-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 class="h1class">検索 & 置換</h1>
+        </div>
+        <div class="textinputDiv">
+            <label>対象テキスト</label>
+            <textarea id="yourtext"  placeholder="ここにテキストを貼り付けて..."></textarea>
+        </div>
+        <div class="group-o-inputgroups">
+            <div class="find-or-replace-input">
+                <label>探す言葉</label>
+                <input type="text" class="FnRinput" id="find" placeholder="例：Apple">
+            </div>
+            <div class="find-or-replace-input">
+                <label>置換する言葉</label>
+                <input type="text" class="FnRinput" id="replace" placeholder="例：Orange">
+            </div>
+        </div>
+        <div class="replace-reset-btns">
+            <button id="btn-execute" onclick="doReplace()" class="all-main-btns">置換実行</button>
+            <button id="btn-reset" onclick="resetAll()" class="all-main-btns">すべてリセット</button>
+        </div>
+        <p id="error-msg">「探す言葉」を入力してください。</p>
+        <div class="result-area">
+            <div class="FnR-result-box" id="result">ここに結果が表示されます</div>
+                <button id="btn-FnR-copy" onclick="copyResult()" class="all-main-btns">全選択＆コピー</button>
+            </div>
+        </div>
+    </div>
     
-        /* ヘッダーの「🌙メニューへ」ボタン */
-        .app-header {
-            display: flex;
-            align-items: center;
-            padding: 8px 10px;
-            background: #222;
-            flex-shrink: 0;
-            z-index: 5;
-            position: relative;
-        }
-        .h1class{
-            margin:0;
-            text-align:left; 
-            flex-grow:1;
-        }
-        .goToMenu-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            margin-right: 10px;
-            padding: 5px;
-        }
-
-        /* カラーピッカー色見本＆ダウンロード */
-        :root {
-            --bg-color: transparent;
-            --card-bg: transparent;
-            --text-color: #ddd;
-            --accent-color: #5500ff;
-            --error-color: #ff7675;
-            --download-color: #070;
-        }
-    /*カラーピッカー色見本＆ダウンロード*/
-        #color-picker-screen{
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: none;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            width: 100%;
-        }
-        .color-container {
-            display: flex;
-            flex-direction: column;
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-        #colorPicker{
-            max-width: 100%;
-            max-height: 100px;
-            min-height: 200px;
-            border-radius: 8px;
-            background-color: transparent;
-        }
-        /* プレビューエリア */
-        .preview-box {
-            display: none;
-        }
-        /* キャンバス（ダウンロード用プレビュー） */
-        #myCanvas {
-            display: none; /* 最初は非表示、JSで制御 */
-        }
-        /* 入力エリア */
-        .color-input-div {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            align-items: center;
+    <!-- カラーピッカー色見本＆ダウンロード -->
+     <div id="color-picker-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 class="h1class">色見本＆ダウンロード</h1>
+        </div>
+        <div class="color-container">
+            カラーピッカー ↓ タッチするとパレットが開くよ
+            <!-- ピッカー -->
+            <input type="color" id="colorPicker" value="#ffffff">
+            <!-- 色見本（プレビュー） -->
+            <div class="preview-box" id="preview">
+                <canvas id="myCanvas"></canvas>
+            </div>
+            <!-- 手入力エリア -->
+            <div class="color-input-div">
+                <div class="input-wrapper">
+                    <input type="text" id="colorInput" placeholder="半角のみ (例:123abc, #123abc)" maxlength="7">
+                    <div class="error-msg" id="errorMsg">無効な文字があります</div>
+                </div>
+            </div>
+            <!-- RGB 表示 -->
+            <div class="rgb-display">
+                <div class="rgb-item">
+                    <span class="rgb-label">R</span>
+                    <span class="rgb-val" id="rVal">FF</span>
+                </div>
+                <div class="rgb-item">
+                    <span class="rgb-label">G</span>
+                    <span class="rgb-val" id="gVal">FF</span>
+                </div>
+                <div class="rgb-item">
+                    <span class="rgb-label">B</span>
+                    <span class="rgb-val" id="bVal">FF</span>
+                </div>
+            </div>
+            <button class="btn save-btn" id="saveBtn">💾 色を保存</button>
+            <!-- 保存リスト -->
+            <h3 class="color-saved-msg">保存済み (クリックでコピー)</h3>
+            <ul class="saved-list" id="savedList"></ul>
+            </div>
+            <!-- サイズ設定 -->
+            <div class="size-settings">
+                <div class="size-input">
+                    <label>幅 (px)</label>
+                    <input type="number" id="width" value="1000" min="1" max="5000">
+                </div>
+                <div class="size-input">
+                    <label>高さ (px)</label>
+                    <input type="number" id="height" value="1000" min="1" max="5000">
+                </div>
+            </div>
             
-        }
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-family: monospace;
-            border: 2px solid #007;
-            border-radius: 8px;
-            text-align: center;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]:focus {
-            border-color: var(--accent-color);
-        }
-        /* エラーメッセージ */
-        .error-msg {
-            color: var(--error-color);
-            font-size: 0.8rem;
-            height: 1rem;
-            margin-top: -10px;
-            margin-bottom: 10px;
-            display: none;
-        }
-        /* RGB 表示 */
-        .rgb-display {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            background: transparent;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .rgb-item {
-            text-align: center;
-        }
-        .rgb-label {
-            font-size: 0.7rem;
-            color: #ddd;
-            display: block;
-        }
-        .rgb-val {
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        /* サイズ設定 */
-        .size-settings {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            justify-content: center;
-            background: transparent;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .size-input {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-        }
-        .size-input label {
-            font-size: 1rem;
-            color: #ddd;
-            margin-bottom: 4px;
-        }
-        .size-input input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 0.9rem;
-            box-sizing: border-box;
-        }
-        /* ピッカー */
-        input[type="color"] {
-            border: none;
-            width: 100%;
-            height: 40px;
-            cursor: pointer;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0; 
-        }
-        input[type="color"]::-webkit-color-swatch {
-            border: none;
-            border-radius: 8px;
-        }
-        /* ボタン共通 */
-        .btn {
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-bottom: 10px;
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        /* 保存ボタン */
-        .save-btn {
-            background-color: var(--accent-color);
-            color: #ddd;
-        }
-        .save-btn:hover {
-            background-color: #5649c0;
-        }
-        .color-saved-msg{
-            font-size: 0.9rem; 
-            color: #555; 
-            margin: 15px 0 5px; 
-            text-align: left;
-        }
-        /* ダウンロードボタン */
-        .download-btn {
-            background-color: var(--download-color);
-            color: #ddd;
-        }
-        .download-btn:hover {
-            background-color: #005555;
-        }
-        /* 保存リスト */
-        .saved-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            height: auto;
-            border: 1px solid #eee;
-            border-radius: 8px;
-        }
-        .saved-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 10px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.2sCapacitor
-        }
-        .saved-item:last-child {
-            border-bottom: none;
-        }
-        .saved-item:hover {
-            background-color: #077;
-        }
-        .color-swatch {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            margin-right: 10px;
-            border: 1px solid #ddd;
-        }
-        .color-code {
-            flex: 1;
-            font-family: monospace;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0 5px;
-            line-height: 1;
-        }
-        .delete-btn:hover {
-            color: var(--error-color);
-        }
-
-    /* テンプレート倉庫 */
-        #template-storage-screen {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .template-container {
-            background-color: transparent;
-            color: #ddd;
-            margin: 0 auto;
-            text-align: center;
-            width: 100%;
-        }
-
-        /* 入力エリア */
-        .template-input-area {
-            background: transparent;
-            border-radius: 8px;
-            margin: 10px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .template-input-area input, .template-input-area textarea {
-            background: transparent;
-            color: #ddd;
-            text-align:left;
-            padding: 15px;
-            font-weight: 500;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            height: auto;
-        }
-        .template-input-area input:focus-within {
-        box-shadow: 0 0 0 2px #aaffaa, 0 0 30px rgba(170, 255, 170, 0.4);
-        }
-        .template-input-area textarea {
-            min-height: 100px;
-            font-family: monospace;
-        }
-        .tate-msg{
-            align-self: flex-end;
-            font-size: 0.8rem;
-        }
-        #ts-reset-input{
-            width: auto;
-            background-color: #550000;
-            color: #ddd;
-            align-self: flex-end;
-        }
-        #add-template {
-            background-color: #077;
-            color: #ddd;
-            align-self: center;
-        }
-
-        /* リストエリア */
-        .list-section {
-            background: transparent;
-            border-radius: 8px;
-            align-self: flex-start;
-        }
-
-        .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-            padding-bottom: 5px;
-        }
-
-        .delete-selected-btn {
-            background-color: #700;
-            color: #ddd;
-            font-size: 0.9rem;
-            margin-top: 15px;
-        }
-
-        .delete-selected-btn:disabled {
-            background-color: transparent;
-            cursor: not-allowed;
-        }
-
-        .template-list {
-            background: #333;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .template-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            transition: background 0.2s;
-        }
-
-        .template-item:hover {
-            background-color: #777;
-        }
-
-        .template-item input[type="checkbox"] {
-            margin-right: 15px;
-            transform: scale(1.2);
-        }
-
-        .template-content {
-            background:transparent;
-            flex-grow: 1;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items:center;
-        }
-
-        .template-title {
-            font-weight: bold;
-            color: #ddd;
-            text-align: left;
-        }
-
-        .template-preview {
-            font-size: 0.85rem;
-            color: #070;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 300px;
-        }
-
-        .delete-single-btn {
-            background: none;
-            color: #999;
-            font-size: 1.2rem;
-            padding: 5px 10px;
-        }
-
-        .delete-single-btn:hover {
-            color: red;
-        }
-
-        /* コード表示モーダル（簡易） */
-        #code-display-area {
-            display: none;
-            background: transparent;
-            font-size: 1.5rem;
-            padding: 0px 20px 20px 20px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            position: relative;
-        }
-
-        .code-header {
-            color:#80A617;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #code-text {
-            background: transparent;
-            font-size: 1rem;
-            color: #ddd;
-            text-align: left;
-            padding: 15px;
-            border-radius: 4px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-break: break-all;
-            border: 1px solid;
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-        
-        .allBtns-in-CTapp{
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            transition: opacity 0.2s;
-        }
-
-        .allBtns-in-CTapp:hover {
-            opacity: 0.9;
-        }
-        
-        .CT-copy-btn {
-            background-color: #070;
-            color: white;
-            font-weight: bold;
-        }
-
-        .CT-close-btn {
-            background: none;
-            color: #777;
-            font-size: 1.5rem;
-            padding: 0;
-        }
-
-        /* 空状態 */
-        .empty-state {
-            text-align: center;
-            color: #999;
-            padding: 40px 0;
-        }
-
-        /* トースト通知 */
-        #telling-id {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 4px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1000;
-            pointer-events: none;
-        }
-
-        /* 海背景のコンテナ */
-.ocean {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; 
-        background: linear-gradient(to bottom, #001f3f 0%, #003366 40%, #001a33 100%);
-    /* より深みを出したい場合は下のグラデーションを参考に */
-    /* background: linear-gradient(to bottom, #006994 0%, #003366 100%); */
-    overflow: hidden;
-}
-
-/* 泡のスタイル */
-.bubble {
-    position: absolute;
-    bottom: -50px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    animation: rise 10s infinite ease-in;
-}
-
-/* 泡のサイズと位置をランダムに設定（CSS変数で制御可能ですが、ここでは固定値で例示） */
-.bubble:nth-child(1) { width: 40px; height: 40px; left: 10%; animation-duration: 8s; animation-delay: 0s; }
-.bubble:nth-child(2) { width: 20px; height: 20px; left: 20%; animation-duration: 5s; animation-delay: 2s; }
-.bubble:nth-child(3) { width: 50px; height: 50px; left: 35%; animation-duration: 10s; animation-delay: 4s; }
-.bubble:nth-child(4) { width: 80px; height: 80px; left: 50%; animation-duration: 12s; animation-delay: 0s; }
-.bubble:nth-child(5) { width: 35px; height: 35px; left: 55%; animation-duration: 6s; animation-delay: 3s; }
-.bubble:nth-child(6) { width: 45px; height: 45px; left: 65%; animation-duration: 9s; animation-delay: 5s; }
-.bubble:nth-child(7) { width: 90px; height: 90px; left: 70%; animation-duration: 11s; animation-delay: 2s; }
-.bubble:nth-child(8) { width: 25px; height: 25px; left: 80%; animation-duration: 7s; animation-delay: 1s; }
-
-/* 泡が上に浮くアニメーション */
-@keyframes rise {
-    0% {
-        bottom: -50px;
-        transform: translateX(0);
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        bottom: 110%; /* 画面外まで浮く */
-        transform: translateX(-50px); /* 少し横に揺れる */
-        opacity: 0;
-    }
-}
-
-
-
-  /* 📝一時メモ帳 */
-        #memoApp-screen{
-            display: none;
-            background-color: transparent;
-            color: #ddd;
-            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-            height: 100vh;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* レイアウト */
-        .app-container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-
-
-
-        .green-btn{
-            background-color: transparent;
-            color: #00aa00;
-            border-color: #00aa00;
-        } 
-        .green-btn:hover{
-            background-color: rgba(77,77,77,0.8);
-        }
-        .yellow-btn{
-            background-color: transparent;
-            color:#aabf00;
-            border-color: #aabf00;
-        }
-        .yellow-btn:hover {
-            background-color: rgba(77,77,77,0.8);
-        }
-
-        .red-btn {
-            background-color: transparent;
-            color: #800;
-            border-color: #800;
-        }
-        .red-btn:hover {
-            background-color: rgba(77,77,77,0.8);
-        }
-
-        
-
-        
-
-        /* サイドバー（メモリスト） */
-        .sidebar {
-            width: 280px;
-            background-color: #333;
-            border-right: 1px solid;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
-            z-index: 10;
-        }
-
-        .sidebar-header {
-            padding: 10px;
-            border-bottom: 1px solid green;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: gold;
-        }
-        .common-btn-states {
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .common-btn-states:hover {
-            background-color: rgba(77, 77, 77, 0.8);
-            transform: translateY(-1px);
-        }
-
-        .note-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .note-item {
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            background-color: transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-        }
-
-        .note-item:hover {
-            background-color: #aaa;
-        }
-
-        .note-item.active {
-            background-color: rgba(187, 134, 252, 0.15);
-            border-color: purple;
-        }
-
-        .note-item-title {
-            font-weight: 600;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: block;
-            color: purple;
-        }
-
-        .note-item-preview {
-            font-size: 1rem;
-            color: #ddd;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: block;
-        }
-
-        .note-item-delete {
-            float: right;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            opacity: 0;
-            transition: opacity 0.2s;
-            line-height: 1;
-            padding: 0 5px;
-            background-color: purple;
-        }
-
-        .note-item:hover .note-item-delete {
-            opacity: 1;
-        }
-
-        .note-item-delete:hover {
-            color: #ff8a80;
-        }
-
-        /* メインエディタエリア */
-        .memo-main-area {
-            position: relative;            
-            z-index: 10;
-            overflow: hidden;
-            background-color: transparent;
-        }
-
-        .editor-header {
-            padding: 15px 25px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: transparent;
-        }
-
-        .editor-title-input {
-            background: transparent;
-            border: none;
-            color: #ddd;
-            font-size: 1.4rem;
-            font-weight: 600;
-            width: 60%;
-            outline: none;
-        }
-
-        .editor-title-input::placeholder {
-            color: #555;
-        }
-
-        .editor-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .status-bar {
-            padding: 8px 25px;
-            font-size: 0.8rem;
-            color: #6943F4;
-            background-color: transparent;
-            border-bottom: 1px solid #5227EC;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        #noteArea {
-            z-index:2;
-            flex: 1;
-            width: 100%;
-            padding: 25px;
-            border: none;
-            background-color: transparent;
-            color: #ddd;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            resize: none;
-            outline: none;
-        }
-
-        textarea::placeholder {
-            color: #070;
-        }
-
-        /* スクロールバー */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: black;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        /* モバイル対応 */
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #ddd;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: absolute;
-                height: 100%;
-                transform: translateX(-100%);
-                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .mobile-toggle {
-                display: block;
-            }
-            .editor-title-input {
-                width: 50%;
-                font-size: 1.1rem;
-            }
-            .memo-btn-new span {
-                display: inline;
-            }
-            .memo-btn-new::after {
-                content: '';
-            }
-        }
-
-        /* Toast 通知のスタイル */
-        .toast-message {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: none; /* クリックを透過 */
-        }
-
-        .toast-message.toast-show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-10px); /* 少し上に浮かせる */
-        }    
-
+            <!-- ボタン -->
+            <button class="btn download-btn" id="downloadBtn">⬇️ 画像をダウンロード</button>
+
+    </div>
+
+    <!--テンプレート倉庫-->
+    <div id="template-storage-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 class="h1class">📦 テンプレート倉庫</h1>
+        </div>
+        <div class="template-container">
+            <!-- 入力エリア -->
+            <div class="template-input-area">
+                <input type="text" id="title" placeholder="タイトル（例：絵文字に影をつける）">
+                <textarea id="code" placeholder="コード（HTML/CSSなど）"></textarea>
+                <p class="tate-msg">ひっぱると、たてに伸びるよ ↑</p>
+                <button id="add-template" class="allBtns-in-CTapp">テンプレート追加</button>
+                <button id="ts-reset-input" class="allBtns-in-CTapp"> 上記をリセット</button>
+
+            </div>
+            <!-- コード表示エリア -->
+            <div id="code-display-area">
+                <div class="code-header">
+                    <h3 id="display-title">タイトル</h3>
+                    <button class="CT-close-btn allBtns-in-CTapp" id="close-display">&times;</button>
+                </div>
+                <div id="code-text"></div>
+                <button class="CT-copy-btn allBtns-in-CTapp" id="ct-copy-btn-id">全コピー</button>
+            </div>
+            <!-- リストエリア -->
+            <div class="list-section" id="list-section">
+                <div class="list-header">
+                    <h3>登録済みテンプレート</h3>
+                </div>
+                <ul class="template-list" id="template-list">
+                    <!-- ここにアイテムが追加されます -->
+                </ul>
+                <button id="delete-selected-btn" class="delete-selected-btn allBtns-in-CTapp" disabled>選択したものを削除</button>
+                <div class="empty-state" id="empty-msg">
+                    テンプレートが登録されていません。上から追加してください！
+                </div>
+            </div>
+        </div>
+        <div id="telling-id">コピーしました！</div>
+    </div>
+
+    <!-- 📝一時メモ帳 -->
+    <div id="memoApp-screen">
+        <div class="app-header">
+            <button class="goToMenu-btn">←🌙メニューへ</button>
+            <h1 class="h1class">📝 一時メモ帳</h1>
+        </div>
+        <div class="app-container">
+            <!-- サイドバー -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">メモ帳</div>
+                    <button class="green-btn common-btn-states" id="btnNewNote">+ 新規</button>
+                </div>
+                <div class="note-list" id="noteList">
+                    <!-- メモアイテムがここに入る -->
+                </div>
+            </div>
+
+            <!-- メインエリア -->
+            <div class="memo-main-area">
+                <button class="mobile-toggle" id="mobileToggle">☰</button>
+                
+                <div class="editor-header">
+                    <input type="text" class="editor-title-input" id="noteTitle" placeholder="タイトル">
+                    <div class="editor-actions">
+                        <button id="memo-btnSelectAll" class="green-btn common-btn-states">📋 全選択</button>
+                        <button id="memobtnCopySelection" class="green-btn common-btn-states">コピー</button>
+                        <button id="btn-quick-clear" class="yellow-btn common-btn-states">クリア</button> 
+                        <button class="memo-delete-btn red-btn common-btn-states" id="btnDeleteNote">🗑 削除</button>
+                    </div>
+                </div>
+
+                <div class="status-bar">
+                    <span id="saveStatus">保存済み</span>
+                    <span id="charCount">0 文字</span>
+                </div>
+
+                <textarea id="noteArea" class="firefly-input" placeholder="ここにメモを入力してください..."></textarea>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
