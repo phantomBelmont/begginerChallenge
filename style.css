@@ -20,6 +20,11 @@
             background-color: transparent;
             color: #fff;
         }
+        
+        :root {
+          --neon: 0 0 0 2px #aaffaa, 0 0 30px rgba(170, 255, 170, 0.4);
+        }
+
         .moon{
             font-size: 1.7rem;
             filter:drop-shadow(0 0 2px #333) drop-shadow(0 0 10px #ffdd00);
@@ -56,6 +61,62 @@
             @keyframes twinkle{
                 0%,100%{opacity:1;} 50%{opacity: 0.2;}
             }
+            
+　　/* 共通設定 */️
+        .nice-push{
+            border-width: 3px;
+            box-shadow: 0 0 5px #fcd34d, 0 0 10px #fcd34d;
+        
+            padding: 30px;
+            margin: 10px;
+            width:auto;
+            text-align: center;
+            border-radius:8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.5rem;
+            width: auto;
+            flex-shrink: 0;
+
+            transition: all 0.2s ease-in-out,
+            background 0.2s ease-in-out,
+            box-shadow 0.2s ease-in-out;
+        
+            will-change: transform, box-shadow;
+        }
+        
+        .nice-push:active {
+            transform: scale(0.95) translateY(2px);
+            box-shadow: 0 0 2px #fcd34d, 0 0 7px #fcd34d;
+        }
+        
+        
+        .green-btn{
+            background-color: transparent;
+            color: #00aa00;
+            border-color: #00aa00;
+        } 
+        .green-btn:hover{
+            background-color: rgba(77,77,77,0.2);
+        }
+        .yellow-btn{
+            background-color: transparent;
+            color:#aabf00;
+            border-color: #aabf00;
+        }
+        .yellow-btn:hover {
+            background-color: rgba(77,77,77,0.2);
+        }
+
+        .red-btn {
+            background-color: transparent;
+            color: #800;
+            border-color: #800;
+        }
+        .red-btn:hover {
+            background-color: rgba(77,77,77,0.);
+        }
+        
     /* --- メニュー画面 --- */
         #menu-screen {
             display: flex; /* アプリ起動時に表示 */
@@ -136,23 +197,25 @@
             flex-basis: 0;
             width: 100%;
             padding: 20px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
+            border: 1px solid #ccc !important;
             border-radius: 4px;
             font-size: 15px;
-            background: #aaa;
+            background: transparent;
             flex-shrink: 0;
-            color: #000;
+            color: #ddd;
         }
         .group-o-inputgroups{
             display: flex;
         }
+        .group-o-inputgroups input: focus-within {
+           outline: none;
+           box-shadow: var(--neon);
+        }
         .textinputDiv {
             padding: 0;
-            box-sizing: border-box;
             border-radius: 4px;
             font-size: 15px;
-            background: #111;
+            background: transparent;
             display: flex;
             flex-grow: 1; /* 残りの高さを全て占有 */
             min-height: 0; /* Flexboxのオーバーフロー対策 */
@@ -160,46 +223,40 @@
             flex-direction: column;
             gap: 4px;
             flex-shrink: 0;
+            outline:none !important;
             /* 　↓　テキストエリアはスクロールできるが、画面全体はしない*/
             overflow: hidden; 
         }
+        .textinputDiv textarea: focus-within {
+            outline: none !important;
+            box-shadow: var(--neon) !important;
+        }
+
         #yourtext {
-            background: #aaa;
+            background: transparent;
+            color:#ddd;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             border-radius: 4px;
             padding: 20px;
-            color: #000;
-            border: none;
-            resize: none;
             width: 100%;
             height: 100%;
-            box-sizing: border-box;
             overflow-y: auto; 
-            min-height: 80px;
-            max-height: 200px;
+            min-height: 150px;
         }
+         
         .replace-reset-btns {
-            padding: 5px 10px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
             flex-shrink: 0;
         }
-        .all-main-btns {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 15px;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
+    
+        #btn-FnR-copy { 
+            margin-top: 5px;
         }
-        #btn-execute { background: #007; }
-        #btn-reset { background: #700; font-size: 13px; padding: 8px; }
-        #btn-FnR-copy { background: #070; margin-top: 5px;}
         /* エラー表示 */
         #error-msg {
             color: red;
@@ -222,7 +279,7 @@
         .FnR-result-box {
             flex-grow: 1;
             border: 1px solid #ccc;
-            background: #aaa;
+            background: transprarent;
             padding: 8px;
             overflow-y: auto; /* 結果が多い場合はここだけでスクロール */
             max-height: 150px;
@@ -230,7 +287,7 @@
             word-break: break-all;
             font-size: 14px;
             border-radius: 4px;
-            color: #000;
+            color: #ddd;
             min-height: 0; /* Flexbox対策 */
         }
     
@@ -331,7 +388,7 @@
             transition: border-color 0.2s;
         }
         input[type="text"]:focus {
-            border-color: var(--accent-color);
+            box-shadow: var(--neon);
         }
         /* エラーメッセージ */
         .error-msg {
@@ -426,13 +483,6 @@
             transform: scale(0.98);
         }
         /* 保存ボタン */
-        .save-btn {
-            background-color: var(--accent-color);
-            color: #ddd;
-        }
-        .save-btn:hover {
-            background-color: #5649c0;
-        }
         .color-saved-msg{
             font-size: 0.9rem; 
             color: #555; 
@@ -440,10 +490,6 @@
             text-align: left;
         }
         /* ダウンロードボタン */
-        .download-btn {
-            background-color: var(--download-color);
-            color: #ddd;
-        }
         .download-btn:hover {
             background-color: #005555;
         }
@@ -536,27 +582,28 @@
             border-radius: 4px;
             font-size: 1rem;
             height: auto;
-        }
+        } 
         .template-input-area input:focus-within {
-        box-shadow: 0 0 0 2px #aaffaa, 0 0 30px rgba(170, 255, 170, 0.4);
+            box-shadow: var(--neon);
         }
         .template-input-area textarea {
             min-height: 100px;
             font-family: monospace;
         }
+        .template-input-area textarea:focus-within {
+            outline: none;
+            box-shadow: var(--neon);
+        }
+        
         .tate-msg{
             align-self: flex-end;
             font-size: 0.8rem;
         }
         #ts-reset-input{
             width: auto;
-            background-color: #550000;
-            color: #ddd;
             align-self: flex-end;
         }
         #add-template {
-            background-color: #077;
-            color: #ddd;
             align-self: center;
         }
 
@@ -573,22 +620,17 @@
             align-items: center;
             margin-bottom: 5px;
             padding-bottom: 5px;
+            color:#A947FF;
         }
-
-        .delete-selected-btn {
-            background-color: #700;
-            color: #ddd;
-            font-size: 0.9rem;
-            margin-top: 15px;
-        }
-
-        .delete-selected-btn:disabled {
-            background-color: transparent;
+        
+        
+        #delete-selected-btn:disabled {
             cursor: not-allowed;
+            visibility: hidden;
         }
 
         .template-list {
-            background: #333;
+            background: transparen;
             list-style: none;
             padding: 0;
             margin: 0;
@@ -622,7 +664,7 @@
 
         .template-title {
             font-weight: bold;
-            color: #ddd;
+            color: #B77DFF;
             text-align: left;
         }
 
@@ -637,7 +679,7 @@
 
         .delete-single-btn {
             background: none;
-            color: #999;
+            color: #0DF3FF;
             font-size: 1.2rem;
             padding: 5px 10px;
         }
@@ -681,31 +723,6 @@
             font-weight: 500;
         }
         
-        .allBtns-in-CTapp{
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            transition: opacity 0.2s;
-        }
-
-        .allBtns-in-CTapp:hover {
-            opacity: 0.9;
-        }
-        
-        .CT-copy-btn {
-            background-color: #070;
-            color: white;
-            font-weight: bold;
-        }
-
-        .CT-close-btn {
-            background: none;
-            color: #777;
-            font-size: 1.5rem;
-            padding: 0;
-        }
 
         /* 空状態 */
         .empty-state {
@@ -768,7 +785,7 @@
     0% {
         bottom: -50px;
         transform: translateX(0);
-        opacity: 0;
+        opacity: 0.5;
     }
     50% {
         opacity: 1;
@@ -798,43 +815,13 @@
             width: 100%;
             height: 100%;
         }
-
-
-
-        .green-btn{
-            background-color: transparent;
-            color: #00aa00;
-            border-color: #00aa00;
-        } 
-        .green-btn:hover{
-            background-color: rgba(77,77,77,0.8);
-        }
-        .yellow-btn{
-            background-color: transparent;
-            color:#aabf00;
-            border-color: #aabf00;
-        }
-        .yellow-btn:hover {
-            background-color: rgba(77,77,77,0.8);
-        }
-
-        .red-btn {
-            background-color: transparent;
-            color: #800;
-            border-color: #800;
-        }
-        .red-btn:hover {
-            background-color: rgba(77,77,77,0.8);
-        }
-
         
 
-        
 
         /* サイドバー（メモリスト） */
         .sidebar {
             width: 280px;
-            background-color: #333 !important;
+            background-color: #333;
             border-right: 1px solid;
             display: flex;
             flex-direction: column;
@@ -855,19 +842,7 @@
             font-weight: 600;
             color: gold;
         }
-        .common-btn-states {
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .common-btn-states:hover {
-            background-color: rgba(77, 77, 77, 0.8);
-            transform: translateY(-1px);
-        }
+        
 
         .note-list {
             flex: 1;
@@ -901,7 +876,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: block;
-            color: purple;
+            color: #B77DFF;
         }
 
         .note-item-preview {
@@ -935,7 +910,9 @@
 
         /* メインエディタエリア */
         .memo-main-area {
-            position: relative;            
+            position: relative;
+            display:flex;
+            flex-direction:column;
             z-index: 10;
             overflow: hidden;
             background-color: transparent;
@@ -943,7 +920,7 @@
 
         .editor-header {
             padding: 15px 25px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px sold;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -952,14 +929,15 @@
 
         .editor-title-input {
             background: transparent;
-            border: none;
-            color: #ddd;
-            font-size: 1.4rem;
+            font-size: 2rem;
             font-weight: 600;
             width: 60%;
-            outline: none;
+            color:#9000FF;
+            border-color:transparent !important;
         }
-
+        .editor-title-input:focus-within {
+            box-shadow: var(--neon);
+        }
         .editor-title-input::placeholder {
             color: #555;
         }
@@ -972,7 +950,7 @@
         .status-bar {
             padding: 8px 25px;
             font-size: 0.8rem;
-            color: #6943F4;
+            color: #0090DD;
             border-bottom: 1px solid #5227EC;
             display: flex;
             justify-content: space-between;
@@ -982,6 +960,7 @@
             z-index:2;
             flex: 1;
             width: 100%;
+      max-height: 600px;
             padding: 25px;
             border: none;
             background-color: transparent;
@@ -992,7 +971,7 @@
             outline: none;
         }
 
-        textarea::placeholder {
+        #noteArea::placeholder {
             color: #070;
         }
 
@@ -1037,7 +1016,7 @@
             }
             .editor-title-input {
                 width: 50%;
-                font-size: 1.1rem;
+                font-size: 2rem;
             }
             .memo-btn-new span {
                 display: inline;
