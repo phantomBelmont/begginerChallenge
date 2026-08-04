@@ -28,6 +28,7 @@
 
   <script src="script.js" defer></script>
   <link rel="stylesheet" href="style.css">
+  
 
 </head>
 <body>
@@ -78,13 +79,13 @@
             </div>
         </div>
         <div class="replace-reset-btns">
-            <button id="btn-execute" onclick="doReplace()" class="all-main-btns">置換実行</button>
-            <button id="btn-reset" onclick="resetAll()" class="all-main-btns">すべてリセット</button>
+            <button id="btn-execute"  class="yellow-btn nice-push">置換実行</button>
+            <button id="btn-reset" class="red-btn nice-push">すべてリセット</button>
         </div>
         <p id="error-msg">「探す言葉」を入力してください。</p>
         <div class="result-area">
             <div class="FnR-result-box" id="result">ここに結果が表示されます</div>
-                <button id="btn-FnR-copy" onclick="copyResult()" class="all-main-btns">全選択＆コピー</button>
+                <button id="btn-FnR-copy" class="green-btn nice-push">全選択＆コピー</button>
             </div>
         </div>
     </div>
@@ -125,7 +126,7 @@
                     <span class="rgb-val" id="bVal">FF</span>
                 </div>
             </div>
-            <button class="btn save-btn" id="saveBtn">💾 色を保存</button>
+            <button class="yellow-btn nice-push" id="saveBtn">💾 色を保存</button>
             <!-- 保存リスト -->
             <h3 class="color-saved-msg">保存済み (クリックでコピー)</h3>
             <ul class="saved-list" id="savedList"></ul>
@@ -143,7 +144,7 @@
             </div>
             
             <!-- ボタン -->
-            <button class="btn download-btn" id="downloadBtn">⬇️ 画像をダウンロード</button>
+            <button class="green-btn nice-push" id="downloadBtn">⬇️ 画像をダウンロード</button>
 
     </div>
 
@@ -159,18 +160,18 @@
                 <input type="text" id="title" placeholder="タイトル（例：絵文字に影をつける）">
                 <textarea id="code" placeholder="コード（HTML/CSSなど）"></textarea>
                 <p class="tate-msg">ひっぱると、たてに伸びるよ ↑</p>
-                <button id="add-template" class="allBtns-in-CTapp">テンプレート追加</button>
-                <button id="ts-reset-input" class="allBtns-in-CTapp"> 上記をリセット</button>
+                <button id="add-template" class="green-btn nice-push">テンプレート追加</button>
+                <button id="ts-reset-input" class="yellow-btn nice-push"> 上記をリセット</button>
 
             </div>
             <!-- コード表示エリア -->
             <div id="code-display-area">
                 <div class="code-header">
                     <h3 id="display-title">タイトル</h3>
-                    <button class="CT-close-btn allBtns-in-CTapp" id="close-display">&times;</button>
+                    <button class="yellow-btn nice‐push" id="close-display">&times;</button>
                 </div>
                 <div id="code-text"></div>
-                <button class="CT-copy-btn allBtns-in-CTapp" id="ct-copy-btn-id">全コピー</button>
+                <button class="green-btn nice‐push" id="ct-copy-btn-id">全コピー</button>
             </div>
             <!-- リストエリア -->
             <div class="list-section" id="list-section">
@@ -180,13 +181,13 @@
                 <ul class="template-list" id="template-list">
                     <!-- ここにアイテムが追加されます -->
                 </ul>
-                <button id="delete-selected-btn" class="delete-selected-btn allBtns-in-CTapp" disabled>選択したものを削除</button>
+                <button id="delete-selected-btn" class="red-btn nice-push" disabled>選択したものを削除</button>
                 <div class="empty-state" id="empty-msg">
                     テンプレートが登録されていません。上から追加してください！
                 </div>
             </div>
         </div>
-        <div id="telling-id">コピーしました！</div>
+        <div id="telling-id">メモコピーしました！</div>
     </div>
 
     <!-- 📝一時メモ帳 -->
@@ -200,7 +201,7 @@
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-header">
                     <div class="sidebar-title">メモ帳</div>
-                    <button class="green-btn common-btn-states" id="btnNewNote">+ 新規</button>
+                    <button class="green-btn nice-push" id="btnNewNote">+ 新規</button>
                 </div>
                 <div class="note-list" id="noteList">
                     <!-- メモアイテムがここに入る -->
@@ -209,15 +210,14 @@
 
             <!-- メインエリア -->
             <div class="memo-main-area">
-                <button class="mobile-toggle" id="mobileToggle">☰</button>
+                <button class="mobile-toggle nice-push" id="mobileToggle">☰</button>
                 
                 <div class="editor-header">
                     <input type="text" class="editor-title-input" id="noteTitle" placeholder="タイトル">
                     <div class="editor-actions">
-                        <button id="memo-btnSelectAll" class="green-btn common-btn-states">📋 全選択</button>
-                        <button id="memobtnCopySelection" class="green-btn common-btn-states">コピー</button>
-                        <button id="btn-quick-clear" class="yellow-btn common-btn-states">クリア</button> 
-                        <button class="memo-delete-btn red-btn common-btn-states" id="btnDeleteNote">🗑 削除</button>
+                        <button id="memobtnCopySelection" class="green-btn nice-push">📋全選択&コピー</button>
+                        <button id="btn-quick-clear" class="yellow-btn nice-push">🧹クリア</button> 
+                        <button class="memo-delete-btn red-btn nice-push" id="btnDeleteNote">🗑 削除</button>
                     </div>
                 </div>
 
@@ -226,7 +226,7 @@
                     <span id="charCount">0 文字</span>
                 </div>
 
-                <textarea id="noteArea" class="firefly-input" placeholder="ここにメモを入力してください..."></textarea>
+                <textarea id="noteArea" placeholder="ここにメモを入力してください..."></textarea>
             </div>
         </div>
     </div>
