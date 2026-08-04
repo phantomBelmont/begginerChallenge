@@ -155,10 +155,8 @@
                 const btn = document.getElementById('btn-FnR-copy');
                 const originalText = btn.textContent;
                 btn.textContent = 'コピー完了！';
-                btn.style.background = '#050';
                 setTimeout(() => {
                     btn.textContent = originalText;
-                    btn.style.background = '#070';
                 }, 1000);
             }).catch(err => {
                 console.error('コピー失敗:', err);
@@ -769,40 +767,56 @@
         }
 
         // イベントリスナーの設定
-        // タイトルや内容が変わったら自動保存
+        //タイトルや内容が変わったら自動保存
+        
         noteTitleInput.addEventListener('input', updateCurrentNote);
         noteArea.addEventListener('input', updateCurrentNote);
 
     
-        // 全選択ボタンのイベントリスナー
-        memobtnSelectAll.addEventListener('click', () => {
-        noteArea.select();
-        updateStatus('全選択完了');
-        });
-
-        // 選択範囲コピーボタンのイベントリスナー
-        const memobtnCopySelection = document.getElementById('memobtnCopySelection');
+        // 全選択＆コピーボタン（統合版）
+        const memobtnCopySelection = document.getElementById('memobtnCopySelection'); // IDは既存のものをそのまま使用するか、必要なら変更してください
+        
         memobtnCopySelection.addEventListener('click', async () => {
-        // 現在の選択範囲を取得
-        const selectedText = window.getSelection().toString();
-
-        if (!selectedText) {
-            updateStatus('選択されたテキストがありません');
-            showToast('選択範囲がありません');
-            return;
-        }
-
-        try {
-            await navigator.clipboard.writeText(selectedText);
-            updateStatus('選択範囲コピー完了');
-            setTimeout(() => updateStatus('保存済み'), 1500);
-        } catch (err) {
-            console.error('コピーに失敗しました:', err);
-            updateStatus('コピーに失敗しました');
-            showToast('クリップボードコピーに失敗しました');
-        }
+            // 選択範囲の取得
+            let selectedText = window.getSelection().toString();
+            let shouldSelectAll = false;
+            
+            // 選択範囲がない場合は全選択を試みる
+            if (!selectedText) {
+                // テキストエリア（noteArea）が存在するか確認して全選択
+                if (noteArea) {
+                    noteArea.select();
+                    // 再度選択範囲を取得（全選択された状態）
+                    selectedText = window.getSelection().toString();
+                    updateStatus('全選択してコピーします');
+                } else {
+                    updateStatus('選択されたテキストがありません');
+                    showToast('テキストエリアが見つかりません');
+                    return;
+                }
+            }
+            
+            if (!selectedText) {
+                updateStatus('コピー対象が見つかりませんでした');
+                showToast('コピー対象がありません');
+                return;
+            }
+            
+            try {
+                await navigator.clipboard.writeText(selectedText);
+                updateStatus('コピー完了');
+                showToast('クリップボードにコピーしました');
+                
+                //状態を少し遅らせて「保存済み」などの通常状態に戻す
+                setTimeout(() => updateStatus('保存済み'), 1500);
+            } catch (err) {
+                console.error('コピーに失敗しました:', err);
+                updateStatus('コピーに失敗しました');
+                showToast('クリップボードコピーに失敗しました');
+            }
         });
-        // クイッククリアボタン（バグ修正版）
+        
+        //クイッククリアボタン（バグ修正版）
         btnQuickClear.addEventListener('click', () => {
             if (!currentNoteId) return;
             if (noteArea.value === '') return; // 空なら何もしない
