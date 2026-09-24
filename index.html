@@ -4,30 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐣試作品🐵</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4B0082">
-  <link rel="icon" type="image/png" href="icon192.png">
-  <link rel="apple-touch-icon" href="icon192.png">
+  <link rel="manifest" href="./manifest.json">
   
-<!-- 安全な CSP の設定例 -->
-    <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self';
-    style-src 'self';
-    img-src 'self' data: https:;
-    font-src 'self' data:;
-    connect-src 'self';
-    base-uri 'self';
-    form-action 'self';
-    worker-src 'self';
+  
+   <meta http-equiv="Content-Security-Policy"
+
+    content= "default-src 'self'; 
+    script-src 'self'; 
+    style-src 'self'; 
+    img-src 'self' data: https:; 
+    font-src 'self' data:; 
+    connect-src 'self'; 
+    base-uri 'self'; 
+    form-action 'self'; 
+    manifest-src 'self'; 
+    worker-src 'self'; 
+    frame-ancestors 'self'; 
     upgrade-insecure-requests;
-    block-all-mixed-content;
-    ">
+  ">
 
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
-  <script src="script.js" defer></script>
-  <link rel="stylesheet" href="style.css">
+  
+  <link rel="stylesheet" href="./style.css">
   
 
 </head>
@@ -230,5 +229,10 @@
             </div>
         </div>
     </div>
+
+
+<script src="./script.js" defer></script>
+
+
 </body>
 </html>
