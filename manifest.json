@@ -1,9 +1,9 @@
 {
-  "name": "私の試作品",
-  "short_name": "試し",
+  "name": "色見本&ダウンロード",
+  "short_name": "🎨色見本🎨",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#4B0082",
+  "background_color": "#000",
   "theme_color": "#4B0082",
   "icons": [
     {
