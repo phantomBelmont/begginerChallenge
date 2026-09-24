@@ -1,4 +1,4 @@
-const tryCACHE = 'v3';
+const tryCACHE = 'v4';
 const ASSETS = [
   './',
   './index.html',
